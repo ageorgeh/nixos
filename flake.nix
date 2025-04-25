@@ -33,7 +33,7 @@
         };
 
         modules = [
-          ./home/alex.nix
+          ./home/alex/default.nix
         ];
       };
 
