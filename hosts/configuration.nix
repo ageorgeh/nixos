@@ -4,19 +4,23 @@
   imports = [
     ./hardware-configuration.nix
   ];
-  
-  
+
+
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ]; 
-    substituters = ["https://cache.nixos.org/" "https://hyprland.cachix.org"];
-    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+    experimental-features = [ "nix-command" "flakes" ];
+    substituters = [ "https://cache.nixos.org/" "https://hyprland.cachix.org" ];
+    trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
-  
+
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   services.xserver.videoDrivers = [ "nvidia" ];
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
+  security.pam.services.hyprland.enableGnomeKeyring = true;
+  security.pam.services.sddm.enableGnomeKeyring = true;
 
   hardware.nvidia = {
     modesetting.enable = true;
@@ -47,9 +51,9 @@
   };
 
   services.xserver.enable = true;
-  # services.xserver.displayManager.gdm.enable = false;
-  # services.xserver.desktopManager.gnome.enable = true;
   services.displayManager.sddm.enable = true;
+  services.displayManager.defaultSession = "hyprland";
+  services.displayManager.sddm.autoLogin.enable = false;
   programs.hyprland.enable = true;
 
   services.xserver.xkb = {
@@ -77,15 +81,24 @@
 
   programs.firefox.enable = true;
 
-  environment.systemPackages = with pkgs; [ ];
+  environment.systemPackages = with pkgs; [
+    git
+    home-manager # Needed before user installs so that packages can be fetched
+    seahorse # GUI for managing stored keyring secrets
+  ];
 
   environment.sessionVariables = {
-    # Needed for wayland vscode
     ELECTRON_OZONE_PLATFORM_HINT = "wayland";
     NIXOS_OZONE_WL = "1";
     EDITOR = "code --ozone-platform=x11 --wait";
+    XDG_CURRENT_DESKTOP = "GNOME";
+    DESKTOP_SESSION = "gnome";
   };
 
+
+  environment.etc."fuse.conf".text = ''
+    user_allow_other
+  '';
 
   system.stateVersion = "24.11";
 }
