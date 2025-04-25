@@ -20,6 +20,7 @@
     code = "code --ozone-platform=x11";
     nixos-build = "sudo nixos-rebuild switch --flake ~/nixos-config#nixos";
     home-build = "home-manager switch --flake ~/nixos-config#alex";
+    logout = "hyprctl dispatch exit";
   };
 
   home.stateVersion = "24.11";
@@ -34,12 +35,29 @@
     fuse
     # Nix formatting 
     nixpkgs-fmt
+    # SSH key management
+    keychain
   ];
 
+  programs.ssh = {
+    enable = true;
+    extraConfig = ''
+      AddKeysToAgent yes
+
+      Host github.com
+        IdentityFile ~/.ssh/github_id
+        IdentitiesOnly yes
+
+      Host 192.168.*
+        ForwardAgent yes
+        IdentityFile ~/.ssh/github_id
+        IdentitiesOnly yes
+    '';
+  };
 
   systemd.user.services.rclone-gdrive = {
     Unit = {
-      Description = "Mount Google Drive 'books' folder with rclone";
+      Description = "Mount Google Drive with rclone";
       After = [ "graphical-session.target" "default.target" ];
       Wants = [ "graphical-session.target" ];
     };
