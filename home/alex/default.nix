@@ -16,8 +16,29 @@
     nixpkgs-fmt
     # SSH key management
     keychain
+    # Waybar
     nerd-fonts.jetbrains-mono
     inotify-tools
+    file
+    tidal-hifi
+    # File system tools
+    xfce.thunar
+    xfce.tumbler
+    xfce.thunar-volman
+    gvfs
+    # Application launcher
+    wofi
+    # Notificaiton daemon
+    mako
+    # Auth agent
+    hyprpolkitagent
+    # Wallpaper
+    hyprpaper
+    # Settings
+    wdisplays # display settings
+    networkmanagerapplet
+    pavucontrol # volume manager
+    wlogout # logout/lock GUI
   ];
 
   imports = [

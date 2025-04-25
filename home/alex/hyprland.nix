@@ -9,15 +9,37 @@
     systemd.variables = [ "--all" ]; # Fixes missing PATH in services
 
     settings = {
+
       exec-once = [
         "waybar"
+        "mako"
+        "hyprpolkitagent"
+        "hyprpaper"
       ];
+      animations = {
+        enabled = true;
+
+        bezier = [
+          "ease, 0.2, 0.0, 0.2, 1.0"
+        ];
+
+        animation = [
+          "windows, 1, 1, ease"
+          "windowsOut, 1, 1, ease"
+          "border, 1, 1, ease"
+          "fade, 1, 1, ease"
+          "workspaces, 1, 1, ease"
+        ];
+      };
       "$mod" = "SUPER";
       bind =
         [
           "$mod, V, exec, code --ozone-platform=x11"
           "$mod, RETURN, exec, kitty"
           "$mod, F, exec, firefox"
+          "$mod, A, exec, wofi --show drun"
+          "$mod, Q, killactive"
+          "$mod, S, exec, ~/.config/scripts/quicksettings.sh"
           ", Print, exec, grimblast copy area"
         ]
         ++ (
