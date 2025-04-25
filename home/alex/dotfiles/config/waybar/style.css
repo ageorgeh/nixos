@@ -1,3 +1,52 @@
-#cpu, #memory, #temperature, #mpd {
+* {
+  font-family: "JetBrainsMono Nerd Font", "Sans";
+  font-size: 13px;
+  padding: 0 12px;
+  margin: 0;
+  min-height: 28px;
+  border: none;
+  color: #cdd6f4;
+}
+
+window#waybar {
+  background: transparent;
+  margin: 6px 12px;
+  padding: 0 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+#waybar > box {
+  margin: 2px 0;
+}
+
+#workspaces button {
+  border-radius: 12px;
   padding: 0 10px;
+  margin: 0 4px;
+  transition: background 0.2s;
+}
+
+#workspaces button.focused {
+  background: rgba(219, 56, 15, 0.6);
+  color: #89b4fa;
+}
+
+#workspaces button:hover {
+  border-radius: 10px;
+  background: transparent;
+  margin: 0 6px;
+  padding: 0 10px;
+  transition: background 0.2s;
+  background: #370617;
+}
+
+/* Tooltips */
+tooltip {
+  background: #370617;
+  border-radius: 10px;
+  padding: 6px 10px;
+}
+
+tooltip label {
+  color: #cdd6f4;
 }

@@ -2,7 +2,8 @@
   "layer": "top",
   "position": "top",
   "modules-left": [
-    "hyprland/workspaces"
+    "hyprland/workspaces",
+    "custom/vscode"
   ],
   "modules-center": [
     "clock"
@@ -14,7 +15,6 @@
     "mpd",
     "pulseaudio",
     "network",
-    "battery",
     "tray"
   ],
   "hyprland/workspaces": {},
@@ -49,14 +49,10 @@
     "format-ethernet": "  {ifname}",
     "format-disconnected": "⚠ Disconnected"
   },
-  "battery": {
-    "format": "{capacity}% {icon}",
-    "format-icons": [
-      "",
-      "",
-      "",
-      "",
-      ""
-    ]
+  "custom/vscode": {
+    "format": " ",
+    "tooltip-format": "Open VSCode (SUPER + V)",
+    "on-click": "/home/alex/.nix-profile/bin/code --ozone-platform=x11",
+    "interval": 3600
   }
 }

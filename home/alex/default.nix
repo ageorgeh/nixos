@@ -16,6 +16,8 @@
     nixpkgs-fmt
     # SSH key management
     keychain
+    nerd-fonts.jetbrains-mono
+    inotify-tools
   ];
 
   imports = [

@@ -28,6 +28,9 @@
     package = pkgs.waybar;
   };
   xdg.configFile."waybar/config".source = ./dotfiles/config/waybar/config;
-  xdg.configFile."waybar/style.css".source = ./dotfiles/config/waybar/style.css;
+  xdg.configFile."waybar/style.css" = {
+    source = ./dotfiles/config/waybar/style.css;
+    force = true;
+  };
 
 }
