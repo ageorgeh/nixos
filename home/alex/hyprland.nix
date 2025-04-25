@@ -9,6 +9,9 @@
     systemd.variables = [ "--all" ]; # Fixes missing PATH in services
 
     settings = {
+      exec-once = [
+        "waybar"
+      ];
       "$mod" = "SUPER";
       bind =
         [

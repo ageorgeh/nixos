@@ -20,4 +20,14 @@
 
 
   programs.kitty.enable = true;
+
+
+  # Waybar
+  programs.waybar = {
+    enable = true;
+    package = pkgs.waybar;
+  };
+  xdg.configFile."waybar/config".source = ./dotfiles/config/waybar/config;
+  xdg.configFile."waybar/style.css".source = ./dotfiles/config/waybar/style.css;
+
 }
