@@ -29,7 +29,7 @@
   };
 
   xdg.configFile."" = {
-    source = ./dotfiles/test;
+    source = ./dotfiles/config;
     recursive = true;
   };
 

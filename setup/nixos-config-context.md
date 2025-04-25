@@ -1,6 +1,6 @@
 # NixOS Configuration Context for LLMs
 
-Generated on Fri 25 Apr 2025 18:25:22 AEST
+Generated on Fri 25 Apr 2025 20:10:40 AEST
 
 ## Repository Structure
 
@@ -10,9 +10,14 @@ Generated on Fri 25 Apr 2025 18:25:22 AEST
 ./.gitignore
 ./home/alex/cloud.nix
 ./home/alex/default.nix
+./home/alex/dotfiles/config/hypr/hyprpaper.conf
+./home/alex/dotfiles/config/kitty/kitty.conf
+./home/alex/dotfiles/config/mako/config
+./home/alex/dotfiles/config/scripts/quicksettings.sh
 ./home/alex/dotfiles/config/waybar/config
 ./home/alex/dotfiles/config/waybar/scripts/reload
 ./home/alex/dotfiles/config/waybar/style.css
+./home/alex/dotfiles/config/wofi/style.css
 ./home/alex/hyprland.nix
 ./home/alex/programs.nix
 ./home/alex/shell.nix
@@ -143,11 +148,11 @@ result
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    # Google drive
+    # Google drive 
     rclone
     rclone-browser
     fuse
-    # Nix formatting
+    # Nix formatting 
     nixpkgs-fmt
     # SSH key management
     keychain
@@ -155,6 +160,25 @@ result
     nerd-fonts.jetbrains-mono
     inotify-tools
     file
+    tidal-hifi
+    # File system tools
+    xfce.thunar
+    xfce.tumbler
+    xfce.thunar-volman
+    gvfs
+    # Application launcher
+    wofi
+    # Notificaiton daemon
+    mako
+    # Auth agent
+    hyprpolkitagent
+    # Wallpaper
+    hyprpaper
+    # Settings
+    wdisplays # display settings
+    networkmanagerapplet
+    pavucontrol # volume manager
+    wlogout # logout/lock GUI
   ];
 
   imports = [
@@ -166,6 +190,78 @@ result
     ./theme.nix
   ];
 }
+```
+
+## File: home/alex/dotfiles/config/hypr/hyprpaper.conf
+
+```
+wallpaper = HDMI-A-1,solid_color=1e1e2e
+wallpaper = DP-3,solid_color=1e1e2e
+```
+
+## File: home/alex/dotfiles/config/kitty/kitty.conf
+
+```
+# Fonts
+font_family      JetBrainsMono Nerd Font
+bold_font        auto
+italic_font      auto
+bold_italic_font auto
+font_size        13.0
+
+# Colors (match your Waybar/GTK theme)
+background       #1e1e2e
+background_opacity 0.9
+borderless_window yes
+foreground       #cdd6f4
+selection_background #313244
+selection_foreground #cdd6f4
+cursor           #89b4fa
+
+# Cursor
+cursor_shape     beam
+
+# Window Decorations
+hide_window_decorations yes
+window_padding_width 8
+
+# Scrollback
+scrollback_lines 10000
+
+# Performance tweaks
+enable_audio_bell no
+repaint_delay 7
+input_delay 1
+```
+
+## File: home/alex/dotfiles/config/mako/config
+
+```
+background-color=#1e1e2e
+text-color=#cdd6f4
+border-color=#89b4fa
+border-size=2
+padding=10
+margin=10
+font=JetBrainsMono Nerd Font 12
+icons=true
+max-history=50
+default-timeout=5000
+```
+
+## File: home/alex/dotfiles/config/scripts/quicksettings.sh
+
+```
+#!/usr/bin/env bash
+
+choice=$(printf "Displays\nNetwork\nAudio\nLogout\n" | wofi --dmenu --prompt "Quick Settings")
+
+case "$choice" in
+    Displays) wdisplays ;;
+    Network) nm-connection-editor ;;
+    Audio) pavucontrol ;;
+    Logout) wlogout ;;
+esac
 ```
 
 ## File: home/alex/dotfiles/config/waybar/config
@@ -318,6 +414,54 @@ tooltip label {
 }
 ```
 
+## File: home/alex/dotfiles/config/wofi/style.css
+
+```
+* {
+  font-family: "JetBrainsMono Nerd Font", "Sans";
+  font-size: 14px;
+  color: #cdd6f4;
+  background-color: transparent;
+  border: none;
+}
+
+window {
+  margin: 0px;
+  border: 2px solid #89b4fa;
+  background-color: #1e1e2e;
+  border-radius: 12px;
+}
+
+#input {
+  padding: 6px 12px;
+  margin: 8px;
+  background-color: #313244;
+  border-radius: 8px;
+  border: none;
+  color: #f5f5f5;
+}
+
+#entry {
+  padding: 8px 12px;
+  margin: 4px 8px;
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+#entry:selected {
+  background-color: #370617;
+  color: #89b4fa;
+}
+
+#text {
+  margin: 0px;
+}
+
+#scroll {
+  margin: 4px;
+}
+```
+
 ## File: home/alex/hyprland.nix
 
 ```
@@ -332,15 +476,37 @@ tooltip label {
     systemd.variables = [ "--all" ]; # Fixes missing PATH in services
 
     settings = {
+
       exec-once = [
         "waybar"
+        "mako"
+        "hyprpolkitagent"
+        "hyprpaper"
       ];
+      animations = {
+        enabled = true;
+
+        bezier = [
+          "ease, 0.2, 0.0, 0.2, 1.0"
+        ];
+
+        animation = [
+          "windows, 1, 1, ease"
+          "windowsOut, 1, 1, ease"
+          "border, 1, 1, ease"
+          "fade, 1, 1, ease"
+          "workspaces, 1, 1, ease"
+        ];
+      };
       "$mod" = "SUPER";
       bind =
         [
           "$mod, V, exec, code --ozone-platform=x11"
           "$mod, RETURN, exec, kitty"
           "$mod, F, exec, firefox"
+          "$mod, A, exec, wofi --show drun"
+          "$mod, Q, killactive"
+          "$mod, S, exec, ~/.config/scripts/quicksettings.sh"
           ", Print, exec, grimblast copy area"
         ]
         ++ (
@@ -390,11 +556,27 @@ tooltip label {
     enable = true;
     package = pkgs.waybar;
   };
-  xdg.configFile."waybar/config".source = ./dotfiles/config/waybar/config;
-  xdg.configFile."waybar/style.css" = {
-    source = ./dotfiles/config/waybar/style.css;
-    force = true;
-  };
+
+  xdg.configFile."".source = ./dotfiles/config;
+
+
+  # xdg.configFile."waybar/config".source = ./dotfiles/config/waybar/config;
+  # xdg.configFile."waybar/style.css".source = ./dotfiles/config/waybar/style.css;
+
+  # # Wofi 
+  # xdg.configFile."wofi/style.css".source = ./dotfiles/config/wofi/style.css;
+
+  # # Mako
+  # xdg.configFile."mako/config".source = ./dotfiles/config/mako/config;
+
+  # # Kitty
+  # xdg.configFile."kitty/kitty.conf".source = ./dotfiles/config/kitty/kitty.conf;
+
+  # # Hyprpaper
+  # xdg.configFile."hypr/hyprpaper.conf".source = ./dotfiles/config/hypr/hyprpaper.conf;
+
+  # # Quicksettings
+  # xdg.configFile."quicksettings.sh".source = ./dotfiles/config/quicksettings.sh;
 
 }
 ```
@@ -472,12 +654,12 @@ tooltip label {
   gtk = {
     enable = true;
     theme = {
-      package = pkgs.flat-remix-gtk;
-      name = "Flat-Remix-GTK-Grey-Darkest";
+      package = pkgs.adw-gtk3;
+      name = "adw-gtk3-dark";
     };
     iconTheme = {
-      package = pkgs.adwaita-icon-theme;
-      name = "Adwaita";
+      package = pkgs.papirus-icon-theme;
+      name = "Papirus-Dark";
     };
     font = {
       name = "Sans";
@@ -643,7 +825,7 @@ tooltip label {
 
 ## File: setup/githubSsh.sh
 
-````
+```
 #!/bin/bash
 
 
@@ -657,17 +839,17 @@ if [ -f "$SSH_KEY" ]; then
   echo "SSH key already exists at $SSH_KEY. Skipping key generation."
 else
   echo "SSH key not found. Generating a new SSH key for GitHub..."
-
+  
   # Generate the SSH key
   ssh-keygen -t ed25519 -C "aghornung@gmail.com" -f "$SSH_KEY" -N ""
 
   echo "SSH key generated at $SSH_KEY."
   echo "Adding the SSH key to the ssh-agent..."
-
+  
   # Start the ssh-agent and add the key
   eval "$(ssh-agent -s)"
   ssh-add "$SSH_KEY"
-
+  
   echo "SSH key added to the ssh-agent."
   echo "Copy the following public key to your GitHub account:"
   cat "${SSH_KEY}.pub"
@@ -675,23 +857,20 @@ fi```
 
 ## File: setup/googleDrive.md
 
-````
-
+```
 # Setting up google drive
 
 This will setup google drive with rclone.
 
 1. run `rclone config`
-2. scope = `drive`
+2. scope = `drive` 
 3. Go to https://console.cloud.google.com/auth/clients?project=projectName and create a client and obtain the **Client ID** and **Client Secret**
 4. run `mkdir ~/Drive`
-
 ```
 
 ## File: setup/llms.md
 
 ```
-
 # flake.nix
 
 {
@@ -969,7 +1148,115 @@ size = 11;
 };
 
 }
+```
 
+## File: setup/llms.sh
+
+```
+#!/bin/bash
+
+# Script to generate a markdown file with the content of all tracked files in the nixos-config
+
+# Set variables
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+OUTPUT_FILE="$SCRIPT_DIR/nixos-config-context.md"
+
+# Create or truncate the output file
+echo "# NixOS Configuration Context for LLMs" > "$OUTPUT_FILE"
+echo "" >> "$OUTPUT_FILE"
+echo "Generated on $(date)" >> "$OUTPUT_FILE"
+echo "" >> "$OUTPUT_FILE"
+
+# Function to add a file's content to the markdown
+add_file_to_md() {
+    local file_path="$1"
+    local rel_path="$(realpath --relative-to="$ROOT_DIR" "$file_path")"
+    
+    # Skip binary files and very large files
+    if [[ -f "$file_path" && "$(file --mime-type -b "$file_path")" != binary* ]]; then
+        file_size=$(wc -c < "$file_path")
+        if [[ $file_size -gt 500000 ]]; then
+            echo "Skipping large file: $rel_path ($file_size bytes)"
+            echo "## File: $rel_path" >> "$OUTPUT_FILE"
+            echo "**Note**: File too large to include ($file_size bytes)" >> "$OUTPUT_FILE"
+            echo "" >> "$OUTPUT_FILE"
+            return
+        fi
+        
+        echo "## File: $rel_path" >> "$OUTPUT_FILE"
+        echo "" >> "$OUTPUT_FILE"
+        echo '```' >> "$OUTPUT_FILE"
+        cat "$file_path" >> "$OUTPUT_FILE"
+        echo '```' >> "$OUTPUT_FILE"
+        echo "" >> "$OUTPUT_FILE"
+    fi
+}
+
+# Add overall repository structure
+echo "## Repository Structure" >> "$OUTPUT_FILE"
+echo "" >> "$OUTPUT_FILE"
+echo '```' >> "$OUTPUT_FILE"
+cd "$ROOT_DIR" && find . -type f -not -path "*/\.git/*" | sort >> "$OUTPUT_FILE"
+echo '```' >> "$OUTPUT_FILE"
+echo "" >> "$OUTPUT_FILE"
+
+# Get list of all git tracked files
+echo "Collecting tracked files..."
+cd "$ROOT_DIR" || exit 1
+tracked_files=$(git ls-files)
+
+# Add a section for the flake files
+echo "## NixOS Configuration Files" >> "$OUTPUT_FILE"
+echo "" >> "$OUTPUT_FILE"
+
+# Process each tracked file
+total_files=$(echo "$tracked_files" | wc -l)
+current=0
+echo "Processing $total_files files..."
+
+for file in $tracked_files; do
+    # Skip flake.lock file
+    if [[ "$file" == "flake.lock" ]]; then
+        echo "Skipping flake.lock file"
+        continue
+    fi
+    
+    current=$((current + 1))
+    if [[ $((current % 10)) -eq 0 ]]; then
+        echo "Progress: $current/$total_files files"
+    fi
+    
+    full_path="$ROOT_DIR/$file"
+    if [[ -f "$full_path" ]]; then
+        add_file_to_md "$full_path"
+    fi
+done
+
+echo "## System Overview" >> "$OUTPUT_FILE"
+echo "" >> "$OUTPUT_FILE"
+echo "This NixOS configuration manages the system setup for user 'alex', including:" >> "$OUTPUT_FILE"
+echo "- System configurations in 'hosts/'" >> "$OUTPUT_FILE"
+echo "- Home-manager configurations in 'home/alex/'" >> "$OUTPUT_FILE"
+echo "- Various dotfiles in 'home/alex/dotfiles/'" >> "$OUTPUT_FILE"
+echo "" >> "$OUTPUT_FILE"
+
+# Add info about the overall structure
+cat >> "$OUTPUT_FILE" << 'EOF'
+## Key Components
+
+1. **flake.nix**: The entry point for the NixOS configuration
+2. **hosts/**: System-wide configurations
+3. **home/alex/**: User-specific configurations managed by home-manager
+4. **setup/**: Scripts for system setup and maintenance
+EOF
+
+echo "Done! Context file generated at $OUTPUT_FILE"
+echo "File size: $(du -h "$OUTPUT_FILE" | cut -f1)"```
+
+## File: setup/nixos-config-context.md
+
+```
 ```
 
 ## System Overview
@@ -985,4 +1272,3 @@ This NixOS configuration manages the system setup for user 'alex', including:
 2. **hosts/**: System-wide configurations
 3. **home/alex/**: User-specific configurations managed by home-manager
 4. **setup/**: Scripts for system setup and maintenance
-```

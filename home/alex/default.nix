@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 
 {
   home.username = "alex";
@@ -39,6 +39,7 @@
     networkmanagerapplet
     pavucontrol # volume manager
     wlogout # logout/lock GUI
+    firefox-devedition
   ];
 
   imports = [
