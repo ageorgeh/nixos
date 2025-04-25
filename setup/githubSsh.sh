@@ -1,7 +1,10 @@
 #!/bin/bash
 
+
+# ~/.ssh/github_id
+
 # Define the SSH key file path
-SSH_KEY="$HOME/.ssh/github_id_rsa"
+SSH_KEY="$HOME/.ssh/github_id"
 
 # Check if the SSH key already exists
 if [ -f "$SSH_KEY" ]; then
@@ -10,8 +13,8 @@ else
   echo "SSH key not found. Generating a new SSH key for GitHub..."
   
   # Generate the SSH key
-  ssh-keygen -t rsa -b 4096 -C "aghornung@gmail.com" -f "$SSH_KEY" -N ""
-  
+  ssh-keygen -t ed25519 -C "aghornung@gmail.com" -f "$SSH_KEY" -N ""
+
   echo "SSH key generated at $SSH_KEY."
   echo "Adding the SSH key to the ssh-agent..."
   
