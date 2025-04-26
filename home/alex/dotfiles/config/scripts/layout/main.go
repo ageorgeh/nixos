@@ -35,15 +35,18 @@ func (e *ev) OpenWindow(w event.OpenWindow) {
 func main() {
 	c = hyprland.MustClient()
 	e = event.MustClient()
-	apps := map[int][]string{
-		0: {"code --ozone-platform=x11"},
-		1: {"firefox-devedition",
-			"firefox",
-			"thunar",
-			"keepassxc",
-			"tidal-hifi"},
-	}
+	// apps := map[int][]string{
+	// 	0: {"code --ozone-platform=x11"},
+	// 	1: {"firefox-devedition",
+	// 		"firefox",
+	// 		"thunar",
+	// 		"keepassxc",
+	// 		"tidal-hifi"},
+	// }
+	// launchApps(apps)
 
-	// Call the launchApps function
-	launchApps(apps)
+	processWindows(WindowsOptions{
+		Command: "hy3:changegroup untab",
+		Monitor: 1,
+	})
 }

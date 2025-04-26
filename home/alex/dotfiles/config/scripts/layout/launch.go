@@ -56,17 +56,29 @@ func isRunning(app string) bool {
 		return false
 	}
 	for _, client := range clients {
-		cmdlinePath := fmt.Sprintf("/proc/%d/cmdline", client.Pid)
-		cmdlineBytes, err := os.ReadFile(cmdlinePath)
+		clientAppName, err := AppNameFromPid(client.Pid)
 		if err != nil {
 			continue
 		}
-		if getAppName(string(cmdlineBytes)) == getAppName(app) {
+		if clientAppName == getAppName(app) {
 			return true
 		}
 
 	}
 	return false
+}
+
+func AppNameFromPid(pid int) (string, error) {
+	cmdlinePath := fmt.Sprintf("/proc/%d/cmdline", pid)
+	cmdlineBytes, err := os.ReadFile(cmdlinePath)
+	if err != nil {
+		return "", err
+	}
+	appName := getAppName(string(cmdlineBytes))
+	if appName == "" {
+		return "", fmt.Errorf("could not get app name from pid %d", pid)
+	}
+	return appName, nil
 }
 
 func getAppName(app string) string {
