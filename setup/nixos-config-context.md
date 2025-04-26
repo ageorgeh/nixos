@@ -1,6 +1,6 @@
 # NixOS Configuration Context for LLMs
 
-Generated on Fri 25 Apr 2025 20:10:40 AEST
+Generated on Fri 25 Apr 2025 22:07:53 AEST
 
 ## Repository Structure
 
@@ -64,6 +64,11 @@ result
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland.url = "github:hyprwm/Hyprland";
+
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
   };
 
   outputs = { self, nixpkgs, flake-utils, home-manager, ... }:
@@ -138,7 +143,7 @@ result
 ## File: home/alex/default.nix
 
 ```
-{ config, pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 
 {
   home.username = "alex";
@@ -179,6 +184,7 @@ result
     networkmanagerapplet
     pavucontrol # volume manager
     wlogout # logout/lock GUI
+    firefox-devedition
   ];
 
   imports = [
@@ -255,12 +261,13 @@ default-timeout=5000
 #!/usr/bin/env bash
 
 choice=$(printf "Displays\nNetwork\nAudio\nLogout\n" | wofi --dmenu --prompt "Quick Settings")
+choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]')
 
 case "$choice" in
-    Displays) wdisplays ;;
-    Network) nm-connection-editor ;;
-    Audio) pavucontrol ;;
-    Logout) wlogout ;;
+  disp*) wdisplays ;;
+  net*) nm-connection-editor ;;
+  aud*) pavucontrol ;;
+  log*) wlogout ;;
 esac
 ```
 
@@ -465,7 +472,7 @@ window {
 ## File: home/alex/hyprland.nix
 
 ```
-{ config, pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 
 {
   # Hyprland
@@ -475,7 +482,48 @@ window {
     portalPackage = null; # same for xdg-desktop-portal-hyprland
     systemd.variables = [ "--all" ]; # Fixes missing PATH in services
 
+    plugins = [
+    ];
+
+
     settings = {
+
+      general = {
+        layout = "dwindle";
+        gaps_in = 4;
+        gaps_out = 4;
+        border_size = 1;
+        resize_on_border = true;
+        "col.active_border" = "rgb(89b4fa) rgb(f5c2e7) 45deg";
+        "col.inactive_border" = "rgb(313244)";
+      };
+
+      dwindle = {
+        pseudotile = true;
+        preserve_split = true;
+      };
+
+      decoration = {
+        rounding = 10;
+        blur = {
+          enabled = true;
+          size = 5;
+          passes = 3;
+          ignore_opacity = false;
+          new_optimizations = true;
+        };
+        shadow = {
+          enabled = true;
+          range = 4;
+          render_power = 3;
+          color = "rgba(1a1a1aee)";
+        };
+      };
+
+      ecosystem = {
+        no_donation_nag = true;
+      };
+
 
       exec-once = [
         "waybar"
@@ -507,6 +555,28 @@ window {
           "$mod, A, exec, wofi --show drun"
           "$mod, Q, killactive"
           "$mod, S, exec, ~/.config/scripts/quicksettings.sh"
+          "$mod, G, togglegroup"
+          "$mod, TAB, changegroupactive, f"
+          "$mod SHIFT, TAB, changegroupactive, b"
+          "$mod SHIFT, L, movewindoworgroup, r"
+          "$mod SHIFT, K, movewindoworgroup, d"
+          "$mod SHIFT, I, movewindoworgroup, u"
+          "$mod SHIFT, J, movewindoworgroup, l"
+          "$mod, L, movefocus, r"
+          "$mod, K, movefocus, d"
+          "$mod, I, movefocus, u"
+          "$mod, J, movefocus, l"
+          "$mod, mouse_down, exec, hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor | awk '/^float.*/ {print $2 * 1.1}')"
+          "$mod, mouse_up, exec, hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor | awk '/^float.*/ {print $2 * 0.9}')"
+          "$mod, equal, exec, hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor | awk '/^float.*/ {print $2 * 1.1}')"
+          "$mod, minus, exec, hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor | awk '/^float.*/ {print $2 * 0.9}')"
+          "$mod, KP_ADD, exec, hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor | awk '/^float.*/ {print $2 * 1.1}')"
+          "$mod, KP_SUBTRACT, exec, hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor | awk '/^float.*/ {print $2 * 0.9}')"
+          "$mod SHIFT, mouse_up, exec, hyprctl -q keyword cursor:zoom_factor 1"
+          "$mod SHIFT, mouse_down, exec, hyprctl -q keyword cursor:zoom_factor 1"
+          "$mod SHIFT, minus, exec, hyprctl -q keyword cursor:zoom_factor 1"
+          "$mod SHIFT, KP_SUBTRACT, exec, hyprctl -q keyword cursor:zoom_factor 1"
+          "$mod SHIFT, 0, exec, hyprctl -q keyword cursor:zoom_factor 1"
           ", Print, exec, grimblast copy area"
         ]
         ++ (
@@ -557,8 +627,10 @@ window {
     package = pkgs.waybar;
   };
 
-  xdg.configFile."".source = ./dotfiles/config;
-
+  xdg.configFile."" = {
+    source = ./dotfiles/config;
+    recursive = true;
+  };
 
   # xdg.configFile."waybar/config".source = ./dotfiles/config/waybar/config;
   # xdg.configFile."waybar/style.css".source = ./dotfiles/config/waybar/style.css;
