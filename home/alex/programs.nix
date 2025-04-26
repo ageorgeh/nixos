@@ -18,6 +18,8 @@
     profiles.default.extensions = with pkgs.vscode-extensions; [ ];
   };
 
+  programs.vim.enable = true;
+
   # Kitty
   programs.kitty.enable = true;
 
