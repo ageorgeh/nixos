@@ -86,25 +86,44 @@ func processWindows(args WindowsOptions) {
 			iteration++
 			clientAppName, err := AppNameFromPid(activeWindow.Pid)
 			if err != nil {
+				println("Error getting app name: ", err)
 				continue
 			}
 			if !startProcessing {
+				println("Skipping: ", clientAppName)
 				if clientAppName == args.After {
 					// Can start processing from the next client
 					startProcessing = true
-					continue
 				}
 			} else {
 				println("Dispatching: ", args.Command)
 				c.Dispatch(args.Command)
-				c.Dispatch("hy3:movefocus r, visible, nowrap")
 			}
 
 			prevWindow = activeWindow.Address
+
+			c.Dispatch("hy3:movefocus r, visible, nowrap")
 			activeWindow, err = c.ActiveWindow()
 			if err != nil {
 				return
 			}
 		}
 	}
+}
+
+func AddressFromAppName(app string) (string, error) {
+	clients, err := c.Clients()
+	if err != nil {
+		return "", err
+	}
+	for _, client := range clients {
+		clientAppName, err := AppNameFromPid(client.Pid)
+		if err != nil {
+			continue
+		}
+		if clientAppName == getAppName(app) {
+			return client.Address, nil
+		}
+	}
+	return "", fmt.Errorf("could not find address for app %s", app)
 }
