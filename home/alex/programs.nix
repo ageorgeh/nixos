@@ -1,15 +1,15 @@
 { config, pkgs, ... }:
 
 {
+  # Git
   programs.git = {
     enable = true;
     userName = "Alexander Hornung";
     userEmail = "aghornung@gmail.com";
   };
 
-
+  # KeepassXC
   programs.keepassxc.enable = true;
-
 
   # VScode
   programs.vscode = {
@@ -18,9 +18,8 @@
     profiles.default.extensions = with pkgs.vscode-extensions; [ ];
   };
 
-
+  # Kitty
   programs.kitty.enable = true;
-
 
   # Waybar
   programs.waybar = {
@@ -28,27 +27,20 @@
     package = pkgs.waybar;
   };
 
+  # Wlsunset
+  services.wlsunset = {
+    enable = true;
+    latitude = "-37.813629";
+    longitude = "144.963058";
+    temperature = {
+      day = 5500;
+      night = 3700;
+    };
+  };
+
+  # Moves all config files to ~/.config
   xdg.configFile."" = {
     source = ./dotfiles/config;
     recursive = true;
   };
-
-  # xdg.configFile."waybar/config".source = ./dotfiles/config/waybar/config;
-  # xdg.configFile."waybar/style.css".source = ./dotfiles/config/waybar/style.css;
-
-  # # Wofi 
-  # xdg.configFile."wofi/style.css".source = ./dotfiles/config/wofi/style.css;
-
-  # # Mako
-  # xdg.configFile."mako/config".source = ./dotfiles/config/mako/config;
-
-  # # Kitty
-  # xdg.configFile."kitty/kitty.conf".source = ./dotfiles/config/kitty/kitty.conf;
-
-  # # Hyprpaper
-  # xdg.configFile."hypr/hyprpaper.conf".source = ./dotfiles/config/hypr/hyprpaper.conf;
-
-  # # Quicksettings
-  # xdg.configFile."quicksettings.sh".source = ./dotfiles/config/quicksettings.sh;
-
 }
