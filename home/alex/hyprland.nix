@@ -68,12 +68,17 @@
           no_donation_nag = true;
         };
 
+        input = {
+          sensitivity = -0.2;
+        };
+
 
         exec-once = [
           "waybar"
           "mako"
           "hyprpolkitagent"
           "hyprpaper"
+          # "sleep 2 && ~/.config/scripts/layout/layout.sh"
         ];
         animations = {
           enabled = true;
@@ -99,6 +104,7 @@
             "$mod, A, exec, wofi --show drun"
             "$mod, Q, killactive"
             "$mod, S, exec, ~/.config/scripts/quicksettings.sh"
+            "$mod, U, exec, ~/.config/scripts/layout/layout.sh"
             "$mod, G, hy3:makegroup, tab, toggle"
             "$mod, TAB, hy3:focustab, r, wrap"
             "$mod SHIFT, TAB, hy3:focustab, l, wrap"

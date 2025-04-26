@@ -40,6 +40,14 @@
     pavucontrol # volume manager
     wlogout # logout/lock GUI
     firefox-devedition
+    # Development
+    jq
+    nodejs_23
+    pnpm
+    socat
+    # Go
+    go # Go programming language
+    gopls # Go language server
   ];
 
   imports = [

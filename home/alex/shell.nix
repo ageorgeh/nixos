@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  programs.bash.enable = true;
   programs.zsh.enable = true;
   programs.fzf.enable = true;
 
@@ -10,5 +9,14 @@
     nixos-build = "sudo nixos-rebuild switch --flake ~/nixos-config#nixos";
     home-build = "home-manager switch --flake ~/nixos-config#alex";
     logout = "hyprctl dispatch exit";
+  };
+
+
+  programs.bash = {
+    enable = true;
+    initExtra = ''
+      export PNPM_HOME="/home/alex/.local/share/pnpm"
+      export PATH="$PNPM_HOME:$PATH"
+    '';
   };
 }
