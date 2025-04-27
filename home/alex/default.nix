@@ -21,7 +21,7 @@
     inotify-tools
     file
     tidal-hifi
-    # File system tools
+    # File system tools # TODO switch to yazi?
     xfce.thunar
     xfce.tumbler
     xfce.thunar-volman

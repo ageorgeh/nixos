@@ -9,6 +9,7 @@
     home-build = "home-manager switch --flake ~/nixos-config#alex";
     logout = "hyprctl dispatch exit";
     code = "code --use-angle=vulkan";
+    hypr-restart = "hyprctl reload";
   };
 
 

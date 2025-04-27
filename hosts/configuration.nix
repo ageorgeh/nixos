@@ -3,6 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./hardware/input.nix
   ];
 
 
@@ -79,56 +80,6 @@
   };
   hardware.nvidia-container-toolkit.enable = true; # Use --device=nvidia.com/gpu=all when running containers needing GPU access
 
-
-  # TODO move to its own file
-  # https://search.nixos.org/options?channel=unstable&show=services.kanata.package&from=0&size=50&sort=relevance&type=packages&query=services.kanata
-  services.kanata = {
-    enable = true;
-    keyboards = {
-      "annePro" = {
-        # https://github.com/jtroo/kanata/blob/main/docs/config.adoc
-        extraDefCfg = ''
-          concurrent-tap-hold yes
-        '';
-        config = ''
-          (defchordsv2
-            (q w e r) (layer-switch emergency) 200 all-released ()
-            (q w e r t) (layer-switch default) 200 all-released ()
-          )
-
-          (defsrc
-            esc  1    2    3    4    5    6    7    8    9    0    -    =    bspc
-            tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
-            caps a    s    d    f    g    h    j    k    l    ;    '    ret
-            lsft z    x    c    v    b    n    m    ,    .    /    rsft
-            lctl lmet lalt           spc            ralt rmet rctl
-          )
-
-          (defalias
-            capAsEsc (tap-hold 200 200 esc lctl)
-          )
-
-          (deflayer default
-            caps 1    2    3    4    5    6    7    8    9    0    -    =    bspc
-            tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
-            @capAsEsc  a    s    d    f    g    h    j    k    l    ;    '    ret
-            lsft z    x    c    v    b    n    m    ,    .    /    rsft
-            lctl lmet lalt           spc            ralt rmet rctl
-          )
-
-          ;; If something fucks up and i need to reset press q w e r at once
-          (deflayer emergency
-            esc  1    2    3    4    5    6    7    8    9    0    -    =    bspc
-            tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
-            caps a    s    d    f    g    h    j    k    l    ;    '    ret
-            lsft z    x    c    v    b    n    m    ,    .    /    rsft
-            lctl lmet lalt           spc            ralt rmet rctl
-          )
-        '';
-      };
-    };
-  };
-
   users.users.alex = {
     isNormalUser = true;
     description = "Alexander Hornung";
@@ -143,7 +94,7 @@
     home-manager # Needed before user installs so that packages can be fetched
     seahorse # GUI for managing stored keyring secrets
     nvidia-vaapi-driver
-    kanata
+    clipse # Clipboard manager - not working right now
   ];
 
   environment.sessionVariables = {

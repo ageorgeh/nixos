@@ -60,6 +60,7 @@ This repository contains a complete NixOS configuration for a modern desktop env
 - **VSCode**: Launch with the `code` alias (configured for Wayland/X11 compatibility).
 - **Shell**: Zsh (with fzf), Bash also enabled.
 - **Dotfiles**: Managed in `home/alex/dotfiles/`.
+- **Keyboard mapping**: Custom keymap see `hosts/hardware/input.nix`. Remaps caps to escape and caps hold to ctrl. Hold right alt to go back to the src layout in emergency.
 
 ## Customization
 

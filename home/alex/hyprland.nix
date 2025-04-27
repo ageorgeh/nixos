@@ -103,6 +103,7 @@
           "mako"
           "hyprpolkitagent"
           "hyprpaper"
+          "clipse -listen"
           "sleep 1 && ~/.config/scripts/layout/layout"
         ];
         animations = {
@@ -123,6 +124,7 @@
         "$mod" = "SUPER";
         bind =
           [
+            "$mod, C, exec, kitty --class clipse -e 'clipse'"
             "$mod, V, exec, code --use-angle=vulkan"
             "$mod, RETURN, exec, kitty"
             "$mod, F, exec, firefox"
