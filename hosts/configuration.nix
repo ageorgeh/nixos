@@ -81,6 +81,29 @@
 
 
 
+  services.kanata = {
+    enable = true;
+    keyboards = {
+      "annePro".config = ''
+        (defsrc
+          esc  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+          tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+          caps a    s    d    f    g    h    j    k    l    ;    '    ret
+          lsft z    x    c    v    b    n    m    ,    .    /    rsft
+          lctl lmet lalt           spc            ralt rmet rctl
+        )
+
+        (deflayer default
+          caps 1    2    3    4    5    6    7    8    9    0    -    =    bspc
+          tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+          esc  a    s    d    f    g    h    j    k    l    ;    '    ret
+          lsft z    x    c    v    b    n    m    ,    .    /    rsft
+          lctl lmet lalt           spc            ralt rmet rctl
+        )
+      '';
+    };
+  };
+
   users.users.alex = {
     isNormalUser = true;
     description = "Alexander Hornung";
@@ -95,6 +118,7 @@
     home-manager # Needed before user installs so that packages can be fetched
     seahorse # GUI for managing stored keyring secrets
     nvidia-vaapi-driver
+    kanata
   ];
 
   environment.sessionVariables = {
@@ -112,4 +136,3 @@
 
   system.stateVersion = "24.11";
 }
-

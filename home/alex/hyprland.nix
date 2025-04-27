@@ -95,7 +95,6 @@
 
         input = {
           sensitivity = -0.2;
-          kb_options = caps:swapescape;
         };
 
 
