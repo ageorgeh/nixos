@@ -8,6 +8,7 @@
     nixos-build = "sudo nixos-rebuild switch --flake ~/nixos-config#nixos";
     home-build = "home-manager switch --flake ~/nixos-config#alex";
     logout = "hyprctl dispatch exit";
+    code = "code --use-angle=vulkan";
   };
 
 

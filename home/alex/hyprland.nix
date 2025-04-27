@@ -9,7 +9,7 @@
     enable = true;
     # package = null; # use the system-installed Hyprland
     package = inputs.hyprland.packages.${pkgs.system}.default;
-    # portalPackage = null; # same for xdg-desktop-portal-hyprland
+    portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
     systemd.variables = [ "--all" ]; # Fixes missing PATH in services
 
     plugins = [
@@ -56,6 +56,7 @@
           "GDK_SCALE,1"
           "QT_SCALE_FACTOR,1"
           "ELECTRON_OZONE_PLATFORM_HINT, auto"
+          "NVD_BACKEND, direct"
           # "EDITOR,nvim"
         ];
 
@@ -123,7 +124,7 @@
         "$mod" = "SUPER";
         bind =
           [
-            "$mod, V, exec, code"
+            "$mod, V, exec, code --use-angle=vulkan"
             "$mod, RETURN, exec, kitty"
             "$mod, F, exec, firefox"
             "$mod, A, exec, wofi --show drun"

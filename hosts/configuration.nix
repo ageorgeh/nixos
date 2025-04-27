@@ -94,14 +94,15 @@
     git
     home-manager # Needed before user installs so that packages can be fetched
     seahorse # GUI for managing stored keyring secrets
+    nvidia-vaapi-driver
   ];
 
   environment.sessionVariables = {
     #   ELECTRON_OZONE_PLATFORM_HINT = "wayland";
-    NIXOS_OZONE_WL = "1";
-    #   EDITOR = "code --ozone-platform=x11 --wait";
-    #   XDG_CURRENT_DESKTOP = "GNOME";
-    #   DESKTOP_SESSION = "gnome";
+    # NIXOS_OZONE_WL = "1";
+    #   EDITOR = "code --use-angle=vulkan --wait";
+    XDG_CURRENT_DESKTOP = "GNOME";
+    DESKTOP_SESSION = "gnome";
   };
 
 

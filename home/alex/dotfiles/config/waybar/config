@@ -52,7 +52,7 @@
   "custom/vscode": {
     "format": " ",
     "tooltip-format": "Open VSCode (SUPER + V)",
-    "on-click": "/home/alex/.nix-profile/bin/code --ozone-platform=x11",
+    "on-click": "/home/alex/.nix-profile/bin/code --use-angle=vulkan",
     "interval": 3600
   }
 }
