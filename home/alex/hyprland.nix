@@ -37,6 +37,30 @@
     settings =
       {
 
+        env = [
+          "NIXOS_OZONE_WL, 1"
+          "NIXPKGS_ALLOW_UNFREE, 1"
+          "XDG_CURRENT_DESKTOP, Hyprland"
+          "XDG_SESSION_TYPE, wayland"
+          "XDG_SESSION_DESKTOP, Hyprland"
+          "GDK_BACKEND, wayland, x11"
+          "CLUTTER_BACKEND, wayland"
+          "QT_QPA_PLATFORM=wayland;xcb"
+          "QT_WAYLAND_DISABLE_WINDOWDECORATION, 1"
+          "LIBVA_DRIVER_NAME, nvidia"
+          "__GLX_VENDOR_LIBRARY_NAME, nvidia"
+          "QT_AUTO_SCREEN_SCALE_FACTOR, 1"
+          "SDL_VIDEODRIVER, x11"
+          "MOZ_ENABLE_WAYLAND, 1"
+          "AQ_DRM_DEVICES,/dev/dri/card0:/dev/dri/card1"
+          "GDK_SCALE,1"
+          "QT_SCALE_FACTOR,1"
+          "ELECTRON_OZONE_PLATFORM_HINT, auto"
+          # "EDITOR,nvim"
+        ];
+
+
+
         general = {
           layout = "hy3";
           gaps_in = 4;
@@ -99,7 +123,7 @@
         "$mod" = "SUPER";
         bind =
           [
-            "$mod, V, exec, code --ozone-platform=x11"
+            "$mod, V, exec, code"
             "$mod, RETURN, exec, kitty"
             "$mod, F, exec, firefox"
             "$mod, A, exec, wofi --show drun"

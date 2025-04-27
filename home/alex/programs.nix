@@ -18,6 +18,7 @@
     profiles.default.extensions = with pkgs.vscode-extensions; [ ];
   };
 
+  # Vim
   programs.vim.enable = true;
 
   # Kitty
@@ -28,6 +29,7 @@
     enable = true;
     package = pkgs.waybar;
   };
+
 
   # Wlsunset
   services.wlsunset = {

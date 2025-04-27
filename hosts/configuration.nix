@@ -72,10 +72,19 @@
     pulse.enable = true;
   };
 
+  # https://nixos.wiki/wiki/Docker
+  virtualisation.docker = {
+    enable = true;
+    package = pkgs.docker_28;
+  };
+  hardware.nvidia-container-toolkit.enable = true; # Use --device=nvidia.com/gpu=all when running containers needing GPU access
+
+
+
   users.users.alex = {
     isNormalUser = true;
     description = "Alexander Hornung";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "input" ];
     packages = with pkgs; [ ];
   };
 
@@ -88,11 +97,11 @@
   ];
 
   environment.sessionVariables = {
-    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+    #   ELECTRON_OZONE_PLATFORM_HINT = "wayland";
     NIXOS_OZONE_WL = "1";
-    EDITOR = "code --ozone-platform=x11 --wait";
-    XDG_CURRENT_DESKTOP = "GNOME";
-    DESKTOP_SESSION = "gnome";
+    #   EDITOR = "code --ozone-platform=x11 --wait";
+    #   XDG_CURRENT_DESKTOP = "GNOME";
+    #   DESKTOP_SESSION = "gnome";
   };
 
 
