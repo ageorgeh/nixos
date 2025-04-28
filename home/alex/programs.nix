@@ -24,12 +24,32 @@
   # Kitty
   programs.kitty.enable = true;
 
+  programs.tofi = {
+    enable = true;
+    settings = {
+      # drun-launch = true;
+      terminal = "kitty";
+      "matching-algorithm" = "fuzzy";
+      font = "~/.nix-profile/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFont-Regular.ttf";
+      width = "100%";
+      height = "100%";
+      border-width = "0";
+      outline-width = "0";
+      padding-left = "35%";
+      padding-top = "35%";
+      result-spacing = "25";
+      background-color = "#000A";
+    };
+  };
+
+
   # Yazi file manager
   # home/alex/dotfiles/config/yazi - for theme configuration
   programs.yazi = {
     enable = true;
-    enableZshIntegration = true;
-    enableBashIntegration = true;
+    # enableZshIntegration = true;
+    # enableBashIntegration = true;
+    # shellWrapperName = "kitty";
 
     settings = {
       manager = {

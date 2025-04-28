@@ -21,22 +21,17 @@
     inotify-tools
     file
     tidal-hifi
-    # File system tools # TODO switch to yazi?
+    # File system tools 
     xfce.thunar
     xfce.tumbler
     xfce.thunar-volman
     gvfs
-    # Application launcher
-    wofi
-    # Notificaiton daemon
-    mako
-    # Auth agent
-    hyprpolkitagent
+    mako # Notificaiton daemon
+    hyprpolkitagent # Auth agent
     # Wallpaper
     hyprpaper
     # Settings
     wdisplays # display settings
-    # networkmanagerapplet
     pavucontrol # volume manager
     wlogout # logout/lock GUI
     firefox-devedition

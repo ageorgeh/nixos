@@ -65,6 +65,7 @@
           "NVD_BACKEND, direct"
           "HYPRCURSOR_THEME, rose-pine-hyprcursor"
           "HYPRCURSOR_SIZE,24"
+          "TERMINAL, kitty"
           # "EDITOR,nvim"
         ];
 
@@ -136,7 +137,7 @@
             "$mod, V, exec, code --use-angle=vulkan"
             "$mod, RETURN, exec, kitty"
             "$mod, F, exec, firefox"
-            "$mod, A, exec, wofi --show drun"
+            "$mod, A, exec, tofi-drun | xargs -r hyprctl dispatch exec --"
             "$mod, Q, killactive"
             "$mod, S, exec, ~/.config/scripts/quicksettings.sh"
             "$mod, U, exec, ~/.config/scripts/layout/layout"
