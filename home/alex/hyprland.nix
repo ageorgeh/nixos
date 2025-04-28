@@ -37,6 +37,12 @@
     settings =
       {
 
+        windowrulev2 = [
+          "float, class:(clipse)"
+          "size 822 852, class:(clipse)"
+          "stayfocused, class:(clipse)"
+        ];
+
         env = [
           "NIXOS_OZONE_WL, 1"
           "NIXPKGS_ALLOW_UNFREE, 1"
@@ -57,6 +63,8 @@
           "QT_SCALE_FACTOR,1"
           "ELECTRON_OZONE_PLATFORM_HINT, auto"
           "NVD_BACKEND, direct"
+          "HYPRCURSOR_THEME, rose-pine-hyprcursor"
+          "HYPRCURSOR_SIZE,24"
           # "EDITOR,nvim"
         ];
 
@@ -103,7 +111,7 @@
           "mako"
           "hyprpolkitagent"
           "hyprpaper"
-          "clipse -listen"
+          "clipse --listen"
           "sleep 1 && ~/.config/scripts/layout/layout"
         ];
         animations = {
@@ -133,8 +141,8 @@
             "$mod, S, exec, ~/.config/scripts/quicksettings.sh"
             "$mod, U, exec, ~/.config/scripts/layout/layout"
             "$mod, G, hy3:makegroup, tab, toggle"
-            "$mod, TAB, hy3:focustab, r, wrap"
-            "$mod SHIFT, TAB, hy3:focustab, l, wrap"
+            "$mod, bracketleft, hy3:focustab, r, wrap"
+            "$mod, bracketright, hy3:focustab, l, wrap"
             "$mod SHIFT, F, togglefloating"
             "$mod SHIFT, H, hy3:movewindow, l"
             "$mod SHIFT, L, hy3:movewindow, r"

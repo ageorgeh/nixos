@@ -24,6 +24,24 @@
   # Kitty
   programs.kitty.enable = true;
 
+  # Yazi file manager
+  # home/alex/dotfiles/config/yazi - for theme configuration
+  programs.yazi = {
+    enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = true;
+
+    settings = {
+      manager = {
+        show_hidden = true;
+      };
+      preview = {
+        max_width = 1000;
+        max_height = 1000;
+      };
+    };
+  };
+
   # Waybar
   programs.waybar = {
     enable = true;

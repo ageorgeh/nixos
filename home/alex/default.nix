@@ -36,18 +36,21 @@
     hyprpaper
     # Settings
     wdisplays # display settings
-    networkmanagerapplet
+    # networkmanagerapplet
     pavucontrol # volume manager
     wlogout # logout/lock GUI
     firefox-devedition
     # Development
     jq
     nodejs_23
-    pnpm
+    nodejs_23.pkgs.pnpm
+    imagemagick # Image manipulation
     socat
     # Go
     go # Go programming language
     gopls # Go language server
+    discord
+    hyprpicker # Color picker
   ];
 
   imports = [
@@ -57,5 +60,6 @@
     ./programs.nix
     ./hyprland.nix
     ./theme.nix
+    ./filesystem.nix
   ];
 }

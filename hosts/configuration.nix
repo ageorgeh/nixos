@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 
 {
   imports = [
@@ -34,7 +34,17 @@
   boot.kernelParams = [ "nvidia-drm.modeset=1" ];
 
   networking.hostName = "nixos";
-  networking.networkmanager.enable = true;
+  networking.nameservers = [
+    "8.8.8.8"
+    "8.8.4.4"
+    "2001:4860:4860::8888"
+    "2001:4860:4860::8844"
+  ];
+  networking.interfaces.enp3s0.mtu = 1480;
+  # networking.networkmanager = {
+  #   enable = true;
+
+  # };
 
   time.timeZone = "Australia/Melbourne";
 
@@ -95,7 +105,12 @@
     seahorse # GUI for managing stored keyring secrets
     nvidia-vaapi-driver
     clipse # Clipboard manager - not working right now
+    wl-clipboard # Used by clipse
+    inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
   ];
+
+  # https://github.com/dnut/clipboard-sync  
+  services.clipboard-sync.enable = true;
 
   environment.sessionVariables = {
     #   ELECTRON_OZONE_PLATFORM_HINT = "wayland";

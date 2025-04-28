@@ -21,15 +21,25 @@
       # (you may encounter issues if you dont do the same for hyprland)
       inputs.hyprland.follows = "hyprland";
     };
+
+    clipboard-sync.url = "github:dnut/clipboard-sync";
+
+    rose-pine-hyprcursor = {
+      url = "github:ndom91/rose-pine-hyprcursor";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.hyprlang.follows = "hyprland/hyprlang";
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils, home-manager, hy3, ... }@inputs:
+  outputs = { self, nixpkgs, flake-utils, home-manager, clipboard-sync, hy3, ... }@inputs:
     {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
         modules = [
           ./hosts/configuration.nix
           home-manager.nixosModules.home-manager
+          clipboard-sync.nixosModules.default
           {
             nixpkgs.config.allowUnfree = true;
           }

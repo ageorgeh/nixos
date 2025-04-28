@@ -1,12 +1,13 @@
 { config, pkgs, ... }:
 
 {
-  home.pointerCursor = {
-    gtk.enable = true;
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Modern-Classic";
-    size = 24;
-  };
+  # home.pointerCursor = {
+  #   gtk.enable = true;
+  #   package = pkgs.bibata-cursors;
+  #   name = "Bibata-Modern-Classic";
+  #   size = 24;
+  # };
+
 
   gtk = {
     enable = true;
@@ -22,6 +23,11 @@
       name = "Sans";
       size = 11;
     };
+  };
+
+  home.file."Pictures/wallpapers" = {
+    recursive = true;
+    source = ./wallpapers;
   };
 
 }
