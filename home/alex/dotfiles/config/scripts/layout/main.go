@@ -71,6 +71,7 @@ func main() {
 		AppOrder:   []string{"firefox-devedition", "firefox", "thunar", "keepassxc", "tidal-hifi"},
 	})
 
+	// TODO disable auto tile for this whole thing really and then enable when done
 	// Focus thunar and make it a tab group
 	thunar := must(AddressFromAppName("thunar"))
 	println("Focusing and making tab group for thunar: ", thunar)

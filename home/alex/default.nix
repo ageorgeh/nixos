@@ -45,7 +45,7 @@
     go # Go programming language
     gopls # Go language server
     discord
-    hyprpicker # Color picker
+    hyprpicker # Color picker TODO make a desktop entry for this
   ];
 
   imports = [

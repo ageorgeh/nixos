@@ -26,8 +26,8 @@
 
   programs.tofi = {
     enable = true;
+    # https://github.com/philj56/tofi/blob/master/doc/config
     settings = {
-      # drun-launch = true;
       terminal = "kitty";
       "matching-algorithm" = "fuzzy";
       font = "~/.nix-profile/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFont-Regular.ttf";
@@ -38,7 +38,8 @@
       padding-left = "35%";
       padding-top = "35%";
       result-spacing = "25";
-      background-color = "#000A";
+      background-color = "#02061866"; # slate-950
+      text-color = "#004f3b"; # emerald-900
     };
   };
 

@@ -26,14 +26,14 @@
           )
 
           (deflayer default
-            caps 1    2    3    4    5    6    7    8    9    0    -    =    bspc
+            grave 1    2    3    4    5    6    7    8    9    0    -    =    bspc
             tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
             @capAsEsc  a    s    d    f    g    h    j    k    l    ;    '    ret
             lsft z    x    c    v    b    n    m    ,    .    /    rsft
             lctl lmet lalt           spc            @emergency rmet rctl
           )
 
-          ;; If something fucks up and i need to reset press q w e r at once
+          ;; If something fucks up and i need to reset hold right alt
           (deflayer emergency
             esc  1    2    3    4    5    6    7    8    9    0    -    =    bspc
             tab  q    w    e    r    t    y    u    i    o    p    [    ]    \

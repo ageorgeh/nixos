@@ -10,7 +10,6 @@
     logout = "hyprctl dispatch exit";
     code = "code --use-angle=vulkan";
     hypr-restart = "hyprctl reload";
-    tofi-test = "tofi-drun | xargs -r hyprctl dispatch exec --";
     tofi = "tofi-drun | xargs -r hyprctl dispatch exec --"; # Plain tofi bricks the computer lmao
   };
 
