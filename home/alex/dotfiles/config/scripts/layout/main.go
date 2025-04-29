@@ -40,6 +40,7 @@ func must[T any](input T, err error) T {
 	return input
 }
 
+// TODO allow multiple instances of the same app somehow
 func main() {
 	c = hyprland.MustClient()
 	e = event.MustClient()

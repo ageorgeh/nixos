@@ -126,7 +126,8 @@
     user_allow_other
   '';
 
-  security.wrappers.node-privileged = {
+  # Just allows node to bind to lower ports with node (good for proxy servers)
+  security.wrappers.node = {
     owner = "root";
     group = "root";
     capabilities = "cap_net_bind_service=+ep";

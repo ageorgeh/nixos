@@ -38,8 +38,13 @@
     jq
     nodejs_23
     nodejs_23.pkgs.pnpm
+    nodejs_23.pkgs.aws-cdk # AWS CDK globally installed
     imagemagick # Image manipulation
     socat # Socket connection
+    mkcert # Certificate generation
+    awscli2 # AWS CLI 
+    aws-sam-cli # AWS SAM CLI
+    lsof # List open files
     # Go
     go # Go programming language
     gopls # Go language server
