@@ -44,7 +44,7 @@ func main() {
 	c = hyprland.MustClient()
 	e = event.MustClient()
 	apps := map[int][]string{
-		0: {"code --use-angle=vulkan ~/nixos-config", "kitty"},
+		0: {"code --use-angle=vulkan ~/nixos-config", "kitty", "code --use-angle=vulkan ~/code/cmsWrapper/cms"},
 		1: {"firefox-devedition",
 			"firefox",
 			"thunar",
@@ -54,20 +54,20 @@ func main() {
 	launchApps(apps)
 
 	processWindows(WindowsOptions{
-		Command: "hy3:changegroup untab",
-		Monitor: 1,
+		Command:  "hy3:changegroup untab",
+		Monitors: []int{0, 1},
 	})
 
 	processWindows(WindowsOptions{
 		UseAddress: true,
 		Command:    "togglefloating",
-		Monitor:    1,
+		Monitors:   []int{1},
 	})
 
 	processWindows(WindowsOptions{
 		UseAddress: true,
 		Command:    "togglefloating",
-		Monitor:    1,
+		Monitors:   []int{1},
 		AppOrder:   []string{"firefox-devedition", "firefox", "thunar", "keepassxc", "tidal-hifi"},
 	})
 
@@ -80,9 +80,9 @@ func main() {
 
 	// Moves all the windows after thunar into the tab group
 	processWindows(WindowsOptions{
-		After:   "thunar",
-		Command: "hy3:movewindow l",
-		Monitor: 1,
+		After:    "thunar",
+		Command:  "hy3:movewindow l",
+		Monitors: []int{1},
 	})
 
 	code := must(AddressFromAppName("code"))
@@ -92,9 +92,9 @@ func main() {
 
 	// Moves all the windows after code into the tab group
 	processWindows(WindowsOptions{
-		After:   "code",
-		Command: "hy3:movewindow l",
-		Monitor: 0,
+		After:    "code",
+		Command:  "hy3:movewindow l",
+		Monitors: []int{0},
 	})
 
 	c.Dispatch("focusmonitor 0")
