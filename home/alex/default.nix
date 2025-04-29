@@ -10,7 +10,6 @@
   home.packages = with pkgs; [
     # Google drive 
     rclone
-    rclone-browser
     fuse
     # Nix formatting 
     nixpkgs-fmt
@@ -40,12 +39,12 @@
     nodejs_23
     nodejs_23.pkgs.pnpm
     imagemagick # Image manipulation
-    socat
+    socat # Socket connection
     # Go
     go # Go programming language
     gopls # Go language server
-    discord
-    hyprpicker # Color picker TODO make a desktop entry for this
+    discord # Discord - maybe in the future change to a better client
+    hyprpicker # Color picker 
   ];
 
   imports = [
@@ -56,5 +55,6 @@
     ./hyprland.nix
     ./theme.nix
     ./filesystem.nix
+    ./desktop.nix
   ];
 }

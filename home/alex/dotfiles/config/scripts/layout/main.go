@@ -44,7 +44,7 @@ func main() {
 	c = hyprland.MustClient()
 	e = event.MustClient()
 	apps := map[int][]string{
-		0: {"code --ozone-platform=x11"},
+		0: {"code --use-angle=vulkan ~/nixos-config", "kitty"},
 		1: {"firefox-devedition",
 			"firefox",
 			"thunar",
@@ -83,6 +83,18 @@ func main() {
 		After:   "thunar",
 		Command: "hy3:movewindow l",
 		Monitor: 1,
+	})
+
+	code := must(AddressFromAppName("code"))
+	println("Focusing and making tab group for code: ", code)
+	c.Dispatch("focuswindow address:" + code)
+	c.Dispatch("hy3:makegroup tab, toggle")
+
+	// Moves all the windows after code into the tab group
+	processWindows(WindowsOptions{
+		After:   "code",
+		Command: "hy3:movewindow l",
+		Monitor: 0,
 	})
 
 	c.Dispatch("focusmonitor 0")

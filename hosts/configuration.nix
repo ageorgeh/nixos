@@ -116,6 +116,7 @@
     #   ELECTRON_OZONE_PLATFORM_HINT = "wayland";
     # NIXOS_OZONE_WL = "1";
     #   EDITOR = "code --use-angle=vulkan --wait";
+    # The following is good for vscode to pick up the correct keychain 
     XDG_CURRENT_DESKTOP = "GNOME";
     DESKTOP_SESSION = "gnome";
   };
@@ -124,6 +125,13 @@
   environment.etc."fuse.conf".text = ''
     user_allow_other
   '';
+
+  security.wrappers.node-privileged = {
+    owner = "root";
+    group = "root";
+    capabilities = "cap_net_bind_service=+ep";
+    source = "${pkgs.nodejs_23}/bin/node";
+  };
 
   system.stateVersion = "24.11";
 }
