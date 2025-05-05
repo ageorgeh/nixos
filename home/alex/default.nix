@@ -39,6 +39,7 @@
     nodejs_23
     nodejs_23.pkgs.pnpm
     nodejs_23.pkgs.aws-cdk # AWS CDK globally installed
+    dart-sass # SASS globally installed
     imagemagick # Image manipulation
     socat # Socket connection
     mkcert # Certificate generation
@@ -49,7 +50,13 @@
     go # Go programming language
     gopls # Go language server
     discord # Discord - maybe in the future change to a better client
-    hyprpicker # Color picker 
+    hyprpicker # Color picker
+    hyprshot # Screenshot tool 
+    jetbrains.datagrip # Database client
+    insomnia # API client
+    # Resource monitoring
+    btop # Better top
+    nvtopPackages.nvidia # Nvidia top
   ];
 
   imports = [
@@ -61,5 +68,6 @@
     ./theme.nix
     ./filesystem.nix
     ./desktop.nix
+    ./xdg.nix
   ];
 }

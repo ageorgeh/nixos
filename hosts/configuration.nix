@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ./hardware/input.nix
+    ./dyn-libs.nix
   ];
 
 
@@ -40,11 +41,11 @@
     "2001:4860:4860::8888"
     "2001:4860:4860::8844"
   ];
+  networking.hosts = {
+    "127.0.0.1" = [ "localhost" "development.roshandhillonart.com" ];
+  };
   networking.interfaces.enp3s0.mtu = 1480;
-  # networking.networkmanager = {
-  #   enable = true;
 
-  # };
 
   time.timeZone = "Australia/Melbourne";
 
@@ -61,8 +62,15 @@
     LC_TIME = "en_AU.UTF-8";
   };
 
+
+
+
   services.xserver.enable = true;
-  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm = {
+    enable = true;
+    theme = "catppuccin-mocha";
+    package = pkgs.kdePackages.sddm;
+  };
   services.displayManager.defaultSession = "hyprland";
   services.displayManager.sddm.autoLogin.enable = false;
   programs.hyprland.enable = true;
@@ -107,6 +115,13 @@
     clipse # Clipboard manager - not working right now
     wl-clipboard # Used by clipse
     inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+    (catppuccin-sddm.override {
+      flavor = "mocha";
+      font = "Noto Sans";
+      fontSize = "9";
+      background = "${../home/alex/wallpapers/field_3440x1440.png}";
+      loginBackground = true;
+    })
   ];
 
   # https://github.com/dnut/clipboard-sync  

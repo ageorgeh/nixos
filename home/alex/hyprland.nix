@@ -139,6 +139,7 @@
             "$mod, F, exec, firefox"
             "$mod, A, exec, tofi-drun | xargs -r hyprctl dispatch exec --"
             "$mod, Q, killactive"
+            "$mod, PRINT, exec, hyprshot -m section --clipboard-only"
             "$mod, S, exec, ~/.config/scripts/quicksettings.sh"
             "$mod, U, exec, ~/.config/scripts/layout/layout"
             "$mod, G, hy3:makegroup, tab, toggle"

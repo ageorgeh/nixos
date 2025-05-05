@@ -11,6 +11,7 @@
     code = "code --use-angle=vulkan";
     hypr-restart = "hyprctl reload";
     tofi = "tofi-drun | xargs -r hyprctl dispatch exec --"; # Plain tofi bricks the computer lmao
+    tofi-clean = "rm -f ~/.cache/tofi-drun";
   };
 
 
