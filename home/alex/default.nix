@@ -57,6 +57,7 @@
     # Resource monitoring
     btop # Better top
     nvtopPackages.nvidia # Nvidia top
+    libarchive # Unzipping etc
   ];
 
   imports = [
