@@ -103,7 +103,7 @@
         };
 
         input = {
-          sensitivity = -0.8;
+          sensitivity = -0.4;
         };
 
 

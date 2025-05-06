@@ -2,14 +2,16 @@ package main
 
 import (
 	"fmt"
+	"slices"
+	"strings"
 
 	"github.com/thiagokokada/hyprland-go"
 )
 
 type WindowsOptions struct {
 	UseAddress bool
-	AppOrder   []string
-	After      string
+	AppOrder   []AppOptions
+	After      *AppOptions
 	Command    string
 	Monitors   []int // Changed from Monitor int
 }
@@ -50,17 +52,19 @@ func processWindows(args WindowsOptions) {
 				for _, app := range args.AppOrder {
 					found := false
 					for i, client := range tempWindows {
-						clientAppName, err := AppNameFromPid(client.Pid)
+						// Replace the repetitive code with the new helper function
+						matches, err := matchesApp(client, app)
 						if err != nil {
 							continue
 						}
-						if clientAppName == getAppName(app) { // Use getAppName for consistency
+						if matches {
 							orderedClients = append(orderedClients, client)
 							// Remove client from tempWindows
-							tempWindows = append(tempWindows[:i], tempWindows[i+1:]...)
+							tempWindows = slices.Delete(tempWindows, i, i+1)
 							found = true
 							break
 						}
+
 					}
 					if !found {
 						// Optionally print a warning if an app in AppOrder wasn't found on this monitor
@@ -74,34 +78,27 @@ func processWindows(args WindowsOptions) {
 				orderedClients = windowsOnMonitor
 			}
 
-			var startProcessing bool = args.After == ""
+			var startProcessing bool = args.After == nil
 			for _, client := range orderedClients {
-				// Ensure the client is still on the correct monitor (it shouldn't change, but safety check)
-				if client.Monitor != monitorID {
-					continue
-				}
-				clientAppName, err := AppNameFromPid(client.Pid)
-				if err != nil {
-					continue
-				}
 				if !startProcessing {
-					if clientAppName == getAppName(args.After) { // Use getAppName for consistency
-						// Can start processing from the next client
+					matches, err := matchesApp(client, *args.After)
+					if err != nil {
+					}
+					if matches {
 						startProcessing = true
 					}
-					// Continue even if found, processing starts *after* this one
-					continue
+				} else {
+					cmd := fmt.Sprintf("%s address:%s", args.Command, client.Address)
+					println("Dispatching: ", cmd)
+					c.Dispatch(cmd)
 				}
-				// else: startProcessing is true
-				cmd := fmt.Sprintf("%s address:%s", args.Command, client.Address)
-				println("Dispatching: ", cmd)
-				c.Dispatch(cmd)
-
 			}
 
 		} else {
 			// Non-UseAddress logic applied per monitor
+			println("Focusing monitor: ", monitorID)
 			c.Dispatch("focusmonitor " + fmt.Sprint(monitorID))
+
 			// Give focus a moment to settle? Might not be necessary.
 			// time.Sleep(50 * time.Millisecond)
 
@@ -118,19 +115,20 @@ func processWindows(args WindowsOptions) {
 				continue
 			}
 
-			var startProcessing bool = args.After == ""
+			var startProcessing bool = args.After == nil
 			var prevWindow string = ""
 			maxIterations := 50 // Limit iterations per monitor
 
-			for iteration := 0; iteration < maxIterations; iteration++ {
+			for range maxIterations {
 				// Check if we've cycled back or if the active window moved monitor
 				if activeWindow.Address == prevWindow || activeWindow.Monitor != monitorID {
 					break // Reached the end or moved off the target monitor
 				}
 
-				clientAppName, err := AppNameFromPid(activeWindow.Pid)
+				client, err := ClientFromAddress(activeWindow.Address)
+				println("Client from Address: ", client.Title, "on monitor", monitorID)
 				if err != nil {
-					println("Error getting app name: ", err)
+					println("Error getting client from Address: ", err)
 					// Decide how to handle: skip this window or break? Let's skip.
 					prevWindow = activeWindow.Address              // Mark as processed to avoid infinite loop on error
 					c.Dispatch("hy3:movefocus r, visible, nowrap") // Try to move to the next
@@ -143,13 +141,15 @@ func processWindows(args WindowsOptions) {
 				}
 
 				if !startProcessing {
-					println("Skipping: ", clientAppName, "on monitor", monitorID)
-					if clientAppName == getAppName(args.After) { // Use getAppName for consistency
-						// Can start processing from the next client
+					println("Skipping: ", client.Title, "on monitor", monitorID)
+					matches, err := matchesApp(client, *args.After)
+					if err != nil {
+					}
+					if matches {
 						startProcessing = true
 					}
 				} else {
-					println("Dispatching: ", args.Command, "on monitor", monitorID, "for window", clientAppName)
+					println("Dispatching: ", args.Command, "on monitor", monitorID, "for window", client.Title)
 					// Note: The command here is applied to the *currently focused* window,
 					// which we are iterating through on the target monitor.
 					c.Dispatch(args.Command)
@@ -168,19 +168,35 @@ func processWindows(args WindowsOptions) {
 	} // End loop over args.Monitors
 }
 
-func AddressFromAppName(app string) (string, error) {
+// Address returns the address of the app if it is running
+func Address(app AppOptions) (string, error) {
 	clients, err := c.Clients()
 	if err != nil {
 		return "", err
 	}
 	for _, client := range clients {
-		clientAppName, err := AppNameFromPid(client.Pid)
+		matches, err := matchesApp(client, app)
 		if err != nil {
 			continue
 		}
-		if clientAppName == getAppName(app) {
+		if matches {
 			return client.Address, nil
 		}
 	}
 	return "", fmt.Errorf("could not find address for app %s", app)
+}
+
+// matchesApp checks if a client matches the given app criteria
+func matchesApp(client hyprland.Client, app AppOptions) (bool, error) {
+	// Check by title if specified
+	if app.title != "" {
+		return strings.Contains(client.Title, app.title), nil
+	}
+
+	// Otherwise check by app name
+	clientAppName, err := AppNameFromPid(client.Pid)
+	if err != nil {
+		return false, err
+	}
+	return clientAppName == getAppName(app.app), nil
 }
