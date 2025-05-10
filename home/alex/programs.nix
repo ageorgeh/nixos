@@ -1,5 +1,7 @@
 { config, pkgs, ... }:
 
+
+
 {
   # Git
   programs.git = {
@@ -81,9 +83,30 @@
     };
   };
 
+
+  # Neovim
+  programs.neovim = {
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
+    withNodeJs = true; # for LSPs like tsserver
+    withPython3 = true;
+    extraPackages = with pkgs; [
+      tree-sitter
+      ripgrep
+      fd
+    ];
+  };
+
   # Moves all config files to ~/.config
   xdg.configFile."" = {
     source = ./dotfiles/config;
     recursive = true;
   };
+
+
+
+  # home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink
+  #   "${config.home.homeDirectory}/nixos-config/home/alex/temp/nvim";
+
 }
