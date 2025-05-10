@@ -60,6 +60,8 @@
     libarchive # Unzipping etc
     gnumake # Make
     openssl # OpenSSL
+    vikunja # Task manager
+    obsidian # Note taking
   ];
 
   imports = [
@@ -72,5 +74,6 @@
     ./filesystem.nix
     ./desktop.nix
     ./xdg.nix
+    ./systemd.nix
   ];
 }
