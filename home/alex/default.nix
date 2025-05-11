@@ -68,12 +68,16 @@
     gcc
     gnumake
 
+    #
     # Nvim
+    #
     tree-sitter
     ripgrep
     fd
     lazygit
     neovim-remote
+    # LSP
+    lua-language-server # Lua
   ];
 
   imports = [
