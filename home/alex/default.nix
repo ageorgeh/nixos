@@ -1,4 +1,4 @@
-{ config, inputs, pkgs, hy3, ... }:
+{ config, inputs, pkgs, hy3, cfg, ... }:
 
 {
   home.username = "alex";
@@ -60,8 +60,13 @@
     libarchive # Unzipping etc
     gnumake # Make
     openssl # OpenSSL
-    vikunja # Task manager
     obsidian # Note taking
+    kitty # Terminal emulator
+    tmux # Terminal multiplexer
+
+    # Compilers
+    gcc
+    gnumake
   ];
 
   imports = [

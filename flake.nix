@@ -32,6 +32,15 @@
   };
 
   outputs = { self, nixpkgs, flake-utils, home-manager, clipboard-sync, hy3, ... }@inputs:
+
+    let
+      defaultCfg = rec {
+        username = "alex";
+        homeDirectory = "/home/${username}";
+        runtimeRoot = "${homeDirectory}/nixos-config";
+        context = self;
+      };
+    in
     {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -53,7 +62,9 @@
             allowUnfree = true;
           };
         };
-        extraSpecialArgs = { inherit inputs; inherit hy3; };
+        extraSpecialArgs = {
+          inherit inputs; inherit hy3; cfg = defaultCfg;
+        };
         modules = [
           ./home/alex/default.nix
         ];
