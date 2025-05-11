@@ -6,10 +6,15 @@ return {
     name = "rose-pine",
     config = function()
         require("rose-pine").setup({
+            dim_inactive_windows = true,
             styles = {
                 transparency = true
             },
         })
         vim.cmd("colorscheme rose-pine")
+        vim.api.nvim_set_hl(0, "NormalNC", {
+            bg = "NONE",
+            fg = "#6e6a86",
+        })
     end
 }

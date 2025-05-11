@@ -21,7 +21,7 @@
           )
 
           (defalias
-            capAsEsc (tap-hold 100 100 esc lctl)
+            capAsEsc (tap-hold 150 150 esc lctl)
             emergency (layer-while-held emergency)
           )
 
