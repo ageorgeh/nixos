@@ -104,6 +104,7 @@ in
     ];
   };
 
+
   # Symlink dotfiles
   # Ensure that either you define files in dotfiles/config or define settings in the 
   # 'home-manager' way like above
@@ -113,8 +114,9 @@ in
       outOfStoreSymlink = true;
       recursive = true;
     };
+
     ".tmux.conf" = {
-      source = ./dotfiles/tmux.conf;
+      source = ./dotfiles/.tmux.conf;
       outOfStoreSymlink = true;
     };
   };

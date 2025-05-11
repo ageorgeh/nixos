@@ -12,6 +12,7 @@
     hypr-restart = "hyprctl reload";
     tofi = "tofi-drun | xargs -r hyprctl dispatch exec --"; # Plain tofi bricks the computer lmao
     tofi-clean = "rm -f ~/.cache/tofi-drun";
+    tmux-source = "tmux source-file ~/.tmux.conf";
   };
 
 
