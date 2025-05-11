@@ -1,7 +1,5 @@
 return {
-    -- UI
-    "nvim-lualine/lualine.nvim",
-    "nvim-tree/nvim-web-devicons",
+
 
     -- LSP and completion
     "neovim/nvim-lspconfig",
