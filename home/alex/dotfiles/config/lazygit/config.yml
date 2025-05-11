@@ -1,0 +1,5 @@
+# https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+os:
+  open: '[ -z "$NVIM" ] && nvim {{filename}} || nvr --remote-tab {{filename}}'
+  edit: '[ -z "$NVIM" ] && nvim {{filename}} || nvr --remote-tab {{filename}}'
+  editAtLine: '[ -z "$NVIM" ] && nvim +{{line}} {{filename}} || nvr --remote-tab +{{line}} {{filename}}'

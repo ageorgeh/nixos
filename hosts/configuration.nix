@@ -44,6 +44,7 @@
   networking.hosts = {
     "127.0.0.1" = [ "localhost" "development.roshandhillonart.com" ];
   };
+  networking.firewall.allowedTCPPorts = [ 5174 ];
   networking.interfaces.enp3s0.mtu = 1480;
 
 

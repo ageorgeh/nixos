@@ -98,9 +98,6 @@ in
     withNodeJs = true; # for LSPs like tsserver
     withPython3 = true;
     extraPackages = with pkgs; [
-      tree-sitter
-      ripgrep
-      fd
     ];
   };
 

@@ -67,6 +67,13 @@
     # Compilers
     gcc
     gnumake
+
+    # Nvim
+    tree-sitter
+    ripgrep
+    fd
+    lazygit
+    neovim-remote
   ];
 
   imports = [
