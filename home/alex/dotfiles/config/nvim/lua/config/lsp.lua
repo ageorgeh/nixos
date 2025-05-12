@@ -2,7 +2,11 @@
 vim.lsp.config("luals", require("lsp.luals"))
 vim.lsp.enable('luals')
 
+vim.lsp.config("svelte_ls", require("lsp.svelte_ls"))
+vim.lsp.enable("svelte_ls")
 
+vim.lsp.config("ts_ls", require("lsp.ts_ls"))
+vim.lsp.enable("ts_ls")
 
 
 vim.api.nvim_create_autocmd('LspAttach', {

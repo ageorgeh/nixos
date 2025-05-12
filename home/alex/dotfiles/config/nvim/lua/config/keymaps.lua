@@ -32,6 +32,15 @@ vim.keymap.set("n", "K", function()
     vim.lsp.buf.hover { border = "rounded", max_height = 25, title = "Hover" }
 end)
 
+-- C-] Jump to definition. C-t to go back
+-- C-x C-o Trigger code completion menu
+-- [-d and ]-d to move the cursor to previous / next errors
+-- grn renames all references of the symbol under the cursor
+-- grr lists all references of the symbol under the cursor
+-- gri lists the implementations for the symbol under the cursor
+-- C-s in insert mode displays the function signature of the symbol under the cursor
+
+
 
 -- Moving highlighted blocks around with shift + j|k
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")

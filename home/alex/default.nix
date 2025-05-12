@@ -78,6 +78,9 @@
     neovim-remote
     # LSP
     lua-language-server # Lua
+    svelte-language-server # Svelte
+    typescript-language-server
+    typescript
   ];
 
   imports = [
