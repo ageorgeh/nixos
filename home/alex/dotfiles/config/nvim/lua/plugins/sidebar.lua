@@ -7,11 +7,13 @@ return {
             require("nvim-tree").setup({
                 update_cwd = true,
                 respect_buf_cwd = true,
+                filters = {
+                    dotfiles = false,
+                    git_ignored = false
+                }
             })
         end,
-        keys = {
-            { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle NvimTree" },
-        },
+
     },
 
     -- oil.nvim

@@ -8,11 +8,8 @@ return {
         "TmuxNavigatePrevious",
         "TmuxNavigatorProcessList",
     },
-    keys = {
-        { "<M-h>",  ":TmuxNavigateLeft<CR>",     mode = "n" },
-        { "<M-j>",  ":TmuxNavigateDown<CR>",     mode = "n" },
-        { "<M-k>",  ":TmuxNavigateUp<CR>",       mode = "n" },
-        { "<M-l>",  ":TmuxNavigateRight<CR>",    mode = "n" },
-        { "<C-\\>", ":TmuxNavigatePrevious<CR>", mode = "n" },
-    },
+    init = function()
+        -- Custom key binds (alt instead of ctrl)
+        vim.g.tmux_navigator_no_mappings = 1
+    end
 }

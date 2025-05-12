@@ -2,6 +2,20 @@
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find Files" })
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live Grep" })
+vim.keymap.set("n", "<leader>fc", function()
+    require("telescope.builtin").find_files({
+        prompt_title = "Find in ~/code",
+        cwd = "~/code",
+        hidden = true, -- optional: include dotfiles
+    })
+end, { desc = "Find files in ~/code" })
+vim.keymap.set("n", "<leader>gc", function()
+    require("telescope.builtin").live_grep({
+        prompt_title = "Grep in ~/code",
+        cwd = "~/code",
+    })
+end, { desc = "Grep in ~/code" })
+
 vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Git files" })
 vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find Buffers" })
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Find Help" })
@@ -19,9 +33,18 @@ vim.keymap.set("n", "<C-M-l>", "<cmd>vertical resize +5<CR>", { desc = "Resize s
 vim.keymap.set("n", "<C-M-k>", "<cmd>resize -5<CR>", { desc = "Resize split up" })
 vim.keymap.set("n", "<C-M-j>", "<cmd>resize +5<CR>", { desc = "Resize split down" })
 
+-- Nvim-tree
+vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeFindFile<cr>", { desc = "Toggle NvimTree" })
 
 -- Undotree
 vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { desc = "Toggle Undotree" })
+
+-- Tmux navigator
+vim.keymap.set("n", "<M-h>", ":<C-U>TmuxNavigateLeft<CR>")
+vim.keymap.set("n", "<M-j>", ":<C-U>TmuxNavigateDown<CR>")
+vim.keymap.set("n", "<M-k>", ":<C-U>TmuxNavigateUp<CR>")
+vim.keymap.set("n", "<M-l>", ":<C-U>TmuxNavigateRight<CR>")
+vim.keymap.set("n", "<C-\\>", ":<C-U>TmuxNavigatePrevious<CR>")
 
 -- LazyGit
 vim.keymap.set("n", "<leader>lg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
@@ -102,3 +125,11 @@ vim.keymap.set("n", "<C-l>", function() harpoon:list():select(4) end)
 -- Toggle previous & next buffers stored within Harpoon list
 vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
 vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
+
+
+
+
+
+-- Nvim Tree TODO
+-- Find and focus directory
+-- Move functions pertaining to key commands to lua/utils/...
