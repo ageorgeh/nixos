@@ -1,4 +1,5 @@
 -- lua/plugins/rose-pine.lua
+-- https://rosepinetheme.com/palette/
 return {
     "rose-pine/neovim",
     lazy = false,

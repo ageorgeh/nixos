@@ -48,3 +48,43 @@ vim.diagnostic.config({
         prefix = "● ",
     },
 })
+
+
+
+
+
+
+
+
+
+
+vim.o.showtabline = 2
+vim.o.tabline = "%!v:lua.HarpoonTabline()"
+
+function _G.HarpoonTabline()
+    local harpoon = require("harpoon"):list()
+    local tabline = ""
+
+    local function normalize(path)
+        return vim.loop.fs_realpath(path)
+    end
+
+    local current_buf = vim.api.nvim_get_current_buf()
+    local current_file = normalize(vim.api.nvim_buf_get_name(current_buf))
+
+    if harpoon.items then
+        for i, item in ipairs(harpoon.items) do
+            local full_path = normalize(item.value) or item.value
+            local relative_path = vim.fn.fnamemodify(item.value, ":.")
+
+            local is_active = (full_path == current_file)
+
+            local hl = is_active and "%#TabLineSel#" or "%#TabLine#"
+            tabline = tabline .. hl .. " " .. i .. ". " .. relative_path .. " " .. "%T"
+        end
+    end
+
+    tabline = tabline .. "%#TabLineFill#%="
+
+    return tabline
+end
