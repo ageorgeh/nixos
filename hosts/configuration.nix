@@ -147,7 +147,7 @@
     owner = "root";
     group = "root";
     capabilities = "cap_net_bind_service=+ep";
-    source = "${pkgs.nodejs_23}/bin/node";
+    source = "${pkgs.nodejs_24}/bin/node";
   };
 
   system.stateVersion = "24.11";

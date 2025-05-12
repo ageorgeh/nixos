@@ -36,9 +36,9 @@
     firefox-devedition
     # Development
     jq
-    nodejs_23
-    nodejs_23.pkgs.pnpm
-    nodejs_23.pkgs.aws-cdk # AWS CDK globally installed
+    nodejs_24
+    nodejs_24.pkgs.pnpm
+    nodejs_24.pkgs.aws-cdk # AWS CDK globally installed
     dart-sass # SASS globally installed
     imagemagick # Image manipulation
     socat # Socket connection

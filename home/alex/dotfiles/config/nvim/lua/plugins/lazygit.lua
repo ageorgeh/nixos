@@ -13,14 +13,10 @@ return {
     dependencies = {
         "nvim-lua/plenary.nvim",
     },
-    -- setting the keybinding for LazyGit with 'keys' is recommended in
-    -- order to load the plugin when the command is run for the first time
-    keys = {
-        { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
-    },
     config = function()
         vim.api.nvim_create_autocmd("TermOpen", {
             callback = function()
+                -- Sends <Esc> to lazy git when using it (so it doesn't just take us to normal mode)
                 local bufname = vim.api.nvim_buf_get_name(0)
                 if bufname:match("lazygit") then
                     vim.keymap.set("t", "<Esc>", "<Esc>", { buffer = true, noremap = true })
