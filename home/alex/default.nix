@@ -39,6 +39,7 @@
     nodejs_24
     nodejs_24.pkgs.pnpm
     nodejs_24.pkgs.aws-cdk # AWS CDK globally installed
+    
     dart-sass # SASS globally installed
     imagemagick # Image manipulation
     socat # Socket connection
@@ -46,9 +47,12 @@
     awscli2 # AWS CLI 
     aws-sam-cli # AWS SAM CLI
     lsof # List open files
+    typst # Latex alternative
+    pandoc # Document conversion
     # Go
     go # Go programming language
     gopls # Go language server
+
     discord # Discord - maybe in the future change to a better client
     hyprpicker # Color picker
     hyprshot # Screenshot tool 
@@ -57,6 +61,7 @@
     # Resource monitoring
     btop # Better top
     nvtopPackages.nvidia # Nvidia top
+    
     libarchive # Unzipping etc
     gnumake # Make
     openssl # OpenSSL
