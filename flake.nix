@@ -31,7 +31,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, home-manager, clipboard-sync, hy3, ... }@inputs:
+  outputs = inputs @ { self, nixpkgs, flake-utils, home-manager, clipboard-sync, hy3, ... }:
 
     let
       defaultCfg = rec {
@@ -39,6 +39,13 @@
         homeDirectory = "/home/${username}";
         runtimeRoot = "${homeDirectory}/nixos-config";
         context = self;
+      };
+
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        config = {
+          allowUnfree = true;
+        };
       };
     in
     {
@@ -56,12 +63,7 @@
       };
 
       homeConfigurations.alex = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          system = "x86_64-linux";
-          config = {
-            allowUnfree = true;
-          };
-        };
+        pkgs = pkgs;
         extraSpecialArgs = {
           inherit inputs; inherit hy3; cfg = defaultCfg;
         };
@@ -69,6 +71,25 @@
           ./home/alex/default.nix
         ];
       };
+
+      devShells."x86_64-linux"."python" = pkgs.mkShell {
+        packages = with pkgs; [
+          uv
+        ];
+        buildInputs = with pkgs; [
+          python313
+          pythonManylinuxPackages.manylinux2014Package
+          cmake
+          ninja
+          imagemagick
+        ];
+      };
+
+      shellHook = ''
+        export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib.outPath}/lib:${pkgs.pythonManylinuxPackages.manylinux2014Package}/lib:$LD_LIBRARY_PATH";
+        # test -d .venv || ${pkgs.uv} venv
+        echo "🐍 Python dev shell loaded"
+      '';
 
     };
 }

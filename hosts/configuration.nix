@@ -115,6 +115,21 @@
     nvidia-vaapi-driver
     clipse # Clipboard manager - not working right now
     wl-clipboard # Used by clipse
+
+    # Compilers - remove??
+    cmake
+    extra-cmake-modules
+    pkg-config
+    openblas
+    gcc
+    libgcc
+    libcxx
+    gnumake
+    gfortran
+    zlib
+    libjpeg
+    libffi
+
     inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
     (catppuccin-sddm.override {
       flavor = "mocha";
@@ -138,11 +153,24 @@
   };
 
 
+  environment.etc."pkgconfig/openblas.pc".source =
+    "${pkgs.openblas.dev}/lib/pkgconfig/openblas64.pc";
+
+  environment.variables = {
+    # PKG_CONFIG_PATH = "/etc/pkgconfig:${pkgs.openblas.dev}/lib/pkgconfig:${pkgs.zlib.dev}/lib/pkgconfig:${pkgs.libjpeg.dev}/lib/pkgconfig:${pkgs.libffi.dev}/lib/pkgconfig";
+    # LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
+    # LD_LIBRARY_PATH = "${pkgs.openblas}/lib";
+    # CMAKE_PREFIX_PATH = "${pkgs.openblas}/lib/cmake";
+    # CFLAGS = "-I${pkgs.zlib.dev}/include";
+    # TEST = "${pkgs.zlib.dev}/lib";
+  };
+
+
   environment.etc."fuse.conf".text = ''
     user_allow_other
   '';
 
-  # Just allows node to bind to lower ports with node (good for proxy servers)
+  # Just allows node to bind to lower ports (good for proxy servers)
   security.wrappers.node = {
     owner = "root";
     group = "root";

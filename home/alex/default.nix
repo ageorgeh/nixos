@@ -39,7 +39,11 @@
     nodejs_24
     nodejs_24.pkgs.pnpm
     nodejs_24.pkgs.aws-cdk # AWS CDK globally installed
-    
+
+    # uv
+    # python313
+
+
     dart-sass # SASS globally installed
     imagemagick # Image manipulation
     socat # Socket connection
@@ -61,7 +65,7 @@
     # Resource monitoring
     btop # Better top
     nvtopPackages.nvidia # Nvidia top
-    
+
     libarchive # Unzipping etc
     gnumake # Make
     openssl # OpenSSL
@@ -69,9 +73,6 @@
     kitty # Terminal emulator
     tmux # Terminal multiplexer
 
-    # Compilers
-    gcc
-    gnumake
 
     #
     # Nvim

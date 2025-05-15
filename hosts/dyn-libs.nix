@@ -8,7 +8,12 @@
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
     glibc
+    gcc
     libcxx
+    gfortran
+    cmake
+    openblas
+    pkg-config
   ];
 
 }
