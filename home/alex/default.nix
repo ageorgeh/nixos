@@ -10,9 +10,8 @@
   home.packages = with pkgs; [
     # Google drive 
     rclone
-    fuse
-    # Nix formatting 
-    nixpkgs-fmt
+    fuse 
+
     # SSH key management
     keychain
     # Waybar
@@ -25,25 +24,35 @@
     xfce.tumbler
     xfce.thunar-volman
     gvfs
-    mako # Notificaiton daemon
+    mako # Notification daemon
     hyprpolkitagent # Auth agent
+
     # Wallpaper
     hyprpaper
+
     # Settings
     wdisplays # display settings
     pavucontrol # volume manager
     wlogout # logout/lock GUI
+
     firefox-devedition
+
+    # ###########
     # Development
+    # ###########
     jq
     nodejs_24
     nodejs_24.pkgs.pnpm
     nodejs_24.pkgs.aws-cdk # AWS CDK globally installed
+    typescript
+    tailwindcss_4
+    cargo # For building rust
 
     # Formatters
     prettierd # Prettier
     stylua # Formatting for .lua
     eslint_d # Eslint
+    nixpkgs-fmt # Nix formatter
 
     dart-sass # SASS globally installed
     imagemagick # Image manipulation
@@ -83,11 +92,12 @@
     fd
     lazygit
     neovim-remote
+    
     # LSP
     lua-language-server # Lua
     svelte-language-server # Svelte
-    typescript-language-server
-    typescript
+    typescript-language-server # TS     
+    tailwindcss-language-server # Tailwind
   ];
 
   imports = [
