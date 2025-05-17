@@ -83,7 +83,10 @@ vim.keymap.set("v", "<leader>y", '"+y')
 vim.keymap.set("n", "<leader>Y", '"+Y')
 
 -- Leader x to make executable
-vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x $<CR>", { silent = true })
+vim.keymap.set("n", "<leader>x", function()
+	vim.cmd("!chmod +x " .. vim.fn.expand("%"))
+	vim.cmd("echo 'Made executable: " .. vim.fn.expand("%") .. "'")
+end, { silent = true })
 
 -- Harpoon
 local harpoon = require("harpoon")

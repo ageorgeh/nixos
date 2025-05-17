@@ -92,12 +92,15 @@
     fd
     lazygit
     neovim-remote
-    
-    # LSP
+    tmuxinator
+
+    # lsp 
     lua-language-server # Lua
     svelte-language-server # Svelte
     typescript-language-server # TS     
     tailwindcss-language-server # Tailwind
+    nixd # Nix 
+    yaml-language-server # yaml
   ];
 
   imports = [

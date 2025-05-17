@@ -66,7 +66,7 @@
           "HYPRCURSOR_THEME, rose-pine-hyprcursor"
           "HYPRCURSOR_SIZE,24"
           "TERMINAL, kitty"
-          # "EDITOR,nvim"
+          "EDITOR, nvim"
         ];
 
 

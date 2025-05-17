@@ -3,8 +3,7 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
-vim.env.NVIM_LISTEN_ADDRESS = "/tmp/nvimsocket"
-
+vim.env.NVIM_LISTEN_ADDRESS = vim.v.servername
 
 require("config.lazy")
 require("config.keymaps")

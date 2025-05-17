@@ -116,6 +116,12 @@ in
       source = ./dotfiles/.tmux.conf;
       outOfStoreSymlink = true;
     };
+
+    "scripts" = {
+        source = ./dotfiles/scripts;
+        outOfStoreSymlink = true;
+        recursive = true;
+    };
   };
 
 

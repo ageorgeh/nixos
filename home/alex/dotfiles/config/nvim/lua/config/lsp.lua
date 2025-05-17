@@ -11,7 +11,7 @@ vim.lsp.enable("ts_ls")
 
 -- vim.lsp.config("tailwindcss", require("lsp.tailwindcss"))
 vim.lsp.enable("tailwindcss")
-
+vim.lsp.enable("nixd")
 -- vim.api.nvim_create_autocmd("LspAttach", {
 -- 	callback = function(args)
 -- 		local client = vim.lsp.get_client_by_id(args.data.client_id)
