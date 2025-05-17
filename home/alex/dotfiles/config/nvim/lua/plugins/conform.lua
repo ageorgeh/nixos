@@ -23,7 +23,7 @@ return {
 			python = { "isort", "black" },
 			javascript = { "prettierd", "prettier", stop_after_first = true },
 			typescript = { "prettierd" },
-			svelte = { "prettierd" },
+			svelte = { "eslint_d", "prettierd" },
 		},
 		-- Set default options
 		default_format_opts = {

@@ -43,6 +43,7 @@
     # Formatters
     prettierd # Prettier
     stylua # Formatting for .lua
+    eslint_d # Eslint
 
     dart-sass # SASS globally installed
     imagemagick # Image manipulation
