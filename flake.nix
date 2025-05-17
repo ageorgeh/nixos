@@ -16,9 +16,7 @@
     };
 
     hy3 = {
-      url = "github:outfoxxed/hy3"; # where {version} is the hyprland release version
-      # or "github:outfoxxed/hy3" to follow the development branch.
-      # (you may encounter issues if you dont do the same for hyprland)
+      url = "github:outfoxxed/hy3";
       inputs.hyprland.follows = "hyprland";
     };
 
@@ -47,6 +45,8 @@
           allowUnfree = true;
         };
       };
+
+      loadShell = name: import (./shells + "/${name}.nix") { inherit pkgs; };
     in
     {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
@@ -72,24 +72,8 @@
         ];
       };
 
-      devShells."x86_64-linux"."python" = pkgs.mkShell {
-        packages = with pkgs; [
-          uv
-        ];
-        buildInputs = with pkgs; [
-          python313
-          pythonManylinuxPackages.manylinux2014Package
-          cmake
-          ninja
-          imagemagick
-        ];
-      };
+      devShells."x86_64-linux"."python" = loadShell "python";
 
-      shellHook = ''
-        export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib.outPath}/lib:${pkgs.pythonManylinuxPackages.manylinux2014Package}/lib:$LD_LIBRARY_PATH";
-        # test -d .venv || ${pkgs.uv} venv
-        echo "🐍 Python dev shell loaded"
-      '';
 
     };
 }

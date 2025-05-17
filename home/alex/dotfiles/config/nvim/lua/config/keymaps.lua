@@ -3,17 +3,17 @@ local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find Files" })
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live Grep" })
 vim.keymap.set("n", "<leader>fc", function()
-    require("telescope.builtin").find_files({
-        prompt_title = "Find in ~/code",
-        cwd = "~/code",
-        hidden = true, -- optional: include dotfiles
-    })
+	require("telescope.builtin").find_files({
+		prompt_title = "Find in ~/code",
+		cwd = "~/code",
+		hidden = true, -- optional: include dotfiles
+	})
 end, { desc = "Find files in ~/code" })
 vim.keymap.set("n", "<leader>gc", function()
-    require("telescope.builtin").live_grep({
-        prompt_title = "Grep in ~/code",
-        cwd = "~/code",
-    })
+	require("telescope.builtin").live_grep({
+		prompt_title = "Grep in ~/code",
+		cwd = "~/code",
+	})
 end, { desc = "Grep in ~/code" })
 
 vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Git files" })
@@ -52,7 +52,7 @@ vim.keymap.set("n", "<leader>lg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
 ---------------------- LSP ----------------------
 -- https://neovim.io/doc/user/lsp.html#vim.lsp.buf.hover()
 vim.keymap.set("n", "K", function()
-    vim.lsp.buf.hover { border = "rounded", max_height = 25, title = "Hover" }
+	vim.lsp.buf.hover({ border = "rounded", max_height = 25, title = "Hover" })
 end)
 
 -- C-] Jump to definition. C-t to go back
@@ -63,12 +63,9 @@ end)
 -- gri lists the implementations for the symbol under the cursor
 -- C-s in insert mode displays the function signature of the symbol under the cursor
 
-
-
 -- Moving highlighted blocks around with shift + j|k
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
-
 
 -- Cursor in center with half page jumps
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -77,59 +74,71 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
-
 -- Paste over something but keep the same buffer
-vim.keymap.set("x", "<leader>p", "\"_dP")
-
+vim.keymap.set("x", "<leader>p", '"_dP')
 
 -- Copy to system clipboard
-vim.keymap.set("n", "<leader>y", "\"+y")
-vim.keymap.set("v", "<leader>y", "\"+y")
-vim.keymap.set("n", "<leader>Y", "\"+Y")
-
+vim.keymap.set("n", "<leader>y", '"+y')
+vim.keymap.set("v", "<leader>y", '"+y')
+vim.keymap.set("n", "<leader>Y", '"+Y')
 
 -- Leader x to make executable
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x $<CR>", { silent = true })
-
 
 -- Harpoon
 local harpoon = require("harpoon")
 local conf = require("telescope.config").values
 local function toggle_telescope(harpoon_files)
-    local file_paths = {}
-    for _, item in ipairs(harpoon_files.items) do
-        table.insert(file_paths, item.value)
-    end
+	local file_paths = {}
+	for _, item in ipairs(harpoon_files.items) do
+		table.insert(file_paths, item.value)
+	end
 
-    require("telescope.pickers").new({}, {
-        prompt_title = "Harpoon",
-        finder = require("telescope.finders").new_table({
-            results = file_paths,
-        }),
-        previewer = conf.file_previewer({}),
-        sorter = conf.generic_sorter({}),
-    }):find()
+	require("telescope.pickers")
+		.new({}, {
+			prompt_title = "Harpoon",
+			finder = require("telescope.finders").new_table({
+				results = file_paths,
+			}),
+			previewer = conf.file_previewer({}),
+			sorter = conf.generic_sorter({}),
+		})
+		:find()
 end
 
+vim.keymap.set("n", "<leader>a", function()
+	harpoon:list():add()
+end)
+vim.keymap.set("n", "<C-e>", function()
+	toggle_telescope(harpoon:list())
+end, { desc = "Open harpoon window" })
 
-
-vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
-vim.keymap.set("n", "<C-e>", function() toggle_telescope(harpoon:list()) end,
-    { desc = "Open harpoon window" })
-
-vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
-vim.keymap.set("n", "<C-j>", function() harpoon:list():select(2) end)
-vim.keymap.set("n", "<C-k>", function() harpoon:list():select(3) end)
-vim.keymap.set("n", "<C-l>", function() harpoon:list():select(4) end)
+vim.keymap.set("n", "<C-h>", function()
+	harpoon:list():select(1)
+end)
+vim.keymap.set("n", "<C-j>", function()
+	harpoon:list():select(2)
+end)
+vim.keymap.set("n", "<C-k>", function()
+	harpoon:list():select(3)
+end)
+vim.keymap.set("n", "<C-l>", function()
+	harpoon:list():select(4)
+end)
 
 -- Toggle previous & next buffers stored within Harpoon list
-vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
-vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
-
-
-
-
+vim.keymap.set("n", "<C-S-P>", function()
+	harpoon:list():prev()
+end)
+vim.keymap.set("n", "<C-S-N>", function()
+	harpoon:list():next()
+end)
 
 -- Nvim Tree TODO
 -- Find and focus directory
 -- Move functions pertaining to key commands to lua/utils/...
+
+-- Formatting
+vim.keymap.set("n", "<leader>lf", function()
+	require("conform").format({ async = true, lsp_fallback = false })
+end)

@@ -61,22 +61,22 @@ end
 vim.keymap.set('i', '<Tab>', tab_complete, { expr = true })
 vim.keymap.set('i', '<S-Tab>', tab_prev, { expr = true })
 
-
+-- Using conform now
 -- Formatting on save
-vim.api.nvim_create_autocmd('LspAttach', {
-    callback = function(args)
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-        if client:supports_method('textDocument/formatting') then
-            vim.api.nvim_create_autocmd('BufWritePre', {
-                buffer = args.buf,
-                callback = function()
-                    vim.lsp.buf.format({ bufnr = args.buf, id = client.id })
-                end,
-            })
-        end
-    end,
-})
+-- vim.api.nvim_create_autocmd('LspAttach', {
+--     callback = function(args)
+--         local client = vim.lsp.get_client_by_id(args.data.client_id)
+--
+--         if client:supports_method('textDocument/formatting') then
+--             vim.api.nvim_create_autocmd('BufWritePre', {
+--                 buffer = args.buf,
+--                 callback = function()
+--                     vim.lsp.buf.format({ bufnr = args.buf, id = client.id })
+--                 end,
+--             })
+--         end
+--     end,
+-- })
 
 
 
@@ -119,6 +119,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end,
 })
 
+-- Show diagnostics (errors etc) on hold for a line
 vim.api.nvim_create_autocmd("CursorHold", {
     pattern = "*",
     callback = function()

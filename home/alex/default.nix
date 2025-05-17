@@ -40,9 +40,9 @@
     nodejs_24.pkgs.pnpm
     nodejs_24.pkgs.aws-cdk # AWS CDK globally installed
 
-    # uv
-    # python313
-
+    # Formatters
+    prettierd # Prettier
+    stylua # Formatting for .lua
 
     dart-sass # SASS globally installed
     imagemagick # Image manipulation
