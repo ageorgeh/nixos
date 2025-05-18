@@ -26,6 +26,7 @@ local function open_task_in_tasks_tab(task)
 	end
 
 	-- Open the task log in a new window within the 'Tasks' tab
+	-- Don't like this so much prefer to just use the overseer tasks view
 	-- local bufnr = task:get_bufnr()
 	-- if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
 	-- 	vim.cmd("vsplit")
