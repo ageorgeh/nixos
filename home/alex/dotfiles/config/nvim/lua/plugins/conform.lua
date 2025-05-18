@@ -24,6 +24,7 @@ return {
 			javascript = { "prettierd", "prettier", stop_after_first = true },
 			typescript = { "prettierd" },
 			svelte = { "eslint_d", "prettierd" },
+			json = { "prettierd" },
 		},
 		-- Set default options
 		default_format_opts = {

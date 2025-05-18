@@ -143,5 +143,24 @@ end)
 
 -- Formatting
 vim.keymap.set("n", "<leader>lf", function()
-	require("conform").format({ async = true, lsp_fallback = false })
+	require("conform").format({ async = true, lsp_fallback = true })
 end)
+
+-- Tabs
+vim.keymap.set("n", "<leader>tb", ":tabnew<CR>", { desc = "New tab" })
+vim.keymap.set("n", "<leader>tn", ":tabn<CR>", { desc = "Next tab" })
+vim.keymap.set("n", "<leader>tx", ":tabclose<CR>", { desc = "Close tab" })
+
+-- Overseer
+-- vim.keymap.set("n", "<leader>or", ":OverseerRun<CR>", { desc = "Overseer run" })
+
+vim.keymap.set("n", "<leader>or", function()
+	local overseer = require("overseer")
+	overseer.run_template({}, function(task)
+		if task then
+			overseer.run_action(task, "Open in tasks tab")
+		end
+	end)
+end, { desc = "Overseer toggle" })
+
+vim.keymap.set("n", "<leader>ot", ":OverseerToggle<CR>", { desc = "Overseer toggle" })
