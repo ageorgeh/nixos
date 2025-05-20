@@ -170,3 +170,8 @@ vim.keymap.set("n", "<leader>or", function()
 end, { desc = "Overseer toggle" })
 
 vim.keymap.set("n", "<leader>ot", ":OverseerToggle<CR>", { desc = "Overseer toggle" })
+
+-- Toggle dependency versions
+vim.keymap.set({ "n" }, "<leader>nt", function()
+	require("package-info").toggle({ force = true })
+end, { silent = true, noremap = true })

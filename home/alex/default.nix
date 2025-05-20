@@ -101,7 +101,7 @@
     tailwindcss-language-server # Tailwind
     nixd # Nix 
     yaml-language-server # yaml
-    nodejs_24.pkgs.vscode-json-languageserver  # JSON
+    vscode-langservers-extracted # JSON
 
     ];
 

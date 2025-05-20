@@ -25,6 +25,7 @@ return {
 			typescript = { "prettierd" },
 			svelte = { "eslint_d", "prettierd" },
 			json = { "prettierd" },
+			jsonc = { "prettierd" },
 		},
 		-- Set default options
 		default_format_opts = {

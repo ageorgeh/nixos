@@ -13,9 +13,9 @@ vim.lsp.enable("ts_ls")
 vim.lsp.enable("tailwindcss")
 vim.lsp.enable("nixd")
 
-vim.lsp.config("jsonls", {
-	cmd = { "vscode-json-languageserver", "--stdio" },
-})
+-- vim.lsp.config("jsonls", {
+-- 	cmd = { "vscode-json-languageserver", "--stdio" },
+-- })
 vim.lsp.enable("jsonls")
 -- vim.api.nvim_create_autocmd("LspAttach", {
 -- 	callback = function(args)
@@ -123,23 +123,23 @@ end
 -- })
 --
 -- -- Show diagnostics (errors etc) on hold for a line
--- vim.api.nvim_create_autocmd("CursorHold", {
--- 	pattern = "*",
--- 	callback = function()
--- 		-- Length of diagnostics for current buffer == 0
--- 		if #vim.diagnostic.get(0) == 0 then
--- 			return
--- 		end
---
--- 		if not vim.b.diagnostics_pos then
--- 			vim.b.diagnostics_pos = { nil, nil }
--- 		end
---
--- 		local cursor_pos = vim.api.nvim_win_get_cursor(0)
--- 		if cursor_pos[1] ~= vim.b.diagnostics_pos[1] or cursor_pos[2] ~= vim.b.diagnostics_pos[2] then
--- 			vim.diagnostic.open_float()
--- 		end
---
--- 		vim.b.diagnostics_pos = cursor_pos
--- 	end,
--- })
+vim.api.nvim_create_autocmd("CursorHold", {
+	pattern = "*",
+	callback = function()
+		-- Length of diagnostics for current buffer == 0
+		if #vim.diagnostic.get(0) == 0 then
+			return
+		end
+
+		if not vim.b.diagnostics_pos then
+			vim.b.diagnostics_pos = { nil, nil }
+		end
+
+		local cursor_pos = vim.api.nvim_win_get_cursor(0)
+		if cursor_pos[1] ~= vim.b.diagnostics_pos[1] or cursor_pos[2] ~= vim.b.diagnostics_pos[2] then
+			vim.diagnostic.open_float()
+		end
+
+		vim.b.diagnostics_pos = cursor_pos
+	end,
+})
