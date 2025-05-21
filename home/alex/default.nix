@@ -47,6 +47,7 @@
     typescript
     tailwindcss_4
     cargo # For building rust
+    lua
 
     # Formatters
     prettierd # Prettier
@@ -102,6 +103,7 @@
     nixd # Nix 
     yaml-language-server # yaml
     vscode-langservers-extracted # JSON
+    mdx-language-server # MDX
 
     ];
 

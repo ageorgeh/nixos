@@ -3,11 +3,17 @@
 -- vim.lsp.config("luals", require("lsp.luals"))
 vim.lsp.enable("lua_ls")
 
--- vim.lsp.config("svelte_ls", require("lsp.svelte_ls"))
+vim.lsp.config("svelte", {
+	filetypes = { "svelte", "svx" },
+})
 vim.lsp.enable("svelte")
 
+vim.lsp.config("mdx_analyzer", {
+	filetypes = { "mdx", "svx" },
+})
+vim.lsp.enable("mdx_analyzer")
 -- vim.lsp.config("ts_ls", require("lsp.ts_ls"))
-vim.lsp.enable("ts_ls")
+-- vim.lsp.enable("ts_ls")
 
 -- vim.lsp.config("tailwindcss", require("lsp.tailwindcss"))
 vim.lsp.enable("tailwindcss")
@@ -97,31 +103,31 @@ end
 -- })
 
 -- Highlight references
--- vim.api.nvim_create_autocmd("LspAttach", {
--- 	callback = function(args)
--- 		local client = vim.lsp.get_client_by_id(args.data.client_id)
---
--- 		if client:supports_method("textDocument/documentHighlight") then
--- 			local autocmd = vim.api.nvim_create_autocmd
--- 			local augroup = vim.api.nvim_create_augroup("lsp_highlight", { clear = false })
---
--- 			vim.api.nvim_clear_autocmds({ buffer = bufnr, group = augroup })
---
--- 			autocmd({ "CursorHold" }, {
--- 				group = augroup,
--- 				buffer = args.buf,
--- 				callback = vim.lsp.buf.document_highlight,
--- 			})
---
--- 			autocmd({ "CursorMoved" }, {
--- 				group = augroup,
--- 				buffer = args.buf,
--- 				callback = vim.lsp.buf.clear_references,
--- 			})
--- 		end
--- 	end,
--- })
---
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(args)
+		local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+		if client:supports_method("textDocument/documentHighlight") then
+			local autocmd = vim.api.nvim_create_autocmd
+			local augroup = vim.api.nvim_create_augroup("lsp_highlight", { clear = false })
+
+			vim.api.nvim_clear_autocmds({ buffer = bufnr, group = augroup })
+
+			autocmd({ "CursorHold" }, {
+				group = augroup,
+				buffer = args.buf,
+				callback = vim.lsp.buf.document_highlight,
+			})
+
+			autocmd({ "CursorMoved" }, {
+				group = augroup,
+				buffer = args.buf,
+				callback = vim.lsp.buf.clear_references,
+			})
+		end
+	end,
+})
+
 -- -- Show diagnostics (errors etc) on hold for a line
 vim.api.nvim_create_autocmd("CursorHold", {
 	pattern = "*",

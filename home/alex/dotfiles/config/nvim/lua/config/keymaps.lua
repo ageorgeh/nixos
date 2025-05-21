@@ -119,7 +119,7 @@ vim.keymap.set("n", "<leader>a", function()
 	harpoon:list():add()
 end)
 vim.keymap.set("n", "<C-e>", function()
-	toggle_telescope(harpoon:list())
+	harpoon.ui:toggle_quick_menu(harpoon:list())
 end, { desc = "Open harpoon window" })
 
 vim.keymap.set("n", "<C-h>", function()
@@ -156,6 +156,17 @@ end)
 vim.keymap.set("n", "<leader>tb", ":tabnew<CR>", { desc = "New tab" })
 vim.keymap.set("n", "<leader>tn", ":tabn<CR>", { desc = "Next tab" })
 vim.keymap.set("n", "<leader>tx", ":tabclose<CR>", { desc = "Close tab" })
+
+-- Typescript tools
+vim.keymap.set("n", "<leader>tso", ":TSToolsOrganizeImports<CR>", { desc = "Organize Imports" })
+vim.keymap.set("n", "<leader>tss", ":TSToolsSortImports<CR>", { desc = "Sort Imports" })
+vim.keymap.set("n", "<leader>tsu", ":TSToolsRemoveUnusedImports<CR>", { desc = "Remove Unused Imports" })
+vim.keymap.set("n", "<leader>tsr", ":TSToolsRemoveUnused<CR>", { desc = "Remove Unused Statements" })
+vim.keymap.set("n", "<leader>tsa", ":TSToolsAddMissingImports<CR>", { desc = "Add Missing Imports" })
+vim.keymap.set("n", "<leader>tsf", ":TSToolsFixAll<CR>", { desc = "Fix All" })
+vim.keymap.set("n", "<leader>tsd", ":TSToolsGoToSourceDefinition<CR>", { desc = "Go To Source Definition" })
+vim.keymap.set("n", "<leader>tsn", ":TSToolsRenameFile<CR>", { desc = "Rename File" })
+vim.keymap.set("n", "<leader>tsF", ":TSToolsFileReferences<CR>", { desc = "File References" })
 
 -- Overseer
 -- vim.keymap.set("n", "<leader>or", ":OverseerRun<CR>", { desc = "Overseer run" })

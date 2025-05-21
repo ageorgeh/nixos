@@ -21,9 +21,10 @@ return {
 		formatters_by_ft = {
 			lua = { "stylua" },
 			python = { "isort", "black" },
-			javascript = { "prettierd", "prettier", stop_after_first = true },
-			typescript = { "prettierd" },
+			javascript = { "eslint_d", "prettierd" },
+			typescript = { "eslint_d", "prettierd" },
 			svelte = { "eslint_d", "prettierd" },
+			svx = { "svx_split_formatter" },
 			json = { "prettierd" },
 			jsonc = { "prettierd" },
 		},
@@ -37,6 +38,11 @@ return {
 		formatters = {
 			shfmt = {
 				prepend_args = { "-i", "2" },
+			},
+			svx_split_formatter = {
+				command = "bash",
+				args = { vim.fn.stdpath("config") .. "/scripts/format_svx.sh" },
+				stdin = true,
 			},
 		},
 	},
