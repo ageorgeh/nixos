@@ -92,6 +92,6 @@ vim.o.foldenable = true
 
 vim.filetype.add({
 	extension = {
-		svx = "svx",
+		svx = "svelte",
 	},
 })

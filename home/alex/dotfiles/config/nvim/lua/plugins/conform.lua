@@ -23,7 +23,18 @@ return {
 			python = { "isort", "black" },
 			javascript = { "eslint_d", "prettierd" },
 			typescript = { "eslint_d", "prettierd" },
-			svelte = { "eslint_d", "prettierd" },
+			-- svelte = { "svx_split_formatter", "eslint_d", "prettierd" },
+			svelte = function(bufnr)
+				local filename = vim.api.nvim_buf_get_name(bufnr)
+				local function ends_with(str, ending)
+					return ending == "" or str:sub(-#ending) == ending
+				end
+				if ends_with(filename, ".md.svelte") then
+					return { "eslint_d", "svx_split_formatter" }
+				else
+					return { "eslint_d", "prettierd" }
+				end
+			end,
 			svx = { "svx_split_formatter" },
 			json = { "prettierd" },
 			jsonc = { "prettierd" },
