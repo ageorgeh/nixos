@@ -186,3 +186,8 @@ vim.keymap.set("n", "<leader>ot", ":OverseerToggle<CR>", { desc = "Overseer togg
 vim.keymap.set({ "n" }, "<leader>nt", function()
 	require("package-info").toggle({ force = true })
 end, { silent = true, noremap = true })
+
+-- Expand luasnips
+vim.keymap.set({ "i" }, "<C-K>", function()
+	require("luasnip").expand()
+end, { silent = true })
