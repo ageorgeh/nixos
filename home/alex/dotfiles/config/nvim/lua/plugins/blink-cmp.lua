@@ -46,6 +46,14 @@ return {
 		-- elsewhere in your config, without redefining it, due to `opts_extend`
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer" },
+
+			providers = {
+				lsp = {
+					name = "LSP",
+					module = "blink.cmp.sources.lsp",
+					async = true,
+				},
+			},
 		},
 
 		-- (Default) Rust fuzzy matcher for typo resistance and significantly better performance

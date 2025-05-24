@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# This script exists so that we can specifically format the svelte parts of a
-# svx file with the svelte formatter and the mdx parts with the mdx formatter
-
-
 set -euo pipefail
 
 tmpfile=$(mktemp)
@@ -12,34 +8,30 @@ cat - > "$tmpfile"
 # Step 1: Prettify the whole input as MDX first
 mdx_output=$(prettierd test.svx --parser=mdx < "$tmpfile")
 
-# process <script> blocks, inline or multi-line
+# Step 2: Re-format any <tag>…</tag> regions with the Svelte parser
 while IFS= read -r line; do
-  # single-line <script>…</script>
-  if [[ $line =~ \<script([^>]*)\>(.*)\<\/script\> ]]; then
-    formatted=$(printf "$line" | prettierd test.svx --parser=svelte )
-    printf "$formatted\n" 
-
-  # start of multi-line <script>
-  elif [[ $line =~ \<script([^>]*)\> ]]; then
+  # single-line <tag>…</tag>
+  if [[ $line =~ \<([[:alnum:]]+)([^>]*)\>(.*)\<\/\1\> ]]; then
+    printf "%s\n" "$line" \
+      | prettierd test.svx --parser=svelte
+  # start of a multi-line <tag>
+  elif [[ $line =~ \<([[:alnum:]]+)([^>]*)\> ]]; then
+    tag="${BASH_REMATCH[1]}"
     buffer="$line"$'\n'
-    # collect until closing </script>
+    # collect until matching </tag>
     while IFS= read -r inner; do
-      if [[ $inner =~ \</script\> ]]; then
-        buffer+="$inner"$'\n'
-        formatted=$(printf "%s" "$buffer" | prettierd test.svx --parser=svelte )
-        printf "$formatted\n"
+      buffer+="$inner"$'\n'
+      if [[ $inner =~ \</$tag\> ]]; then
+        printf "%s" "$buffer" \
+          | prettierd test.svx --parser=svelte
         break
-      else
-        buffer+="$inner"$'\n'
       fi
     done
-
-  # anything else
+  # everything else
   else
     printf '%s\n' "$line"
   fi
 done <<< "$mdx_output"
-
 
 rm "$tmpfile"
 
