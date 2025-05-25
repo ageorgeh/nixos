@@ -44,6 +44,7 @@
     nodejs_24
     nodejs_24.pkgs.pnpm
     nodejs_24.pkgs.aws-cdk # AWS CDK globally installed
+    nodejs_24.pkgs.prettier
     typescript
     tailwindcss_4
     cargo # For building rust
@@ -78,6 +79,9 @@
     nvtopPackages.nvidia # Nvidia top
 
     libarchive # Unzipping etc
+    ripgrep # Used by nvim plugs
+    lynx # Used by nvim plugs
+    lua51Packages.tiktoken_core # Used by copilot-chat nvim: https://github.com/CopilotC-Nvim/CopilotChat.nvim#optional-dependencies
     gnumake # Make
     openssl # OpenSSL
     obsidian # Note taking
@@ -104,7 +108,7 @@
     yaml-language-server # yaml
     vscode-langservers-extracted # JSON
     mdx-language-server # MDX
-
+    bash-language-server # Bash
     ];
 
   imports = [

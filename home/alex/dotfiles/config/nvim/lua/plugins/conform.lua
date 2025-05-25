@@ -51,8 +51,8 @@ return {
 				prepend_args = { "-i", "2" },
 			},
 			svx_split_formatter = {
-				command = "bash",
-				args = { vim.fn.stdpath("config") .. "/scripts/format_svx.sh" },
+				command = "node",
+				args = { vim.fn.stdpath("config") .. "/scripts/format_md_svelte.ts", "$FILENAME" },
 				stdin = true,
 			},
 		},

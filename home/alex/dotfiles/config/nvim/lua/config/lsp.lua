@@ -5,6 +5,16 @@ vim.lsp.enable("lua_ls")
 
 vim.lsp.config("svelte", {
 	filetypes = { "svelte", "svx" },
+	on_attach = function(client, bufnr)
+		if client.name == "svelte" then
+			vim.api.nvim_create_autocmd("BufWritePost", {
+				pattern = { "*.js", "*.ts" },
+				callback = function(ctx)
+					client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
+				end,
+			})
+		end
+	end,
 })
 vim.lsp.enable("svelte")
 
@@ -23,6 +33,7 @@ vim.lsp.enable("nixd")
 -- 	cmd = { "vscode-json-languageserver", "--stdio" },
 -- })
 vim.lsp.enable("jsonls")
+vim.lsp.enable("bashls")
 -- vim.api.nvim_create_autocmd("LspAttach", {
 -- 	callback = function(args)
 -- 		local client = vim.lsp.get_client_by_id(args.data.client_id)

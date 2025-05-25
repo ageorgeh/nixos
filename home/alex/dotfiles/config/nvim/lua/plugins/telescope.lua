@@ -11,6 +11,7 @@ return {
 				require("telescope").load_extension("fzf")
 			end,
 		},
+		"nvim-telescope/telescope-ui-select.nvim",
 	},
 	config = function()
 		local telescope_custom_actions = {}
@@ -52,6 +53,10 @@ return {
 					},
 				},
 			},
+			extensions = {
+				["ui-select"] = {},
+			},
 		})
+		require("telescope").load_extension("ui-select")
 	end,
 }
