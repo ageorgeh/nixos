@@ -41,6 +41,7 @@
     # Development
     # ###########
     jq
+    bun
     nodejs_24
     nodejs_24.pkgs.pnpm
     nodejs_24.pkgs.aws-cdk # AWS CDK globally installed

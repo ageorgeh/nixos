@@ -1,0 +1,24 @@
+{
+  "lockfileVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "nixos-config",
+      "dependencies": {
+        "@types/node": "^22.15.2",
+        "prettier": "3.5.3",
+      },
+      "devDependencies": {
+        "bun-types": "^1.2.14",
+      },
+    },
+  },
+  "packages": {
+    "@types/node": ["@types/node@22.15.21", "http://localhost:4873/@types/node/-/node-22.15.21.tgz", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-EV/37Td6c+MgKAbkcLG6vqZ2zEYHD7bvSrzqqs2RIhbA6w3x+Dqz8MZM3sP6kGTeLrdoOgKZe+Xja7tUB2DNkQ=="],
+
+    "bun-types": ["bun-types@1.2.14", "http://localhost:4873/bun-types/-/bun-types-1.2.14.tgz", { "dependencies": { "@types/node": "*" } }, "sha512-Kuh4Ub28ucMRWeiUUWMHsT9Wcbr4H3kLIO72RZZElSDxSu7vpetRvxIUDUaW6QtaIeixIpm7OXtNnZPf82EzwA=="],
+
+    "prettier": ["prettier@3.5.3", "http://localhost:4873/prettier/-/prettier-3.5.3.tgz", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw=="],
+
+    "undici-types": ["undici-types@6.21.0", "http://localhost:4873/undici-types/-/undici-types-6.21.0.tgz", {}, "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="],
+  }
+}

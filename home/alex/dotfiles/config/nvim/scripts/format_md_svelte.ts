@@ -1,61 +1,53 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 
-import fs from "fs";
-import prettier from "prettier";
-import { spawn } from "node:child_process";
+import { spawn } from "bun";
 
-export function formatWithPrettierd(filepath: string, source: string, parser: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const proc = spawn("prettierd", [filepath, `--parser=${parser}`  ]);
-
-    let output = "";
-    let errorOutput = "";
-
-    proc.stdout.on("data", (chunk) => {
-      output += chunk.toString();
-    });
-
-    proc.stderr.on("data", (chunk) => {
-      errorOutput += chunk.toString();
-    });
-
-    proc.on("error", reject);
-
-    proc.on("close", (code) => {
-      if (code === 0) {
-        resolve(output);
-      } else {
-        reject(new Error(`prettierd failed with code ${code}:\n${errorOutput}`));
-      }
-    });
-
-    proc.stdin.write(source);
-    proc.stdin.end();
+export async function formatWithPrettierd(
+  filepath: string,
+  source: string,
+  parser: string,
+): Promise<string> {
+  const proc = spawn(["prettierd", filepath, `--parser=${parser}`], {
+    stdin: "pipe",
+    stdout: "pipe",
+    stderr: "pipe",
   });
+
+  const output = new Response(proc.stdout).text();
+  const errorOutput = new Response(proc.stderr).text();
+
+  proc.stdin.write(source);
+  proc.stdin.end();
+
+  await proc.exited;
+  if (proc.exitCode === 0) {
+    return output;
+  } else {
+    throw new Error(
+      `prettierd failed with code ${proc.exitCode}:\n${errorOutput}`,
+    );
+  }
 }
 
 const filepath = process.argv[2];
-
-const options = await prettier.resolveConfig(filepath ?? process.cwd());
 
 // Read from stdin
 const stdin = await new Promise<string>((resolve, reject) => {
   let data = "";
   process.stdin.setEncoding("utf-8");
-  process.stdin.on("data", chunk => (data += chunk));
+  process.stdin.on("data", (chunk) => (data += chunk));
   process.stdin.on("end", () => resolve(data));
   process.stdin.on("error", reject);
 });
 
 // Format entire file as MDX
-let formatted = await formatWithPrettierd(filepath, stdin, 'mdx');
+let formatted = await formatWithPrettierd(filepath, stdin, "mdx");
 
 // Regex to match all tags, including self-closing and opening/closing
-const tagRegex =
-  /<(\/?)([a-zA-Z][\w-]*)([^>]*)\/?>|<\/([a-zA-Z][\w-]*)>/g;
+const tagRegex = /<(\/?)([a-zA-Z][\w-]*)([^>]*)\/?>|<\/([a-zA-Z][\w-]*)>/g;
 
 function findTagBlocks(text: string) {
-  const blocks: {start:number, end:number}[] = [];
+  const blocks: { start: number; end: number }[] = [];
   const stack: { tag: string; start: number }[] = [];
   let match: RegExpExecArray | null;
 
@@ -65,20 +57,20 @@ function findTagBlocks(text: string) {
     const tag = tagName || closingName;
     const index = match.index;
 
-    const isSelfClosing = /\/\s*>$/.test(full) || (!slash && full.endsWith("/>"));
+    const isSelfClosing =
+      /\/\s*>$/.test(full) || (!slash && full.endsWith("/>"));
 
     if (!isClosing && !isSelfClosing) {
       // opening tag
       stack.push({ tag, start: index });
     } else if (isSelfClosing) {
       // self-closing tag — treat as standalone block
-    if (stack.length === 0) {
-      blocks.push({
-        start: index,
-        end: index + full.length,
-      });
-
-    }
+      if (stack.length === 0) {
+        blocks.push({
+          start: index,
+          end: index + full.length,
+        });
+      }
     } else {
       // closing tag
       const last = stack.pop();
@@ -121,30 +113,20 @@ function mergeAdjacentBlocks(blocks: Block[], text: string): Block[] {
 
 const mergedBlocks = mergeAdjacentBlocks(blocks, formatted);
 
-let result = "";
 let lastIndex = 0;
-const promises: (Promise<string> | string)[] = [];
+const chunks: (string | Promise<string>)[] = [];
 
 for (const { start, end } of mergedBlocks) {
-  promises.push(formatted.slice(lastIndex, start));
+  chunks.push(formatted.slice(lastIndex, start));
   const block = formatted.slice(start, end);
-  try {
-    promises.push(formatWithPrettierd(filepath, block, 'svelte'));
-  } catch (e) {
-    console.log(e.message);
-    throw new Error(e);
-  }
+  chunks.push(formatWithPrettierd(filepath, block, "svelte"));
   lastIndex = end;
 }
+chunks.push(formatted.slice(lastIndex));
 
-const results = await Promise.all(promises)
-results.forEach((res) => {
-    result += res
-})
-
-result += formatted.slice(lastIndex);
-
-process.stdout.write(result);
+const results = await Promise.all(chunks);
+process.stdout.write(results.join(""));
 
 // For testing
 // time for i in {1..100}; do node ~/.config/nvim/scripts/format_md_svelte.ts < preview.md.svelte > /dev/null; done
+// time for i in {1..100}; do bun ~/.config/nvim/scripts/format_md_svelte.ts < preview.md.svelte > /dev/null; done

@@ -22,7 +22,7 @@ return {
 			lua = { "stylua" },
 			python = { "isort", "black" },
 			javascript = { "eslint_d", "prettierd" },
-			typescript = { "eslint_d", "prettierd" },
+			typescript = { "prettierd" },
 			-- svelte = { "svx_split_formatter", "eslint_d", "prettierd" },
 			svelte = function(bufnr)
 				local filename = vim.api.nvim_buf_get_name(bufnr)
@@ -51,7 +51,7 @@ return {
 				prepend_args = { "-i", "2" },
 			},
 			svx_split_formatter = {
-				command = "node",
+				command = "bun",
 				args = { vim.fn.stdpath("config") .. "/scripts/format_md_svelte.ts", "$FILENAME" },
 				stdin = true,
 			},
