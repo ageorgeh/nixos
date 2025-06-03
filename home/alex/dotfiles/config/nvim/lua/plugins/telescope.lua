@@ -12,11 +12,17 @@ return {
 			end,
 		},
 		"nvim-telescope/telescope-ui-select.nvim",
+		{
+			"nvim-telescope/telescope-live-grep-args.nvim",
+		},
 	},
 	config = function()
 		local telescope_custom_actions = {}
-		local actions = require("telescope.actions")
+		local telescope = require("telescope")
 		local action_state = require("telescope.actions.state")
+		local actions = require("telescope.actions")
+		local lga_actions = require("telescope-live-grep-args.actions")
+		local troubleSource = require("trouble.sources.telescope")
 
 		function telescope_custom_actions._multiopen(prompt_bufnr, open_cmd)
 			local picker = action_state.get_current_picker(prompt_bufnr)
@@ -41,15 +47,32 @@ return {
 			telescope_custom_actions._multiopen(prompt_bufnr, "edit")
 		end
 
-		require("telescope").setup({
+		telescope.setup({
 			defaults = {
 				mappings = {
+					i = {
+						["<C-q>"] = function(prompt_bufnr)
+							actions.smart_send_to_qflist(prompt_bufnr)
+							require("trouble").open({ mode = "qflist" })
+						end,
+						["<c-t>"] = function(args)
+							require("trouble.sources.telescope").open(args)
+						end,
+						["<C-k>"] = lga_actions.quote_prompt({ postfix = " -U " }),
+					},
 					n = {
 						-- https://github.com/nvim-telescope/telescope.nvim/issues/1048#issuecomment-993956937
-						-- ["<CR>"] = telescope_custom_actions.multi_selection_open,
+						--  = telescope_custom_actions.multi_selection_open,
 						["<C-V>"] = telescope_custom_actions.multi_selection_open_vsplit,
 						["<C-S>"] = telescope_custom_actions.multi_selection_open_split,
 						["<C-T>"] = telescope_custom_actions.multi_selection_open_tab,
+						["<C-q>"] = function(prompt_bufnr)
+							actions.smart_send_to_qflist(prompt_bufnr)
+							require("trouble").open({ mode = "qflist" })
+						end,
+						["<c-t>"] = function()
+							troubleSource.open()
+						end,
 					},
 				},
 			},
@@ -57,6 +80,7 @@ return {
 				["ui-select"] = {},
 			},
 		})
-		require("telescope").load_extension("ui-select")
+		telescope.load_extension("live_grep_args")
+		telescope.load_extension("ui-select")
 	end,
 }

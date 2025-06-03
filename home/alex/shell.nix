@@ -6,6 +6,7 @@
 
   home.shellAliases = {
     nixos-build = "sudo nixos-rebuild switch --flake ~/nixos-config#nixos";
+    nixos-update = "sudo nix flake update --flake ~/nixos-config";
     home-build = "home-manager switch --flake ~/nixos-config#alex";
     logout = "hyprctl dispatch exit";
     code = "code --use-angle=vulkan";

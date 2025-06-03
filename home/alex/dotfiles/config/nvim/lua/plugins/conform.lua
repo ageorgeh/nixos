@@ -22,7 +22,7 @@ return {
 			lua = { "stylua" },
 			python = { "isort", "black" },
 			javascript = { "eslint_d", "prettierd" },
-			typescript = { "prettierd" },
+			typescript = { "eslint_d", "prettierd" },
 			-- svelte = { "svx_split_formatter", "eslint_d", "prettierd" },
 			svelte = function(bufnr)
 				local filename = vim.api.nvim_buf_get_name(bufnr)

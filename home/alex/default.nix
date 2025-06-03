@@ -80,6 +80,7 @@
     nvtopPackages.nvidia # Nvidia top
 
     libarchive # Unzipping etc
+    zip # Easier zipping
     ripgrep # Used by nvim plugs
     lynx # Used by nvim plugs
     lua51Packages.tiktoken_core # Used by copilot-chat nvim: https://github.com/CopilotC-Nvim/CopilotChat.nvim#optional-dependencies

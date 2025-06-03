@@ -1,7 +1,14 @@
 -- Telescope
 local builtin = require("telescope.builtin")
+local lga = require("telescope").extensions.live_grep_args
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find Files" })
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live Grep" })
+vim.keymap.set("n", "<leader>fg", function()
+	lga.live_grep_args({
+		auto_quoting = true,
+		default_text = "", -- optional starting text
+		postfix = " -U ",
+	})
+end, { desc = "Live Grep" })
 vim.keymap.set("n", "<leader>fc", function()
 	require("telescope.builtin").find_files({
 		prompt_title = "Find in ~/code",
@@ -54,6 +61,13 @@ vim.keymap.set("n", "<C-\\>", ":<C-U>TmuxNavigatePrevious<CR>")
 
 -- LazyGit
 vim.keymap.set("n", "<leader>lg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
+
+vim.keymap.set("n", "<leader>lr", function()
+	vim.cmd("LspStop")
+	vim.defer_fn(function()
+		vim.cmd("e")
+	end, 1000)
+end, { desc = "Restart LSP" })
 
 ---------------------- LSP ----------------------
 -- https://neovim.io/doc/user/lsp.html#vim.lsp.buf.hover()

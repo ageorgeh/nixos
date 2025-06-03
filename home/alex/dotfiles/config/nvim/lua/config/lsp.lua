@@ -18,10 +18,6 @@ vim.lsp.config("svelte", {
 })
 vim.lsp.enable("svelte")
 
-vim.lsp.config("mdx_analyzer", {
-	filetypes = { "mdx" },
-})
-vim.lsp.enable("mdx_analyzer")
 -- vim.lsp.config("ts_ls", require("lsp.ts_ls"))
 -- vim.lsp.enable("ts_ls")
 

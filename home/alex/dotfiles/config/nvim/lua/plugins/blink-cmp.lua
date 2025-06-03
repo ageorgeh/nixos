@@ -45,21 +45,22 @@ return {
 		-- Default list of enabled providers defined so that you can extend it
 		-- elsewhere in your config, without redefining it, due to `opts_extend`
 		sources = {
-			default = { "lsp", "path", "snippets", "buffer", "copilot" },
+			default = { "lsp", "path", "snippets", "buffer" },
 
-			providers = {
-				lsp = {
-					name = "LSP",
-					module = "blink.cmp.sources.lsp",
-					async = true,
-				},
-				copilot = {
-					name = "copilot",
-					module = "blink-copilot",
-					score_offset = 100,
-					async = true,
-				},
-			},
+			-- providers = {
+			-- 	lsp = {
+			-- 		name = "LSP",
+			-- 		module = "blink.cmp.sources.lsp",
+			-- 		async = true,
+			-- 		-- score_offset = 1,
+			-- 	},
+			-- 	copilot = {
+			-- 		name = "copilot",
+			-- 		module = "blink-copilot",
+			-- 		-- score_offset = 0,
+			-- 		async = true,
+			-- 	},
+			-- },
 		},
 
 		-- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
