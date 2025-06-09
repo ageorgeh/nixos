@@ -111,6 +111,8 @@
     vscode-langservers-extracted # JSON
     mdx-language-server # MDX
     bash-language-server # Bash
+    glsl_analyzer # Shaders 
+
     ];
 
   imports = [

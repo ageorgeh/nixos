@@ -21,7 +21,36 @@ vim.lsp.enable("svelte")
 -- vim.lsp.config("ts_ls", require("lsp.ts_ls"))
 -- vim.lsp.enable("ts_ls")
 
--- vim.lsp.config("tailwindcss", require("lsp.tailwindcss"))
+vim.lsp.config("tailwindcss", {
+	settings = {
+		tailwindCSS = {
+			validate = true,
+			lint = {
+				cssConflict = "warning",
+				invalidApply = "error",
+				invalidScreen = "error",
+				invalidVariant = "error",
+				invalidConfigPath = "error",
+				invalidTailwindDirective = "error",
+				recommendedVariantOrder = "warning",
+			},
+			classAttributes = {
+				"class",
+				"className",
+				"class:list",
+				"classList",
+				"ngClass",
+				"imgClass",
+			},
+			includeLanguages = {
+				eelixir = "html-eex",
+				eruby = "erb",
+				templ = "html",
+				htmlangular = "html",
+			},
+		},
+	},
+})
 vim.lsp.enable("tailwindcss")
 vim.lsp.enable("nixd")
 
@@ -30,6 +59,7 @@ vim.lsp.enable("nixd")
 -- })
 vim.lsp.enable("jsonls")
 vim.lsp.enable("bashls")
+vim.lsp.enable("glsl_analyzer")
 -- vim.api.nvim_create_autocmd("LspAttach", {
 -- 	callback = function(args)
 -- 		local client = vim.lsp.get_client_by_id(args.data.client_id)

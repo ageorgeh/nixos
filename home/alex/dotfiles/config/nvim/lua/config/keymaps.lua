@@ -64,6 +64,7 @@ vim.keymap.set("n", "<leader>lg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
 
 vim.keymap.set("n", "<leader>lr", function()
 	vim.cmd("LspStop")
+	-- Need to let everything settle before remounting
 	vim.defer_fn(function()
 		vim.cmd("e")
 	end, 1000)
