@@ -89,7 +89,8 @@
     obsidian # Note taking
     kitty # Terminal emulator
     tmux # Terminal multiplexer
-
+    webfontkitgenerator # Generating fonts
+    polypane # Browser dev tool
 
     #
     # Nvim

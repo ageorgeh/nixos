@@ -35,6 +35,7 @@ return {
 					return { "eslint_d", "prettierd" }
 				end
 			end,
+			css = { "eslint_d", "prettierd" },
 			svx = { "svx_split_formatter" },
 			json = { "prettierd" },
 			jsonc = { "prettierd" },
