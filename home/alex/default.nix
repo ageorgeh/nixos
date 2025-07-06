@@ -75,9 +75,15 @@
     hyprshot # Screenshot tool 
     jetbrains.datagrip # Database client
     insomnia # API client
+    drawio # Drawio desktop
+
     # Resource monitoring
     btop # Better top
     nvtopPackages.nvidia # Nvidia top
+
+    # Dynamo local
+    dynamodb-local
+    nosql-workbench
 
     libarchive # Unzipping etc
     zip # Easier zipping
@@ -90,7 +96,7 @@
     kitty # Terminal emulator
     tmux # Terminal multiplexer
     webfontkitgenerator # Generating fonts
-    polypane # Browser dev tool
+    # polypane # Browser dev tool - REMOVED from nix packages due to lack of support
 
     #
     # Nvim

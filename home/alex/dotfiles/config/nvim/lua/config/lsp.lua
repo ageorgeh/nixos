@@ -1,6 +1,5 @@
 -- Starting point for new LSP https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/configs
 
--- vim.lsp.config("luals", require("lsp.luals"))
 vim.lsp.enable("lua_ls")
 
 vim.lsp.config("svelte", {
@@ -19,7 +18,9 @@ vim.lsp.config("svelte", {
 vim.lsp.enable("svelte")
 
 -- vim.lsp.config("ts_ls", require("lsp.ts_ls"))
--- vim.lsp.enable("ts_ls")
+vim.lsp.enable("ts_ls")
+
+-- vim.lsp.enable("typescript-tools")
 
 vim.lsp.config("tailwindcss", {
 	settings = {
@@ -144,7 +145,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-		if client:supports_method("textDocument/documentHighlight") then
+		if client and client:supports_method("textDocument/documentHighlight") then
 			local autocmd = vim.api.nvim_create_autocmd
 			local augroup = vim.api.nvim_create_augroup("lsp_highlight", { clear = false })
 
