@@ -26,7 +26,7 @@
           group_inset = 10
 
           autotile {
-            enable = true
+            enable = false
             trigger_width = 800
             trigger_height = 600
           }

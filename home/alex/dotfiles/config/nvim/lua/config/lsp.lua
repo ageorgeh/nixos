@@ -61,6 +61,8 @@ vim.lsp.enable("nixd")
 vim.lsp.enable("jsonls")
 vim.lsp.enable("bashls")
 vim.lsp.enable("glsl_analyzer")
+vim.lsp.enable("gopls")
+
 -- vim.api.nvim_create_autocmd("LspAttach", {
 -- 	callback = function(args)
 -- 		local client = vim.lsp.get_client_by_id(args.data.client_id)

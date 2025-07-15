@@ -62,6 +62,11 @@ func main() {
 	firefoxDev := AppOptions{
 		app: "firefox-devedition",
 	}
+	noSqlWorkbench := AppOptions{
+		app:          "nosql-workbench",
+		initialTitle: "NoSQL Workbench",
+		title:        "NoSQL Workbench",
+	}
 	firefox := AppOptions{
 		app: "firefox",
 	}
@@ -77,57 +82,39 @@ func main() {
 
 	apps := map[int][]AppOptions{
 		0: {nixosCode, kitty, cmsCode},
-		1: {firefoxDev, firefox, thunar, keepassxc, tidalHifi},
+		1: {firefoxDev, noSqlWorkbench,
+			firefox,
+			thunar, keepassxc, tidalHifi},
 	}
 
 	launchApps(apps)
 
 	// Untab all windows
-	processWindows(WindowsOptions{
+	processWindowsInSucession(WindowsInSuccessionOptions{
 		Command:  "hy3:changegroup untab",
 		Monitors: []int{0, 1},
 	})
 
-	// Float all windows on monitor 1
-	processWindows(WindowsOptions{
-		UseAddress: true,
-		Command:    "togglefloating",
-		Monitors:   []int{0, 1},
+	// // Float all windows
+	processAllWindows(AllWindowsOptions{
+		Command:  "setfloating",
+		Monitors: []int{0, 1},
 	})
 
-	// Unfloat windows on monitor 1 in order
-	processWindows(WindowsOptions{
-		UseAddress: true,
-		Command:    "togglefloating",
-		Monitors:   []int{0, 1},
-		AppOrder:   []AppOptions{firefoxDev, firefox, thunar, keepassxc, tidalHifi, nixosCode, cmsCode, kitty}},
-	)
-
-	// TODO disable auto tile for this whole thing really and then enable when done
-	// Focus thunar and make it a tab group
-	thunarAd := must(Address(thunar))
-	println("Focusing and making tab group for thunar: ", thunarAd)
-	c.Dispatch("focuswindow address:" + thunarAd)
-	c.Dispatch("hy3:makegroup tab, toggle")
-
-	// Moves all the windows after thunar into the tab group
-	processWindows(WindowsOptions{
-		After:    &thunar,
-		Command:  "hy3:movewindow l",
-		Monitors: []int{1},
+	// // Unfloat windows in order
+	processWindowsInOrder(OrderedWindowsOptions{
+		Command:  "togglefloating",
+		Monitors: []int{0, 1},
+		AppOrder: []AppOptions{
+			firefoxDev, noSqlWorkbench,
+			firefox,
+			thunar, keepassxc, tidalHifi,
+			nixosCode, cmsCode, kitty},
 	})
 
-	codeAd := must(Address(nixosCode))
-	println("Focusing and making tab group for nixos code: ", codeAd)
-	c.Dispatch("focuswindow address:" + codeAd)
-	c.Dispatch("hy3:makegroup tab, toggle")
-
-	// Moves all the windows after code into the tab group
-	processWindows(WindowsOptions{
-		After:    &nixosCode,
-		Command:  "hy3:movewindow l",
-		Monitors: []int{0},
-	})
+	makeGroup(1, firefoxDev, noSqlWorkbench)
+	makeGroup(1, thunar, keepassxc, tidalHifi)
+	makeGroup(0, nixosCode, cmsCode, kitty)
 
 	c.Dispatch("focusmonitor 0")
 

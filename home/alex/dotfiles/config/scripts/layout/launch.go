@@ -35,10 +35,10 @@ func launchApps(apps map[int][]AppOptions) {
 					onOpen: func(w event.OpenWindow) {
 						if app.initialTitle != "" && w.Title == app.initialTitle {
 							close(done)
-						}
-						if IsRunning(app) {
+						} else if IsRunning(app) {
 							close(done) // window opened, signal done
 						}
+
 					},
 				}, event.EventOpenWindow)
 			}()

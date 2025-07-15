@@ -37,6 +37,8 @@
 
     firefox-devedition
 
+    thunderbird # Email client
+
     # ###########
     # Development
     # ###########
@@ -68,7 +70,6 @@
     pandoc # Document conversion
     # Go
     go # Go programming language
-    gopls # Go language server
 
     discord # Discord - maybe in the future change to a better client
     hyprpicker # Color picker
@@ -119,6 +120,7 @@
     mdx-language-server # MDX
     bash-language-server # Bash
     glsl_analyzer # Shaders 
+    gopls # Go language server
 
     ];
 
