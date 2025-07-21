@@ -74,7 +74,7 @@
     discord # Discord - maybe in the future change to a better client
     hyprpicker # Color picker
     hyprshot # Screenshot tool 
-    jetbrains.datagrip # Database client
+    # jetbrains.datagrip # Database client
     insomnia # API client
     drawio # Drawio desktop
 
