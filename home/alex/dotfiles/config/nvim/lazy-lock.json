@@ -10,7 +10,7 @@
   "friendly-snippets": { "branch": "main", "commit": "572f5660cf05f8cd8834e096d7b4c921ba18e175" },
   "harpoon": { "branch": "harpoon2", "commit": "ed1f853847ffd04b2b61c314865665e1dadf22c7" },
   "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },
-  "lazygit.nvim": { "branch": "main", "commit": "ac4a400b256a63ae9d533b022db9b98d3358ef55" },
+  "lazygit.nvim": { "branch": "main", "commit": "b4229a094bdebe82d6f0b9aa69fea23a9e4b6b61" },
   "lualine.nvim": { "branch": "master", "commit": "a94fc68960665e54408fe37dcf573193c4ce82c9" },
   "mini.surround": { "branch": "main", "commit": "f59022c2c66c1cffd3cd755b105faa468b25a4e0" },
   "neogen": { "branch": "main", "commit": "d7f9461727751fb07f82011051338a9aba07581d" },
