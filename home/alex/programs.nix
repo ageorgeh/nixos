@@ -77,19 +77,6 @@ in
   #   package = pkgs.waybar;
   # };
 
-
-  # Wlsunset
-  services.wlsunset = {
-    enable = true;
-    latitude = "37.813629";
-    longitude = "144.963058";
-    temperature = {
-      day = 5500;
-      night = 3700;
-    };
-  };
-
-
   # Neovim
   programs.neovim = {
     enable = true;

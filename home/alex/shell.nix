@@ -21,8 +21,9 @@
   programs.bash = {
     enable = true;
     initExtra = ''
+      export POMO="/home/alex/.config/pomo"
       export PNPM_HOME="/home/alex/.local/share/pnpm"
-      export PATH="$PNPM_HOME:$PATH"
+      export PATH="$POMO:$PNPM_HOME:$PATH"
     '';
   };
 }

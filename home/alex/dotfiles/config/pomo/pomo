@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#
+# pomo — Pomodoro & general Timewarrior wrapper
+#
+# Usage:
+#   pomo work         # start a 25 min work session (auto‐notify at 25m)
+#   pomo break        # start a 5 min break      (auto‐notify at 5m)
+#   pomo stop         # stop whatever’s running
+#   pomo tag NAME...  # start tracking NAME (e.g. pomo tag run)
+#   pomo status       # show today’s summary
+
+TIMEW="timew"
+NOTIFY="notify-send"
+
+case "$1" in
+  work)
+    $TIMEW start pomodoro work
+    $NOTIFY "Pomodoro ▶ Work started" "25 min timer begun"
+    ( sleep 1500 && $NOTIFY "⏰ Work interval ended. Please switch to break." ) &
+    ;;
+
+  break)
+    $TIMEW start pomodoro break
+    $NOTIFY "Pomodoro 🛎 Break started" "5 min timer begun"
+    ( sleep 300 && $NOTIFY "⏰ Break ended. Back to work!" ) &
+    ;;
+
+  stop)
+    $TIMEW stop
+    $NOTIFY "⏹ Timer stopped" "Session ended"
+    ;;
+
+  tag)
+    shift
+    if [ $# -eq 0 ]; then
+      echo "Usage: pomo tag <activity-name>"
+      exit 1
+    fi
+    $TIMEW start "$@"
+    $NOTIFY "▶ Tracking: $*" "Started"
+    ;;
+
+  status)
+    # show a brief summary of today
+    $TIMEW summary :day
+    ;;
+
+  *)
+    cat <<EOF
+Usage: pomo {work|break|stop|tag|status}
+
+  work         Start a 25 min work session (notify at 25 min; you still need to 'pomo stop')
+  break        Start a 5 min break        (notify at 5 min; then 'pomo stop')
+  stop         Stop current session
+  tag NAME…    Start tracking arbitrary activity e.g. 'pomo tag run'
+  status       Show today's Timewarrior summary
+EOF
+    ;;
+esac
+

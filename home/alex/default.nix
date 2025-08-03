@@ -25,9 +25,12 @@
     xfce.thunar-volman
     gvfs
     mako # Notification daemon
+    libnotify
     hyprpolkitagent # Auth agent
+    timewarrior
 
-    # Wallpaper
+    # Hyprland 
+    hyprsunset
     hyprpaper
 
     # Settings

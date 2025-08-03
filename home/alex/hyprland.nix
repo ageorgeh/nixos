@@ -108,10 +108,11 @@
 
 
         exec-once = [
+          "hyprpaper"
+          "hyprsunset"
           "waybar"
           "mako"
           "hyprpolkitagent"
-          "hyprpaper"
           "clipse --listen"
           "sleep 1 && ~/.config/scripts/layout/layout"
         ];

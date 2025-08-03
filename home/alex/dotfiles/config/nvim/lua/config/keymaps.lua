@@ -63,11 +63,12 @@ vim.keymap.set("n", "<C-\\>", ":<C-U>TmuxNavigatePrevious<CR>")
 vim.keymap.set("n", "<leader>lg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
 
 vim.keymap.set("n", "<leader>lr", function()
-	vim.cmd("LspStop")
+	vim.cmd("LspRestart")
+	-- vim.cmd("LspStop")
 	-- Need to let everything settle before remounting
-	vim.defer_fn(function()
-		vim.cmd("e")
-	end, 1000)
+	-- vim.defer_fn(function()
+	-- vim.cmd("e")
+	-- end, 1000)
 end, { desc = "Restart LSP" })
 
 ---------------------- LSP ----------------------
