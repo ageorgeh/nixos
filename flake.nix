@@ -72,6 +72,7 @@
         ];
       };
 
+      # nix develop ~/nixos-config#python
       devShells."x86_64-linux"."python" = loadShell "python";
 
 

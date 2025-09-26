@@ -10,7 +10,7 @@
   home.packages = with pkgs; [
     # Google drive 
     rclone
-    fuse 
+    fuse
 
     # SSH key management
     keychain
@@ -55,6 +55,8 @@
     tailwindcss_4
     cargo # For building rust
     lua
+    playwright-test
+    playwright-driver.browsers
 
     # Formatters
     prettierd # Prettier
@@ -125,7 +127,7 @@
     glsl_analyzer # Shaders 
     gopls # Go language server
 
-    ];
+  ];
 
   imports = [
     ./shell.nix

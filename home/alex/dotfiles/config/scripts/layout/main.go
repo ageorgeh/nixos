@@ -62,6 +62,9 @@ func main() {
 	firefoxDev := AppOptions{
 		app: "firefox-devedition",
 	}
+	obsidian := AppOptions{
+		app: "obsidian",
+	}
 	noSqlWorkbench := AppOptions{
 		app:          "nosql-workbench",
 		initialTitle: "NoSQL Workbench",
@@ -82,7 +85,7 @@ func main() {
 
 	apps := map[int][]AppOptions{
 		0: {nixosCode, kitty, cmsCode},
-		1: {firefoxDev, noSqlWorkbench,
+		1: {firefoxDev, obsidian, noSqlWorkbench,
 			firefox,
 			thunar, keepassxc, tidalHifi},
 	}
@@ -106,13 +109,13 @@ func main() {
 		Command:  "togglefloating",
 		Monitors: []int{0, 1},
 		AppOrder: []AppOptions{
-			firefoxDev, noSqlWorkbench,
+			firefoxDev, obsidian, noSqlWorkbench,
 			firefox,
 			thunar, keepassxc, tidalHifi,
 			nixosCode, cmsCode, kitty},
 	})
 
-	makeGroup(1, firefoxDev, noSqlWorkbench)
+	makeGroup(1, firefoxDev, obsidian, noSqlWorkbench)
 	makeGroup(1, thunar, keepassxc, tidalHifi)
 	makeGroup(0, nixosCode, cmsCode, kitty)
 

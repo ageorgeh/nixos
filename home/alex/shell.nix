@@ -24,6 +24,8 @@
       export POMO="/home/alex/.config/pomo"
       export PNPM_HOME="/home/alex/.local/share/pnpm"
       export PATH="$POMO:$PNPM_HOME:$PATH"
+      export PLAYWRIGHT_BROWSERS_PATH=${pkgs.playwright-driver.browsers}
+      export PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=true
     '';
   };
 }
