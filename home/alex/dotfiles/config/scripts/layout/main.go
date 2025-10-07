@@ -63,7 +63,8 @@ func main() {
 		app: "firefox-devedition",
 	}
 	obsidian := AppOptions{
-		app: "obsidian",
+		app:   "obsidian",
+		class: "obsidian",
 	}
 	noSqlWorkbench := AppOptions{
 		app:          "nosql-workbench",

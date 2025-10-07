@@ -16,6 +16,7 @@ type AppOptions struct {
 	app          string
 	title        string
 	initialTitle string
+	class        string
 }
 
 func launchApps(apps map[int][]AppOptions) {
@@ -66,6 +67,9 @@ func IsRunning(i AppOptions) bool {
 	if i.title != "" {
 		return TitleRunning(i.title)
 	}
+	if i.class != "" {
+		return ClassRunning(i.class)
+	}
 	if i.app != "" {
 		return AppRunning(i.app)
 	}
@@ -83,6 +87,19 @@ func AppRunning(app string) bool {
 			continue
 		}
 		if clientAppName == getAppName(app) {
+			return true
+		}
+	}
+	return false
+}
+
+func ClassRunning(class string) bool {
+	clients, err := c.Clients()
+	if err != nil {
+		return false
+	}
+	for _, client := range clients {
+		if client.Class == class {
 			return true
 		}
 	}

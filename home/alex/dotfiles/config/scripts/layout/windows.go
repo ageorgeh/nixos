@@ -173,6 +173,10 @@ func matchesApp(client hyprland.Client, app AppOptions) (bool, error) {
 	if app.title != "" {
 		return strings.Contains(client.Title, app.title), nil
 	}
+	// Check by class if specified
+	if app.class != "" {
+		return client.Class == app.class, nil
+	}
 
 	// Otherwise check by app name
 	clientAppName, err := AppNameFromPid(client.Pid)
