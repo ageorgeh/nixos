@@ -81,6 +81,7 @@
     hyprshot # Screenshot tool 
     # jetbrains.datagrip # Database client
     insomnia # API client
+    yaak # API client
     drawio # Drawio desktop
 
     # Resource monitoring
@@ -91,7 +92,7 @@
     dynamodb-local
     nosql-workbench
 
-    libarchive # Unzipping etc
+    libarchive # Unzipping etc bsdtar -xf Sue_Ellen_Francisco.zip
     zip # Easier zipping
     ripgrep # Used by nvim plugs
     lynx # Used by nvim plugs

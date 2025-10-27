@@ -2,7 +2,7 @@
 return {
 	"saghen/blink.cmp",
 	-- optional: provides snippets for the snippet source
-	dependencies = { "rafamadriz/friendly-snippets", "fang2hou/blink-copilot" },
+	dependencies = { "rafamadriz/friendly-snippets" },
 
 	-- use a release tag to download pre-built binaries
 	version = "1.*",
@@ -45,7 +45,7 @@ return {
 		-- Default list of enabled providers defined so that you can extend it
 		-- elsewhere in your config, without redefining it, due to `opts_extend`
 		sources = {
-			default = { "lsp", "path", "snippets", "buffer", "copilot" },
+			default = { "lsp", "path", "snippets", "buffer" },
 
 			providers = {
 				-- lsp = {
@@ -54,12 +54,12 @@ return {
 				-- 	async = true,
 				-- 	-- score_offset = 1,
 				-- },
-				copilot = {
-					name = "copilot",
-					module = "blink-copilot",
-					-- score_offset = 0,
-					async = true,
-				},
+				-- copilot = {
+				-- 	name = "copilot",
+				-- 	module = "blink-copilot",
+				-- 	-- score_offset = 0,
+				-- 	async = true,
+				-- },
 			},
 		},
 

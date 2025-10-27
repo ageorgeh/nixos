@@ -20,6 +20,12 @@
         identityFile = "~/.ssh/github_id";
         identitiesOnly = true;
       };
+
+      "media-server" = {
+        hostname = "192.168.20.75";
+        user = "media-server";
+        identityFile = "~/.ssh/media_server_id";
+      };
     };
 
     extraConfig = ''
