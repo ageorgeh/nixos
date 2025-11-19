@@ -37,10 +37,8 @@
     settings =
       {
 
-        windowrulev2 = [
-          "float, class:(clipse)"
-          "size 822 852, class:(clipse)"
-          "stayfocused, class:(clipse)"
+        windowrule = [
+
         ];
 
         env = [

@@ -3,16 +3,15 @@
 {
   programs.ssh = {
     enable = true;
-    enableDefaultConfig = false;
+
+    forwardAgent = false;
+    serverAliveInterval = 60;
+    hashKnownHosts = true;
+    controlMaster = "auto";
+    controlPath = "~/.ssh/master-%r@%h:%p";
 
     matchBlocks = {
-      "*" = {
-        forwardAgent = false;
-        serverAliveInterval = 60;
-        hashKnownHosts = true;
-        controlMaster = "auto";
-        controlPath = "~/.ssh/master-%r@%h:%p";
-      };
+
 
       "github.com" = {
         hostname = "github.com";

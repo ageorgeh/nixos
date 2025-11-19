@@ -189,7 +189,7 @@ vim.keymap.set("n", "<leader>tsF", ":TSToolsFileReferences<CR>", { desc = "File 
 
 vim.keymap.set("n", "<leader>or", function()
 	local overseer = require("overseer")
-	overseer.run_template({}, function(task)
+	overseer.run_task({}, function(task)
 		if task then
 			overseer.run_action(task, "Open in tasks tab")
 		end
