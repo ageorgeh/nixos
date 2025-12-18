@@ -20,9 +20,9 @@ vim.lsp.config("svelte", {
 vim.lsp.enable("svelte")
 
 -- vim.lsp.config("ts_ls", require("lsp.ts_ls"))
-vim.lsp.enable("ts_ls")
+-- vim.lsp.enable("ts_ls")
 
--- vim.lsp.enable("typescript-tools")
+vim.lsp.enable("typescript-tools")
 
 vim.lsp.config("tailwindcss", {
 	settings = {
