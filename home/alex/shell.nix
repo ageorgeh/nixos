@@ -5,7 +5,7 @@
   programs.fzf.enable = true;
 
   home.shellAliases = {
-    nixos-build = "sudo nixos-rebuild switch --flake ~/nixos-config#nixos";
+    nixos-build = "sudo nixos-rebuild switch --flake ~/nixos-config#workstation";
     nixos-update = "sudo nix flake update --flake ~/nixos-config";
     home-build = "home-manager switch --flake ~/nixos-config#alex";
     logout = "hyprctl dispatch exit";

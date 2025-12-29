@@ -7,9 +7,11 @@
   # Hyprland
   wayland.windowManager.hyprland = {
     enable = true;
-    # package = null; # use the system-installed Hyprland
-    package = inputs.hyprland.packages.${pkgs.system}.default;
-    portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
+    package = null; # use the system-installed Hyprland
+    portalPackage = null;
+    # package = inputs.hyprland.packages.${pkgs.system}.default;
+    # portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
+
     systemd.variables = [ "--all" ]; # Fixes missing PATH in services
 
     plugins = [
