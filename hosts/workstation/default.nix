@@ -1,10 +1,15 @@
 { config, inputs, pkgs, ... }:
 
 {
+  # imports
   imports = [
     ./hardware-configuration.nix
     ./hardware/input.nix
     ./dyn-libs.nix
+    ./user.nix
+
+
+    ../../modules/nixos/hardware/nvidia.nix
   ];
 
 
@@ -15,28 +20,32 @@
     trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
 
-
+  # boot
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 3;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+
+  # services 
   services.gnome.gnome-keyring.enable = true;
+  services.clipboard-sync.enable = true; # https://github.com/dnut/clipboard-sync  
+
+  services.xserver.enable = true;
+  services.displayManager.sddm = {
+    enable = true;
+    theme = "catppuccin-mocha";
+    package = pkgs.kdePackages.sddm;
+  };
+  services.displayManager.defaultSession = "hyprland";
+  services.displayManager.sddm.autoLogin.enable = false;
+
+  # security
   security.pam.services.greetd.enableGnomeKeyring = true;
   security.pam.services.hyprland.enableGnomeKeyring = true;
   security.pam.services.sddm.enableGnomeKeyring = true;
 
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = true;
-    powerManagement.finegrained = false;
-    open = false;
-    nvidiaSettings = true;
-  };
-
-  boot.kernelParams = [ "nvidia-drm.modeset=1" ];
-
-  networking.hostName = "nixos";
+  # networking
+  networking.hostName = "workstation";
   networking.nameservers = [
     "8.8.8.8"
     "8.8.4.4"
@@ -65,18 +74,9 @@
     LC_TIME = "en_AU.UTF-8";
   };
 
-
-
-
-  services.xserver.enable = true;
-  services.displayManager.sddm = {
-    enable = true;
-    theme = "catppuccin-mocha";
-    package = pkgs.kdePackages.sddm;
-  };
-  services.displayManager.defaultSession = "hyprland";
-  services.displayManager.sddm.autoLogin.enable = false;
+  # programs
   programs.hyprland.enable = true;
+  programs.firefox.enable = true;
 
   services.xserver.xkb = {
     layout = "au";
@@ -99,19 +99,11 @@
     enable = true;
     package = pkgs.docker_28;
   };
-  hardware.nvidia-container-toolkit.enable = true; # Use --device=nvidia.com/gpu=all when running containers needing GPU access
 
-  users.users.alex = {
-    isNormalUser = true;
-    description = "Alexander Hornung";
-    extraGroups = [ "networkmanager" "wheel" "docker" "input" ];
-    packages = with pkgs; [ ];
-  };
-
-  programs.firefox.enable = true;
 
   environment.systemPackages = with pkgs; [
     git
+    # TODO remove
     home-manager # Needed before user installs so that packages can be fetched
     seahorse # GUI for managing stored keyring secrets
     nvidia-vaapi-driver
@@ -137,18 +129,14 @@
       flavor = "mocha";
       font = "Noto Sans";
       fontSize = "9";
-      background = "${../home/alex/wallpapers/field_3440x1440.png}";
+      background = "${../../home/alex/wallpapers/field_3440x1440.png}";
       loginBackground = true;
     })
   ];
 
-  # https://github.com/dnut/clipboard-sync  
-  services.clipboard-sync.enable = true;
+
 
   environment.sessionVariables = {
-    #   ELECTRON_OZONE_PLATFORM_HINT = "wayland";
-    # NIXOS_OZONE_WL = "1";
-    #   EDITOR = "code --use-angle=vulkan --wait";
     # The following is good for vscode to pick up the correct keychain 
     XDG_CURRENT_DESKTOP = "GNOME";
     DESKTOP_SESSION = "gnome";
@@ -158,14 +146,7 @@
   environment.etc."pkgconfig/openblas.pc".source =
     "${pkgs.openblas.dev}/lib/pkgconfig/openblas64.pc";
 
-  environment.variables = {
-    # PKG_CONFIG_PATH = "/etc/pkgconfig:${pkgs.openblas.dev}/lib/pkgconfig:${pkgs.zlib.dev}/lib/pkgconfig:${pkgs.libjpeg.dev}/lib/pkgconfig:${pkgs.libffi.dev}/lib/pkgconfig";
-    # LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
-    # LD_LIBRARY_PATH = "${pkgs.openblas}/lib";
-    # CMAKE_PREFIX_PATH = "${pkgs.openblas}/lib/cmake";
-    # CFLAGS = "-I${pkgs.zlib.dev}/include";
-    # TEST = "${pkgs.zlib.dev}/lib";
-  };
+  environment.variables = { };
 
 
   environment.etc."fuse.conf".text = ''

@@ -83,6 +83,18 @@ vim.lsp.config("tailwindcss", {
 })
 vim.lsp.enable("tailwindcss")
 vim.lsp.enable("nixd")
+vim.lsp.config('nixd', {
+	cmd = { 'nixd' },
+	filetypes = { 'nix' },
+	root_markers = { 'flake.nix', '.git' },
+	settings = {
+		nixd = {
+			formatting = {
+				command = { "nixfmt" },
+			},
+		},
+	},
+})
 
 -- vim.lsp.config("jsonls", {
 -- 	cmd = { "vscode-json-languageserver", "--stdio" },

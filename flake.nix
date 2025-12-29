@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     flake-utils.url = "github:numtide/flake-utils";
+    agenix.url = "github:ryantm/agenix";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,53 +30,45 @@
     };
   };
 
-  outputs = inputs @ { self, nixpkgs, flake-utils, home-manager, clipboard-sync, hy3, ... }:
-
+  outputs = inputs@{ self, nixpkgs, flake-utils, clipboard-sync, home-manager, ... }:
     let
-      defaultCfg = rec {
-        username = "alex";
-        homeDirectory = "/home/${username}";
-        runtimeRoot = "${homeDirectory}/nixos-config";
-        context = self;
-      };
+      mkHost = { hostName, system ? "x86_64-linux" }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
 
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-        config = {
-          allowUnfree = true;
+          specialArgs = { inherit inputs; };
+
+          modules = [
+            # host entrypoint
+            (./hosts + "/${hostName}/default.nix")
+
+            # shared integrations
+            home-manager.nixosModules.home-manager
+            clipboard-sync.nixosModules.default
+
+            # global nixpkgs settings
+            { nixpkgs.config.allowUnfree = true; }
+          ];
         };
-      };
 
-      loadShell = name: import (./shells + "/${name}.nix") { inherit pkgs; };
+      mkPkgs = system: import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
     in
     {
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./hosts/configuration.nix
-          home-manager.nixosModules.home-manager
-          clipboard-sync.nixosModules.default
-          {
-            nixpkgs.config.allowUnfree = true;
-          }
-        ];
+      nixosConfigurations = {
+        workstation = mkHost { hostName = "workstation"; };
+        # media = mkHost { hostName = "media"; };
+        # laptop = mkHost { hostName = "laptop"; };
       };
 
-      homeConfigurations.alex = home-manager.lib.homeManagerConfiguration {
-        pkgs = pkgs;
-        extraSpecialArgs = {
-          inherit inputs; inherit hy3; cfg = defaultCfg;
+      homeConfigurations = {
+        alex-darwin = home-manager.lib.homeManagerConfiguration {
+          pkgs = mkPkgs "aarch64-darwin";
+          extraSpecialArgs = { inherit inputs; hostName = "laptop"; };
+          modules = [ ./home/alex/default.nix ];
         };
-        modules = [
-          ./home/alex/default.nix
-        ];
       };
-
-      # nix develop ~/nixos-config#python
-      devShells."x86_64-linux"."python" = loadShell "python";
-
-
     };
 }
-
