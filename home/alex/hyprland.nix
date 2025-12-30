@@ -110,7 +110,7 @@
         exec-once = [
           "hyprpaper"
           "hyprsunset"
-          "waybar"
+          # "waybar"
           "mako"
           "hyprpolkitagent"
           "clipse --listen"

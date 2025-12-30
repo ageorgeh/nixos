@@ -2,13 +2,20 @@
   description = "NixOS config with NVIDIA + GNOME + Home Manager";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    # TODO remove this once unstable has 1.146.0 of aws sam
+    nixpkgs-sam-pr.url = "github:NixOS/nixpkgs/pull/459380/head";
     flake-utils.url = "github:numtide/flake-utils";
-    agenix.url = "github:ryantm/agenix";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # secrets
+    agenix = {
+      url = "github:ryantm/agenix";
+    };
+
+    # firefox addons
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -34,13 +41,31 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-utils, clipboard-sync, home-manager, nur, ... }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-sam-pr, flake-utils, clipboard-sync, home-manager, nur, ... }:
     let
-      mkPkgs = system: import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-        overlays = [ nur.overlays.default ];
-      };
+      mkPkgs = system:
+        let
+          pkgsPr = import nixpkgs-sam-pr {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        in
+        import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+          overlays = [
+            (final: prev: {
+              # pull the PR versions 
+              aws-sam-cli = pkgsPr.aws-sam-cli;
+              # PR also updates these; overriding them prevents mixed-version issues
+              python312Packages = prev.python312Packages.override (pyFinal: pyPrev: {
+                aws-lambda-builders = pkgsPr.python312Packages.aws-lambda-builders;
+                ruamel-yaml = pkgsPr.python312Packages.ruamel-yaml;
+              });
+            })
+            nur.overlays.default
+          ];
+        };
 
       mkHost = { hostName, system ? "x86_64-linux" }:
         let
