@@ -29,5 +29,19 @@
       startupNotify = true;
       comment = "An API client for developers";
     };
+    firefox-devedition = {
+      name = "Firefox Developer Edition";
+      genericName = "Web Browser";
+      comment = "Firefox Developer Edition (shared profile)";
+      exec = "firefox-devedition --no-remote -P default";
+      terminal = false;
+      categories = [ "Network" "WebBrowser" ];
+      startupNotify = true;
+      mimeType = [
+        "text/html"
+        "x-scheme-handler/http"
+        "x-scheme-handler/https"
+      ];
+    };
   };
 }

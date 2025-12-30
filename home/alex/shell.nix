@@ -10,6 +10,7 @@
     home-build = "home-manager switch --flake ~/nixos-config#alex";
     logout = "hyprctl dispatch exit";
     code = "code --use-angle=vulkan";
+    firefox-devedition = "firefox-devedition --no-remote -P default"; # Cant find the correct profile without this
     hypr-restart = "hyprctl reload";
     tofi = "tofi-drun | xargs -r hyprctl dispatch exec --"; # Plain tofi bricks the computer lmao
     tofi-clean = "rm -f ~/.cache/tofi-drun";

@@ -9,6 +9,10 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprland.url = "github:hyprwm/Hyprland";
 
     hyprland-plugins = {
@@ -30,11 +34,20 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-utils, clipboard-sync, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, flake-utils, clipboard-sync, home-manager, nur, ... }:
     let
+      mkPkgs = system: import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [ nur.overlays.default ];
+      };
+
       mkHost = { hostName, system ? "x86_64-linux" }:
+        let
+          pkgs = mkPkgs system;
+        in
         nixpkgs.lib.nixosSystem {
-          inherit system;
+          inherit system pkgs;
 
           specialArgs = { inherit inputs; };
 
@@ -45,16 +58,8 @@
             # shared integrations
             home-manager.nixosModules.home-manager
             clipboard-sync.nixosModules.default
-
-            # global nixpkgs settings
-            { nixpkgs.config.allowUnfree = true; }
           ];
         };
-
-      mkPkgs = system: import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
     in
     {
       nixosConfigurations = {

@@ -32,26 +32,6 @@ in
   # Vim
   programs.vim.enable = true;
 
-  programs.tofi = {
-    enable = true;
-    # https://github.com/philj56/tofi/blob/master/doc/config
-    settings = {
-      terminal = "kitty";
-      "matching-algorithm" = "fuzzy";
-      font = "~/.nix-profile/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFont-Regular.ttf";
-      width = "100%";
-      height = "100%";
-      border-width = "0";
-      outline-width = "0";
-      padding-left = "35%";
-      padding-top = "35%";
-      result-spacing = "25";
-      background-color = "#02061866"; # slate-950
-      text-color = "#004f3b"; # emerald-900
-    };
-  };
-
-
   # Yazi file manager
   # home/alex/dotfiles/config/yazi - for theme configuration
   programs.yazi = {
@@ -88,6 +68,32 @@ in
     ];
   };
 
+  # firefox
+  programs.firefox = {
+    enable = true;
+    profiles = {
+      default = {
+        id = 0;
+        name = "default";
+        isDefault = true;
+        settings = {
+          "ui.systemUsesDarkTheme" = 1;
+          "extensions.autoDisableScopes" = 0;
+        };
+        extensions = {
+          force = true;
+          packages = with pkgs.nur.repos.rycee.firefox-addons; [
+            ublock-origin
+            keepassxc-browser
+            darkreader
+            vimium
+            floccus
+          ];
+        };
+      };
+    };
+  };
+
 
   # Symlink dotfiles
   # Ensure that either you define files in dotfiles/config or define settings in the 
@@ -105,10 +111,13 @@ in
     };
 
     "scripts" = {
-        source = ./dotfiles/scripts;
-        outOfStoreSymlink = true;
-        recursive = true;
+      source = ./dotfiles/scripts;
+      outOfStoreSymlink = true;
+      recursive = true;
     };
+
+    ".local/share/fonts/NerdFonts/JetBrainsMono".source =
+      "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono";
   };
 
 

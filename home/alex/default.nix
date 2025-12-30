@@ -39,6 +39,7 @@
     wlogout # logout/lock GUI
 
     firefox-devedition
+    tofi
 
     thunderbird # Email client
 
@@ -129,6 +130,9 @@
     gopls # Go language server
 
   ];
+
+
+  home.sessionVariables = { };
 
   imports = [
     ./shell.nix

@@ -1,0 +1,84 @@
+#
+### tofi config
+### https://github.com/philj56/tofi/blob/master/doc/config
+#
+
+
+#
+### Fonts
+#
+    font=~/.local/share/fonts/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFont-Regular.ttf
+    hint-font=false
+
+height=100%
+width=100%
+
+outline-width=0
+border-width=0
+
+padding-left=35%
+padding-top=35%
+
+
+matching-algorithm=fuzzy
+result-spacing=25
+terminal=kitty
+
+#
+### Rose Pine (dark) — tofi theming
+#
+    background-color=#02061866
+
+    # Base text
+    text-color = #E0DEF4
+
+    # Prompt
+    prompt-color = #E0DEF4
+    prompt-background = #00000000
+    prompt-background-padding = 0
+    prompt-background-corner-radius = 0
+
+    # Placeholder
+    placeholder-color = #908CAA
+    placeholder-background = #00000000
+    placeholder-background-padding = 0
+    placeholder-background-corner-radius = 0
+
+    # Input
+    input-color = #E0DEF4
+    input-background = #00000000
+    input-background-padding = 0
+    input-background-corner-radius = 0
+
+    # Results
+    default-result-color = #E0DEF4
+    default-result-background = #00000000
+    default-result-background-padding = 0
+    default-result-background-corner-radius = 0
+
+    # Alternate results (optional; keep same or slightly different)
+    alternate-result-color = #E0DEF4
+    alternate-result-background = #00000000
+    alternate-result-background-padding = 0
+    alternate-result-background-corner-radius = 0
+
+    # Selection
+    selection-color = #EBBCBA
+    selection-background = #00000000
+    selection-background-padding = 0
+    selection-background-corner-radius = 0
+
+    # Match highlight within selection
+    selection-match-color = #9CCFD8
+
+
+
+
+
+#
+### Behaviour
+#
+    # Assume input is plain ASCII, and disable some Unicode handling
+    # functions. This is faster, but means e.g. a search for "e" will not
+    # match "é".
+    ascii-input = true 
