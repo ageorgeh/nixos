@@ -33,7 +33,7 @@
       name = "Firefox Developer Edition";
       genericName = "Web Browser";
       comment = "Firefox Developer Edition (shared profile)";
-      exec = "firefox-devedition --no-remote -P default";
+      exec = "firefox-devedition -P dev";
       terminal = false;
       categories = [ "Network" "WebBrowser" ];
       startupNotify = true;

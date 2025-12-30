@@ -60,7 +60,7 @@ func main() {
 	}
 
 	firefoxDev := AppOptions{
-		app: "firefox-devedition --no-remote -P default",
+		app: "firefox-devedition -P dev",
 	}
 	obsidian := AppOptions{
 		app:   "obsidian",

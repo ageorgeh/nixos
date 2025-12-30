@@ -21,35 +21,9 @@
       name = "Papirus-Dark";
     };
     font = {
-      name = "Sans";
+      name = "JetBrainsMono";
       size = 11;
     };
-
-
-    # enable = true;
-
-    # theme = {
-    #   name = "rose-pine";
-    #   package = pkgs.rose-pine-gtk-theme;
-    # };
-
-    # # iconTheme = {
-    # #   name = "rose-pine"; # or any icon theme you prefer
-    # #   package = pkgs.rose-pine-icon-theme;
-    # # };
-
-    # gtk3.extraConfig = {
-    #   gtk-application-prefer-dark-theme = 0;
-    # };
-
-    # gtk4.extraConfig = {
-    #   gtk-application-prefer-dark-theme = 0;
-    # };
-
-    # font = {
-    #   name = "JetBrainsMono";
-    #   size = 11;
-    # };
   };
 
   home.file."Pictures/wallpapers" = {

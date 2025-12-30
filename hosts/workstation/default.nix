@@ -39,6 +39,14 @@
   services.displayManager.defaultSession = "hyprland";
   services.displayManager.sddm.autoLogin.enable = false;
 
+  services.gvfs.enable = true;
+  services.dbus.enable = true;
+  services.samba.enable = true;
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+  };
+
   # security
   security.pam.services.greetd.enableGnomeKeyring = true;
   security.pam.services.hyprland.enableGnomeKeyring = true;
@@ -112,6 +120,7 @@
     nvidia-vaapi-driver
     clipse # Clipboard manager - not working right now
     wl-clipboard # Used by clipse
+    wsdd
 
     # Compilers - remove??
     cmake

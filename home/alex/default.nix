@@ -23,7 +23,7 @@
     xfce.thunar
     xfce.tumbler
     xfce.thunar-volman
-    gvfs
+
     mako # Notification daemon
     libnotify
     hyprpolkitagent # Auth agent
@@ -40,7 +40,6 @@
 
     firefox-devedition
     tofi
-    # rose-pine-gtk-theme
 
     thunderbird # Email client
 
