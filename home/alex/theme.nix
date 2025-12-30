@@ -10,10 +10,11 @@
 
 
   gtk = {
+
     enable = true;
     theme = {
-      package = pkgs.adw-gtk3;
-      name = "adw-gtk3-dark";
+      package = pkgs.rose-pine-gtk-theme;
+      name = "rose-pine";
     };
     iconTheme = {
       package = pkgs.papirus-icon-theme;
@@ -23,6 +24,32 @@
       name = "Sans";
       size = 11;
     };
+
+
+    # enable = true;
+
+    # theme = {
+    #   name = "rose-pine";
+    #   package = pkgs.rose-pine-gtk-theme;
+    # };
+
+    # # iconTheme = {
+    # #   name = "rose-pine"; # or any icon theme you prefer
+    # #   package = pkgs.rose-pine-icon-theme;
+    # # };
+
+    # gtk3.extraConfig = {
+    #   gtk-application-prefer-dark-theme = 0;
+    # };
+
+    # gtk4.extraConfig = {
+    #   gtk-application-prefer-dark-theme = 0;
+    # };
+
+    # font = {
+    #   name = "JetBrainsMono";
+    #   size = 11;
+    # };
   };
 
   home.file."Pictures/wallpapers" = {

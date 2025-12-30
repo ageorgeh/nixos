@@ -132,7 +132,7 @@
       flavor = "mocha";
       font = "Noto Sans";
       fontSize = "9";
-      background = "${../../home/alex/wallpapers/field_3440x1440.png}";
+      background = "${../../home/alex/wallpapers/min-linux.jpg}";
       loginBackground = true;
     })
   ];

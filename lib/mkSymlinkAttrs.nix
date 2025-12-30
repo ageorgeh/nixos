@@ -1,29 +1,17 @@
-# This function adds and interpretes outOfStoreSymlink option to home.file attribute sets.
-#
-# Usage:
-#   home.file = mkSymlinkAttrs {
-#     .foo = { source = "foo"; outOfStoreSymlink = true; recursive = true; };
-#     .bar = { source = "foo/bar"; outOfStoreSymlink = true; };
-#   };
 { pkgs, hm, context, runtimeRoot, ... }:
 
 let
   inherit (pkgs) lib;
 
-  # Swap a path inside the nix store with the same path in runtimeRoot
   runtimePath = path:
     let
-      rootStr = toString context; # context is the `self` passed to flake outputs
+      rootStr = toString context;
       pathStr = toString path;
     in
     assert lib.assertMsg (lib.hasPrefix rootStr pathStr)
       "${pathStr} does not start with ${rootStr}";
     runtimeRoot + lib.removePrefix rootStr pathStr;
 
-  # Make outOfStoreSymlink against runtimeRoot. This replicates
-  # config.lib.file.mkOutOfStoreSymlink as_mkOutOfStoreSymlink and wraps it to
-  # replace the target path in the nix store with the original target path
-  # inside runtimeRoot. This is necessary because flakes live in the nix store.
   mkOutOfStoreSymlink =
     let
       _mkOutOfStoreSymlink = path:
@@ -31,7 +19,9 @@ let
           pathStr = toString path;
           name = hm.strings.storeFileName (baseNameOf pathStr);
         in
-        pkgs.runCommandLocal name { } ''ln -s ${lib.strings.escapeShellArg pathStr} $out'';
+        pkgs.runCommandLocal name { } ''
+          ln -s ${lib.strings.escapeShellArg pathStr} $out
+        '';
     in
     file: _mkOutOfStoreSymlink (runtimePath file);
 
@@ -46,23 +36,42 @@ let
         (lib.filesystem.listFilesRecursive path)
     );
 
-  # Remove custom attributes from attribute set.
+  # Recursively make *regular* symlinks (store paths are fine as-is).
+  mkRecursiveSymlink = path: link:
+    builtins.listToAttrs (
+      map
+        (file:
+          let
+            suffix = builtins.unsafeDiscardStringContext
+              (lib.removePrefix (toString path) (toString file));
+          in
+          {
+            name = link + suffix;
+            value = { source = file; };
+          })
+        (lib.filesystem.listFilesRecursive path)
+    );
+
   rmopts = attrs: builtins.removeAttrs attrs [ "source" "recursive" "outOfStoreSymlink" ];
 
 in
-fileAttrs: lib.attrsets.concatMapAttrs
-  (
-    name: value:
-    # Make outOfStoreSymlinks
-    if value.outOfStoreSymlink or false
-    then
-      if value.recursive or false
-      then
-        lib.attrsets.mapAttrs
-          (_: attrs: attrs // rmopts value)
-          (mkRecursiveOutOfStoreSymlink value.source name)
-      else { "${name}" = { source = mkOutOfStoreSymlink value.source; } // rmopts value; }
-    # Handle all other cases as usual
-    else { "${name}" = value; }
+fileAttrs:
+lib.attrsets.concatMapAttrs
+  (name: value:
+  let
+    recursive = value.recursive or false;
+    oos = value.outOfStoreSymlink or false;
+  in
+  if recursive then
+    if oos then
+      lib.attrsets.mapAttrs (_: attrs: attrs // rmopts value)
+        (mkRecursiveOutOfStoreSymlink value.source name)
+    else
+      lib.attrsets.mapAttrs (_: attrs: attrs // rmopts value)
+        (mkRecursiveSymlink value.source name)
+  else if oos then
+    { "${name}" = { source = mkOutOfStoreSymlink value.source; } // rmopts value; }
+  else
+    { "${name}" = value; }
   )
   fileAttrs

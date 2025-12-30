@@ -40,6 +40,7 @@
 
     firefox-devedition
     tofi
+    # rose-pine-gtk-theme
 
     thunderbird # Email client
 
