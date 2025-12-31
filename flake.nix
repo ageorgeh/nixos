@@ -5,11 +5,27 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     # TODO remove this once unstable has 1.146.0 of aws sam
     nixpkgs-sam-pr.url = "github:NixOS/nixpkgs/pull/459380/head";
-    flake-utils.url = "github:numtide/flake-utils";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # hyprland
+    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
+    hy3 = {
+      url = "github:outfoxxed/hy3";
+      inputs.hyprland.follows = "hyprland";
+    };
+    rose-pine-hyprcursor = {
+      url = "github:ndom91/rose-pine-hyprcursor";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.hyprlang.follows = "hyprland/hyprlang";
+    };
+
     # secrets
     agenix = {
       url = "github:ryantm/agenix";
@@ -20,40 +36,35 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "github:hyprwm/Hyprland";
-
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
-    };
-
-    hy3 = {
-      url = "github:outfoxxed/hy3";
-      inputs.hyprland.follows = "hyprland";
-    };
 
     clipboard-sync.url = "github:dnut/clipboard-sync";
-
-    rose-pine-hyprcursor = {
-      url = "github:ndom91/rose-pine-hyprcursor";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.hyprlang.follows = "hyprland/hyprlang";
-    };
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-sam-pr, flake-utils, clipboard-sync, home-manager, nur, ... }:
+  outputs =
+    inputs@{
+      nixpkgs,
+      clipboard-sync,
+      home-manager,
+      ...
+    }:
     let
       overlays = import ./overlays/default.nix {
         inherit inputs;
       };
 
-      mkPkgs = system:
+      mkPkgs =
+        system:
         import nixpkgs {
           inherit system overlays;
           config.allowUnfree = true;
         };
 
-      mkHost = { hostName, system ? "x86_64-linux", wayland ? false }:
+      mkHost =
+        {
+          hostName,
+          system ? "x86_64-linux",
+          wayland ? false,
+        }:
         let
           pkgs = mkPkgs system;
         in
@@ -69,8 +80,7 @@
             # shared integrations
             home-manager.nixosModules.home-manager
           ]
-          ++ nixpkgs.lib.optionals wayland
-            [ clipboard-sync.nixosModules.default ];
+          ++ nixpkgs.lib.optionals wayland [ clipboard-sync.nixosModules.default ];
         };
     in
     {
@@ -86,7 +96,10 @@
       homeConfigurations = {
         alex-darwin = home-manager.lib.homeManagerConfiguration {
           pkgs = mkPkgs "aarch64-darwin";
-          extraSpecialArgs = { inherit inputs; hostName = "laptop"; };
+          extraSpecialArgs = {
+            inherit inputs;
+            hostName = "laptop";
+          };
           modules = [ ./home/alex/default.nix ];
         };
       };

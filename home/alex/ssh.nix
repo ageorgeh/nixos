@@ -1,5 +1,8 @@
-{ config, pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 
+let
+  p = import ../../lib/paths.nix { inherit config inputs; };
+in
 {
   programs.ssh = {
     enable = true;
@@ -23,7 +26,7 @@
       "github.com" = {
         hostname = "github.com";
         user = "git";
-        identityFile = "~/.ssh/github_id";
+        identityFile = p.keys.github;
         identitiesOnly = true;
       };
 

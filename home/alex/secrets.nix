@@ -3,6 +3,7 @@
 let
   ssh = config.home.homeDirectory + "/.ssh";
   secrets = inputs.self + "/secrets";
+  p = import ../../lib/paths.nix { inherit config inputs; };
 in
 
 {
@@ -13,7 +14,7 @@ in
 
   age.secrets."github-ssh-key" = {
     file = secrets + "/github-ssh-key.age";
-    path = "${ssh}/github_id";
+    path = p.keys.github;
     mode = "600";
   };
 }

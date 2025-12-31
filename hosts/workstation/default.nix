@@ -1,4 +1,8 @@
-{ config, inputs, pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  ...
+}:
 
 {
   # imports
@@ -8,15 +12,22 @@
     ./dyn-libs.nix
     ./user.nix
 
-
     ../../modules/nixos/hardware/nvidia.nix
   ];
 
-
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-    substituters = [ "https://cache.nixos.org/" "https://hyprland.cachix.org" ];
-    trusted-substituters = [ "https://cache.nixos.org/" "https://hyprland.cachix.org" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    substituters = [
+      "https://cache.nixos.org/"
+      "https://hyprland.cachix.org"
+    ];
+    trusted-substituters = [
+      "https://cache.nixos.org/"
+      "https://hyprland.cachix.org"
+    ];
     trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
 
@@ -25,16 +36,22 @@
   boot.loader.systemd-boot.configurationLimit = 3;
   boot.loader.efi.canTouchEfiVariables = true;
 
-
-  # services 
+  # services
   services.gnome.gnome-keyring.enable = true;
-  services.clipboard-sync.enable = true; # https://github.com/dnut/clipboard-sync  
+  services.clipboard-sync.enable = true; # https://github.com/dnut/clipboard-sync
 
-  services.xserver.enable = true;
+  services.xserver = {
+    enable = true;
+    xkb = {
+      layout = "au";
+      variant = "";
+    };
+  };
+
   services.displayManager = {
     sddm = {
       enable = true;
-      theme = "catppuccin-mocha";
+      theme = "catppuccin-mocha-peach";
       package = pkgs.kdePackages.sddm;
     };
     defaultSession = "hyprland";
@@ -51,7 +68,6 @@
   };
 
   # security
-  security.pam.services.greetd.enableGnomeKeyring = true;
   security.pam.services.hyprland.enableGnomeKeyring = true;
   security.pam.services.sddm.enableGnomeKeyring = true;
 
@@ -64,11 +80,16 @@
     "2001:4860:4860::8844"
   ];
   networking.hosts = {
-    "127.0.0.1" = [ "localhost" "development.roshandhillonart.com" ];
+    "127.0.0.1" = [
+      "localhost"
+      "development.roshandhillonart.com"
+    ];
   };
-  networking.firewall.allowedTCPPorts = [ 5174 8000 ];
+  networking.firewall.allowedTCPPorts = [
+    5174
+    8000
+  ];
   networking.interfaces.enp3s0.mtu = 1480;
-
 
   time.timeZone = "Australia/Melbourne";
 
@@ -89,12 +110,8 @@
   programs.hyprland = {
     enable = true;
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.default;
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-  };
-
-  services.xserver.xkb = {
-    layout = "au";
-    variant = "";
+    portalPackage =
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
   services.printing.enable = true;
@@ -113,7 +130,6 @@
     enable = true;
     package = pkgs.docker_28;
   };
-
 
   environment.systemPackages = with pkgs; [
     git
@@ -144,27 +160,23 @@
     # https://github.com/catppuccin/sddm?tab=readme-ov-file#nixos
     (catppuccin-sddm.override {
       flavor = "mocha";
+      accent = "peach";
       font = "Noto Sans";
       fontSize = "9";
       background = "${../../home/alex/wallpapers/min-linux.jpg}";
-      loginBackground = true;
+      loginBackground = false;
     })
   ];
 
-
-
   environment.sessionVariables = {
-    # The following is good for vscode to pick up the correct keychain 
+    # Required for vscode to pick up the correct keychain
     XDG_CURRENT_DESKTOP = "GNOME";
     DESKTOP_SESSION = "gnome";
   };
 
-
-  environment.etc."pkgconfig/openblas.pc".source =
-    "${pkgs.openblas.dev}/lib/pkgconfig/openblas64.pc";
+  environment.etc."pkgconfig/openblas.pc".source = "${pkgs.openblas.dev}/lib/pkgconfig/openblas64.pc";
 
   environment.variables = { };
-
 
   environment.etc."fuse.conf".text = ''
     user_allow_other
