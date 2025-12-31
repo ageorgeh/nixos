@@ -13,7 +13,7 @@ in
 
   age.secrets."github-ssh-key" = {
     file = secrets + "/github-ssh-key.age";
-    path = "${ssh}/id_github";
+    path = "${ssh}/github_id";
     mode = "600";
   };
 }
