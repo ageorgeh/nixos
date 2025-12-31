@@ -2,7 +2,7 @@
 
 let
   ssh = config.home.homeDirectory + "/.ssh";
-  secrets = inputs.self + ../../secrets;
+  secrets = inputs.self + "/secrets";
 in
 
 {
