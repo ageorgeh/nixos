@@ -3,15 +3,22 @@
 {
   programs.ssh = {
     enable = true;
-
-    forwardAgent = false;
-    serverAliveInterval = 60;
-    hashKnownHosts = true;
-    controlMaster = "auto";
-    controlPath = "~/.ssh/master-%r@%h:%p";
+    enableDefaultConfig = false; # TODO remove this when it becomes deprecated
 
     matchBlocks = {
-
+      "*" = {
+        forwardAgent = false;
+        addKeysToAgent = "yes";
+        identitiesOnly = true;
+        compression = false;
+        serverAliveInterval = 0;
+        serverAliveCountMax = 3;
+        hashKnownHosts = false;
+        userKnownHostsFile = "~/.ssh/known_hosts";
+        controlMaster = "no";
+        controlPath = "~/.ssh/master-%r@%n:%p";
+        controlPersist = "no";
+      };
 
       "github.com" = {
         hostname = "github.com";
@@ -26,11 +33,6 @@
         identityFile = "~/.ssh/media_server_id";
       };
     };
-
-    extraConfig = ''
-      AddKeysToAgent yes
-      IdentitiesOnly yes
-    '';
   };
 
   home.file.".ssh/config" = {

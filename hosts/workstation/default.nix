@@ -31,14 +31,17 @@
   services.clipboard-sync.enable = true; # https://github.com/dnut/clipboard-sync  
 
   services.xserver.enable = true;
-  services.displayManager.sddm = {
-    enable = true;
-    theme = "catppuccin-mocha";
-    package = pkgs.kdePackages.sddm;
+  services.displayManager = {
+    sddm = {
+      enable = true;
+      theme = "catppuccin-mocha";
+      package = pkgs.kdePackages.sddm;
+    };
+    defaultSession = "hyprland";
+    autoLogin.enable = false;
   };
-  services.displayManager.defaultSession = "hyprland";
-  services.displayManager.sddm.autoLogin.enable = false;
 
+  # network discovery
   services.gvfs.enable = true;
   services.dbus.enable = true;
   services.samba.enable = true;
@@ -85,8 +88,8 @@
   # programs
   programs.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.default;
-    portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
   services.xserver.xkb = {
@@ -96,7 +99,7 @@
 
   services.printing.enable = true;
 
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -136,7 +139,9 @@
     libjpeg
     libffi
 
-    inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+    inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
+
+    # https://github.com/catppuccin/sddm?tab=readme-ov-file#nixos
     (catppuccin-sddm.override {
       flavor = "mocha";
       font = "Noto Sans";

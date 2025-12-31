@@ -43,31 +43,17 @@
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-sam-pr, flake-utils, clipboard-sync, home-manager, nur, ... }:
     let
+      overlays = import ./overlays/default.nix {
+        inherit inputs;
+      };
+
       mkPkgs = system:
-        let
-          pkgsPr = import nixpkgs-sam-pr {
-            inherit system;
-            config.allowUnfree = true;
-          };
-        in
         import nixpkgs {
-          inherit system;
+          inherit system overlays;
           config.allowUnfree = true;
-          overlays = [
-            (final: prev: {
-              # pull the PR versions 
-              aws-sam-cli = pkgsPr.aws-sam-cli;
-              # PR also updates these; overriding them prevents mixed-version issues
-              python312Packages = prev.python312Packages.override (pyFinal: pyPrev: {
-                aws-lambda-builders = pkgsPr.python312Packages.aws-lambda-builders;
-                ruamel-yaml = pkgsPr.python312Packages.ruamel-yaml;
-              });
-            })
-            nur.overlays.default
-          ];
         };
 
-      mkHost = { hostName, system ? "x86_64-linux" }:
+      mkHost = { hostName, system ? "x86_64-linux", wayland ? false }:
         let
           pkgs = mkPkgs system;
         in
@@ -82,13 +68,17 @@
 
             # shared integrations
             home-manager.nixosModules.home-manager
-            clipboard-sync.nixosModules.default
-          ];
+          ]
+          ++ nixpkgs.lib.optionals wayland
+            [ clipboard-sync.nixosModules.default ];
         };
     in
     {
       nixosConfigurations = {
-        workstation = mkHost { hostName = "workstation"; };
+        workstation = mkHost {
+          hostName = "workstation";
+          wayland = true;
+        };
         # media = mkHost { hostName = "media"; };
         # laptop = mkHost { hostName = "laptop"; };
       };

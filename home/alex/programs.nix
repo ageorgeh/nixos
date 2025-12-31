@@ -15,8 +15,12 @@ in
   # Git
   programs.git = {
     enable = true;
-    userName = "Alexander Hornung";
-    userEmail = "aghornung@gmail.com";
+    settings = {
+      user = {
+        email = "aghornung@gmail.com";
+        name = "Alexander Hornung";
+      };
+    };
   };
 
   # KeepassXC

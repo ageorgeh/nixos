@@ -9,15 +9,11 @@
     enable = true;
     package = null; # use the system-installed Hyprland
     portalPackage = null;
-    # package = inputs.hyprland.packages.${pkgs.system}.default;
-    # portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
 
     systemd.variables = [ "--all" ]; # Fixes missing PATH in services
 
     plugins = [
-      # inputs.hyprland-plugins.packages.${pkgs.system}.hyprtrails
-      # inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprbars
-      inputs.hy3.packages.x86_64-linux.hy3
+      inputs.hy3.packages.${pkgs.stdenv.hostPlatform.system}.hy3
     ];
 
     extraConfig = ''
