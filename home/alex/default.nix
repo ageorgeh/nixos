@@ -1,6 +1,22 @@
 { config, inputs, pkgs, hy3, cfg, ... }:
 
 {
+  imports = [
+    inputs.agenix.homeManagerModules.default
+
+    ./shell.nix
+    ./ssh.nix
+    ./secrets.nix
+    ./cloud.nix
+    ./programs.nix
+    ./hyprland.nix
+    ./theme.nix
+    ./filesystem.nix
+    ./desktop.nix
+    ./xdg.nix
+    ./systemd.nix
+  ];
+
   home.username = "alex";
   home.homeDirectory = "/home/alex";
   home.stateVersion = "24.11";
@@ -134,16 +150,5 @@
 
   home.sessionVariables = { };
 
-  imports = [
-    ./shell.nix
-    ./ssh.nix
-    ./cloud.nix
-    ./programs.nix
-    ./hyprland.nix
-    ./theme.nix
-    ./filesystem.nix
-    ./desktop.nix
-    ./xdg.nix
-    ./systemd.nix
-  ];
+
 }
