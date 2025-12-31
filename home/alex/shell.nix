@@ -24,7 +24,6 @@
   # Delete unreachable store paths: sudo nix-collect-garbage -d
   # Deduplicate the store: sudo nix store optimise
 
-
   programs.bash = {
     enable = true;
     initExtra = ''

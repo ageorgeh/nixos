@@ -1,1 +1,1 @@
-- make build precommit
+- make window opening script faster by opening everything in parallel

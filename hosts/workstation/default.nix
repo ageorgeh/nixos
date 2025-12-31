@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   pkgs,
   ...
@@ -40,6 +41,7 @@
   services.gnome.gnome-keyring.enable = true;
   services.clipboard-sync.enable = true; # https://github.com/dnut/clipboard-sync
 
+  # xserver + sddm used as it looks good and works with minimal config
   services.xserver = {
     enable = true;
     xkb = {
@@ -51,6 +53,7 @@
   services.displayManager = {
     sddm = {
       enable = true;
+      wayland.enable = false;
       theme = "catppuccin-mocha-peach";
       package = pkgs.kdePackages.sddm;
     };
