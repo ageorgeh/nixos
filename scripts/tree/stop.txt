@@ -1,0 +1,3 @@
+home/alex/dotfiles/config
+home/alex/dotfiles/scripts
+home/alex/wallpapers

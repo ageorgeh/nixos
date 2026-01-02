@@ -86,9 +86,12 @@
     dynamodb-local
     nosql-workbench
 
+    # cli tools
     libarchive # Unzipping etc bsdtar -xf Sue_Ellen_Francisco.zip
     zip # Easier zipping
-    ripgrep # Used by nvim plugs
+    ripgrep # faster grep - Used by nvim plugs
+    tree
+
     lynx # Used by nvim plugs
     lua51Packages.tiktoken_core # Used by copilot-chat nvim: https://github.com/CopilotC-Nvim/CopilotChat.nvim#optional-dependencies
     gnumake # Make

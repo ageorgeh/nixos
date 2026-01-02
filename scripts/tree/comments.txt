@@ -1,0 +1,28 @@
+home/alex/dotfiles/config: symlinked to ~/.config - config files
+home/alex/dotfiles/scripts: symlinked to ~/scripts - random scripts
+
+home/alex/default.nix:entrypoint
+home/alex/desktop.nix:xdg desktop entries
+home/alex/environment.nix:environment variables
+home/alex/filesystem.nix:home filesystem symlinks
+home/alex/hyprland.nix:hyprland config
+home/alex/packages.nix:list of packages
+home/alex/programs.nix:programs with options 
+home/alex/secrets.nix:age secret management
+# home/alex/shell.nix
+home/alex/ssh.nix:ssh config
+home/alex/systemd.nix:user daemons
+home/alex/theme.nix:gtk theme
+
+hosts/workstation/dyn-libs.nix:dynamic libraries unavailable to non native nix programs
+hosts/workstation/hardware/input.nix:keyboard mappings
+hosts/workstation/user.nix:home manager
+
+lib/mkSymlinkAttrs.nix:symlinking non store files
+lib/paths.nix:path constants
+
+overlays/aws-sam-pr.nix:replace the aws sam pkg to the updated one from a pr
+
+secrets/secrets.nix:service secret management
+
+shells:quick access dev shells
