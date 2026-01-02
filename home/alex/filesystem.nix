@@ -1,9 +1,4 @@
-# This file configures the user's directory structure using xdg.userDirs.
-# It ensures that standard XDG directories are properly set up and creates
-# custom directories for specific purposes.
-
 {
-  cfg,
   config,
   pkgs,
   inputs,
@@ -13,8 +8,9 @@
 let
   mkSymlinkAttrs = inputs.self.lib.mkSymlinkAttrs {
     inherit pkgs;
-    inherit (cfg) context runtimeRoot;
-    hm = config.lib; # same as: cfg.context.inputs.home-manager.lib.hm;
+    context = inputs.self;
+    runtimeRoot = inputs.self;
+    hm = config.lib; # same as: inputs.home-manager.lib.hm;
   };
 in
 {
