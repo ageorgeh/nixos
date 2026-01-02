@@ -38,6 +38,7 @@
     };
 
     clipboard-sync.url = "github:dnut/clipboard-sync";
+
   };
 
   outputs =
@@ -45,6 +46,7 @@
       nixpkgs,
       clipboard-sync,
       home-manager,
+      self,
       ...
     }:
     let
@@ -84,6 +86,10 @@
         };
     in
     {
+
+      # local
+      lib = import ./lib/default.nix { };
+
       nixosConfigurations = {
         workstation = mkHost {
           hostName = "workstation";

@@ -1,16 +1,8 @@
-{ config, pkgs, cfg, ... }:
+{
+  pkgs,
+  ...
+}:
 
-
-let
-  inherit (config.home) username homeDirectory;
-
-  mkSymlinkAttrs = import ../../lib/mkSymlinkAttrs.nix {
-    inherit pkgs;
-    inherit (cfg) context runtimeRoot;
-    hm = config.lib; # same as: cfg.context.inputs.home-manager.lib.hm;
-  };
-
-in
 {
   # Git
   programs.git = {
@@ -120,35 +112,4 @@ in
       };
     };
   };
-
-
-  # Symlink dotfiles
-  # Ensure that either you define files in dotfiles/config or define settings in the 
-  # 'home-manager' way like above
-  home.file = mkSymlinkAttrs {
-    ".config" = {
-      source = ./dotfiles/config;
-      outOfStoreSymlink = true;
-      recursive = true;
-    };
-
-    ".tmux.conf" = {
-      source = ./dotfiles/.tmux.conf;
-      outOfStoreSymlink = true;
-    };
-
-    "scripts" = {
-      source = ./dotfiles/scripts;
-      outOfStoreSymlink = true;
-      recursive = true;
-    };
-
-    ".local/share/fonts/NerdFonts/JetBrainsMono".source =
-      "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono";
-
-
-
-  };
-
-
 }

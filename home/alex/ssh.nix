@@ -1,7 +1,11 @@
-{ config, inputs, pkgs, ... }:
+{
+  config,
+  inputs,
+  ...
+}:
 
 let
-  p = import ../../lib/paths.nix { inherit config inputs; };
+  p = inputs.self.lib.paths { inherit config inputs; };
 in
 {
   programs.ssh = {

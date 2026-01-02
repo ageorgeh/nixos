@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # home.pointerCursor = {
@@ -8,9 +8,7 @@
   #   size = 24;
   # };
 
-
   gtk = {
-
     enable = true;
     theme = {
       package = pkgs.rose-pine-gtk-theme;
@@ -25,10 +23,4 @@
       size = 11;
     };
   };
-
-  home.file."Pictures/wallpapers" = {
-    recursive = true;
-    source = ./wallpapers;
-  };
-
 }

@@ -92,6 +92,7 @@
     5174
     8000
   ];
+  # nixos quirk with the ISP, higher or default mtu don't work
   networking.interfaces.enp3s0.mtu = 1480;
 
   time.timeZone = "Australia/Melbourne";
@@ -119,7 +120,9 @@
 
   services.printing.enable = true;
 
+  # Not required with pipewire
   services.pulseaudio.enable = false;
+  # rtkit (optional, recommended) allows Pipewire to use the realtime scheduler for increased performance.
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -136,8 +139,6 @@
 
   environment.systemPackages = with pkgs; [
     git
-    # TODO remove
-    home-manager # Needed before user installs so that packages can be fetched
     seahorse # GUI for managing stored keyring secrets
     nvidia-vaapi-driver
     clipse # Clipboard manager - not working right now
