@@ -13,7 +13,7 @@ let
     BROWSER = "firefox";
     NIXOS_OZONE_WL = "1";
 
-    # NIXPKGS_ALLOW_UNFREE = "1";
+    NIXPKGS_ALLOW_UNFREE = "1";
     # POMO = homeDir + "/.config/pomo";
     # PNPM_HOME = homeDir + "/.local/share/pnpm";
 

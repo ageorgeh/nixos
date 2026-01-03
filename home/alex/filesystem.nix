@@ -9,7 +9,7 @@ let
   mkSymlinkAttrs = inputs.self.lib.mkSymlinkAttrs {
     inherit pkgs;
     context = inputs.self;
-    runtimeRoot = inputs.self;
+    runtimeRoot = if pkgs.stdenv.isDarwin then "/Users/alex" else "/home/alex" + "/nixos-config";
     hm = config.lib; # same as: inputs.home-manager.lib.hm;
   };
 in
@@ -25,10 +25,7 @@ in
     };
   };
 
-  # Symlink dotfiles
-  # Ensure that either you define files in dotfiles/config or define settings in the
-  # 'home-manager' way like above
-  home.file = mkSymlinkAttrs {
+  home.file = {
     "Pictures/wallpapers" = {
       recursive = true;
       source = ./wallpapers;
@@ -48,6 +45,10 @@ in
         sso_registration_scopes = sso:account:access
       '';
     };
+    ".local/share/fonts/NerdFonts/JetBrainsMono".source =
+      "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono";
+  }
+  // (mkSymlinkAttrs {
     ".config" = {
       source = ./dotfiles/config;
       outOfStoreSymlink = true;
@@ -64,8 +65,5 @@ in
       outOfStoreSymlink = true;
       recursive = true;
     };
-
-    ".local/share/fonts/NerdFonts/JetBrainsMono".source =
-      "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono";
-  };
+  });
 }
