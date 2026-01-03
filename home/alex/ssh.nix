@@ -8,6 +8,8 @@ let
   p = inputs.self.lib.paths { inherit config inputs; };
 in
 {
+  services.ssh-agent.enable = true;
+
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false; # TODO remove this when it becomes deprecated
@@ -40,12 +42,5 @@ in
         identityFile = "~/.ssh/media_server_id";
       };
     };
-  };
-
-  home.file.".ssh/config" = {
-    target = ".ssh/config_source";
-    onChange = ''
-      install -m 400 ~/.ssh/config_source ~/.ssh/config
-    '';
   };
 }

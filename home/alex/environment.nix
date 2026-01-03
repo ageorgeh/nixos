@@ -57,7 +57,9 @@ in
 {
   home.sessionVariables = env;
 
-  wayland.windowManager.hyprland.settings.env = lib.mapAttrsToList (k: v: "${k},${v}") hyprEnv;
+  wayland.windowManager.hyprland.settings.env = lib.mkIf pkgs.stdenv.isLinux (
+    lib.mapAttrsToList (k: v: "${k},${v}") hyprEnv
+  );
 
   # aliases, prompt, functions...
   programs.bash.initExtra = '''';
