@@ -6,12 +6,12 @@
 }:
 let
   homeDir = config.home.homeDirectory;
+  isLinux = pkgs.stdenv.isLinux;
 
   env = {
     EDITOR = "nvim";
     TERMINAL = "kitty";
     BROWSER = "firefox";
-    NIXOS_OZONE_WL = "1";
 
     NIXPKGS_ALLOW_UNFREE = "1";
     # POMO = homeDir + "/.config/pomo";
@@ -20,6 +20,10 @@ let
     PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
     PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
 
+  };
+
+  envLinux = {
+    NIXOS_OZONE_WL = "1";
   };
 
   hyprEnv = {
@@ -55,9 +59,9 @@ let
 
 in
 {
-  home.sessionVariables = env;
+  home.sessionVariables = env // lib.optionalAttrs isLinux envLinux;
 
-  wayland.windowManager.hyprland.settings.env = lib.mkIf pkgs.stdenv.isLinux (
+  wayland.windowManager.hyprland.settings.env = lib.mkIf isLinux (
     lib.mapAttrsToList (k: v: "${k},${v}") hyprEnv
   );
 

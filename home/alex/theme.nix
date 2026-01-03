@@ -1,14 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
-  # home.pointerCursor = {
-  #   gtk.enable = true;
-  #   package = pkgs.bibata-cursors;
-  #   name = "Bibata-Modern-Classic";
-  #   size = 24;
-  # };
-
-  gtk = {
+  gtk = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
     theme = {
       package = pkgs.rose-pine-gtk-theme;

@@ -20,12 +20,11 @@ in
     ./shell.nix # Shell aliases
     ./environment.nix # Env variables
 
+    ./filesystem.nix # home files
+
+    ./hyprland.nix # Hyprland config
     ./theme.nix # gtk theme config
 
-    ./filesystem.nix # home files
-  ]
-  ++ lib.optionals isLinux [
-    ./hyprland.nix # Hyprland config
     ./desktop.nix # xdg desktop entries
     ./systemd.nix # User daemons
   ];

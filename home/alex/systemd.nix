@@ -1,7 +1,12 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
-  systemd.user.services = {
+  systemd.user.services = lib.mkIf pkgs.stdenv.isLinux {
     # Google drive
     rclone-gdrive = {
       Unit = {

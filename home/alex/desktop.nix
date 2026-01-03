@@ -1,7 +1,7 @@
-{ ... }:
+{ lib, pkgs, ... }:
 
 {
-  xdg.desktopEntries = {
+  xdg.desktopEntries = lib.mkIf pkgs.stdenv.isLinux {
     hyprpicker = {
       name = "Hyprpicker";
       genericName = "Color Picker";

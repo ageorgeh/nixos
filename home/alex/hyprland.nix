@@ -1,13 +1,14 @@
 {
   inputs,
   pkgs,
+  lib,
   ...
 }:
 
 {
 
   # Hyprland
-  wayland.windowManager.hyprland = {
+  wayland.windowManager.hyprland = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
     package = null; # use the system-installed Hyprland
     portalPackage = null;

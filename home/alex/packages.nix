@@ -6,16 +6,10 @@ in
   home.packages =
     with pkgs;
     [
-      # Google drive
-      rclone
-      fuse
 
       # Waybar
       nerd-fonts.jetbrains-mono
-      inotify-tools
       file
-
-      tidal-hifi
 
       timewarrior
 
@@ -57,16 +51,10 @@ in
       go # Go programming language
 
       discord # Discord - maybe in the future change to a better client
-      hyprpicker # Color picker
-      hyprshot # Screenshot tool
       # jetbrains.datagrip # Database client
       insomnia # API client
       yaak # API client
       drawio # Drawio desktop
-
-      # Resource monitoring
-      btop # Better top
-      nvtopPackages.nvidia # Nvidia top
 
       # Dynamo local
       dynamodb-local
@@ -115,9 +103,19 @@ in
     ++ lib.optionals isLinux (
       with pkgs;
       [
+        # Google drive
+        rclone
+        fuse
+
+        # Resource monitoring
+        btop # Better top
+        nvtopPackages.nvidia # Nvidia top
+
         # Hyprland
         hyprsunset
         hyprpaper
+        hyprpicker # Color picker
+        hyprshot # Screenshot tool
 
         # File system tools
         xfce.thunar # File manager
@@ -126,6 +124,8 @@ in
 
         mako # Notification daemon
         libnotify
+        inotify-tools
+
         hyprpolkitagent # Auth agent
 
         tofi # App selector
@@ -134,6 +134,8 @@ in
         wdisplays # display settings
         pavucontrol # volume manager
         wlogout # logout/lock GUI
+
+        tidal-hifi
       ]
     );
 }

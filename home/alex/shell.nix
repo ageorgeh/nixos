@@ -10,10 +10,7 @@ in
 
   home.shellAliases = {
     home-build = "home-manager switch --flake ~/nixos-config#alex";
-    code = "code --use-angle=vulkan";
     "firefox-devedition" = "firefox-devedition -P dev"; # Cant find the correct profile without this
-    tofi = "tofi-drun | xargs -r hyprctl dispatch exec --"; # Plain tofi bricks the computer lmao
-    tofi-clean = "rm -f ~/.cache/tofi-drun";
     tmux-source = "tmux source-file ~/.tmux.conf";
     nvim = "~/scripts/nvim-listen.sh";
   }
@@ -25,6 +22,12 @@ in
     # hyprland
     logout = "hyprctl dispatch exit";
     hypr-restart = "hyprctl reload";
+
+    tofi = "tofi-drun | xargs -r hyprctl dispatch exec --"; # Plain tofi bricks the computer lmao
+    tofi-clean = "rm -f ~/.cache/tofi-drun";
+
+    # wayland
+    code = "code --use-angle=vulkan";
   }
   // lib.optionalAttrs isDarwin {
 
