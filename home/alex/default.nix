@@ -1,9 +1,12 @@
 {
   inputs,
   pkgs,
+  lib,
   ...
 }:
-
+let
+  isLinux = pkgs.stdenv.isLinux;
+in
 {
   imports = [
     inputs.agenix.homeManagerModules.default
@@ -17,13 +20,13 @@
     ./shell.nix # Shell aliases
     ./environment.nix # Env variables
 
-    ./hyprland.nix # Hyprland config
-
     ./theme.nix # gtk theme config
 
     ./filesystem.nix # home files
-    ./desktop.nix # Desktop entries
-
+  ]
+  ++ lib.optionals isLinux [
+    ./hyprland.nix # Hyprland config
+    ./desktop.nix # xdg desktop entries
     ./systemd.nix # User daemons
   ];
 

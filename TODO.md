@@ -1,1 +1,2 @@
 - make window opening script faster by opening everything in parallel
+- make dynamodb local a systemd service and connect to it through the nosql workbench rather than using its internal dynamodb-local

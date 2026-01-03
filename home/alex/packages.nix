@@ -14,30 +14,17 @@ in
       nerd-fonts.jetbrains-mono
       inotify-tools
       file
-      tidal-hifi
-      # File system tools
-      xfce.thunar
-      xfce.tumbler
-      xfce.thunar-volman
 
-      mako # Notification daemon
-      libnotify
-      hyprpolkitagent # Auth agent
+      tidal-hifi
+
       timewarrior
 
-      # Settings
-      wdisplays # display settings
-      pavucontrol # volume manager
-      wlogout # logout/lock GUI
-
       firefox-devedition
-      tofi
-
       thunderbird # Email client
 
-      # ###########
+      #
       # Development
-      # ###########
+      #
       jq
       bun
       pnpm
@@ -131,6 +118,22 @@ in
         # Hyprland
         hyprsunset
         hyprpaper
+
+        # File system tools
+        xfce.thunar # File manager
+        xfce.tumbler # Thumbnailing service
+        xfce.thunar-volman # Volume management
+
+        mako # Notification daemon
+        libnotify
+        hyprpolkitagent # Auth agent
+
+        tofi # App selector
+
+        # Settings
+        wdisplays # display settings
+        pavucontrol # volume manager
+        wlogout # logout/lock GUI
       ]
     );
 }

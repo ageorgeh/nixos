@@ -1,4 +1,5 @@
 {
+  lib,
   config,
   pkgs,
   inputs,
@@ -12,6 +13,7 @@ let
     runtimeRoot = if pkgs.stdenv.isDarwin then "/Users/alex" else "/home/alex" + "/nixos-config";
     hm = config.lib; # same as: inputs.home-manager.lib.hm;
   };
+  isDarwin = pkgs.stdenv.isDarwin;
 in
 {
   # Directory structure
@@ -45,8 +47,20 @@ in
         sso_registration_scopes = sso:account:access
       '';
     };
+  }
+  // lib.optionalAttrs (!isDarwin) {
+    # Linux-style font path
     ".local/share/fonts/NerdFonts/JetBrainsMono".source =
       "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono";
+  }
+  // lib.optionalAttrs isDarwin {
+    # macOS standard font path
+    "Library/Fonts/JetBrainsMono Nerd Font.ttf".source =
+      "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMonoNerdFont-Regular.ttf";
+    # Also include for tofi
+    ".local/share/fonts/NerdFonts/JetBrainsMono".source =
+      "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono";
+
   }
   // (mkSymlinkAttrs {
     ".config" = {
