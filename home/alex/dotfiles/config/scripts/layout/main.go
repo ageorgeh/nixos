@@ -22,17 +22,6 @@ var (
 	eventsOut io.Writer = flag.CommandLine.Output()
 )
 
-type ev struct {
-	event.DefaultEventHandler
-	onOpen func(w event.OpenWindow)
-}
-
-func (e *ev) OpenWindow(w event.OpenWindow) {
-	if e.onOpen != nil {
-		e.onOpen(w)
-	}
-}
-
 func must[T any](input T, err error) T {
 	if err != nil {
 		panic(err)
@@ -46,21 +35,23 @@ func main() {
 
 	nixosCode := AppOptions{
 		app:          "code --use-angle=vulkan ~/nixos-config",
-		title:        "nixos-config",
+		title:        ".*nixos-config.*",
 		initialTitle: "Visual Studio Code",
 	}
 	cmsCode := AppOptions{
 		app:          "code --use-angle=vulkan ~/code/cmsWrapper/cms",
-		title:        "cms",
+		title:        ".*cms.*",
 		initialTitle: "Visual Studio Code",
 	}
 
 	kitty := AppOptions{
-		app: "kitty",
+		app:   "kitty",
+		class: "kitty",
 	}
 
 	firefoxDev := AppOptions{
-		app: "firefox-devedition -P dev",
+		app:   "firefox-devedition -P dev",
+		class: "firefox-devedition",
 	}
 	obsidian := AppOptions{
 		app:   "obsidian",
@@ -72,23 +63,31 @@ func main() {
 		title:        "NoSQL Workbench",
 	}
 	firefox := AppOptions{
-		app: "firefox",
+		app:   "firefox",
+		class: "firefox",
 	}
 	thunar := AppOptions{
-		app: "thunar",
+		app:   "thunar",
+		class: "thunar",
 	}
 	keepassxc := AppOptions{
-		app: "keepassxc",
+		app:   "keepassxc",
+		class: "org.keepassxc.KeePassXC",
 	}
-	tidalHifi := AppOptions{
-		app: "tidal-hifi",
-	}
+	// tidalHifi := AppOptions{
+	// 	app:   "tidal-hifi",
+	// 	class: "tidal-hifi",
+	// }
 
 	apps := map[int][]AppOptions{
 		0: {nixosCode, kitty, cmsCode},
 		1: {firefoxDev, obsidian, noSqlWorkbench,
 			firefox,
-			thunar, keepassxc, tidalHifi},
+
+			thunar,
+			keepassxc,
+			// tidalHifi,
+		},
 	}
 
 	launchApps(apps)
@@ -99,25 +98,42 @@ func main() {
 		Monitors: []int{0, 1},
 	})
 
-	// // Float all windows
+	// unfloat all windows
+	processAllWindows(AllWindowsOptions{
+		Command:  "settiled",
+		Monitors: []int{0, 1},
+	})
+
+	moveWindows(apps)
+	// return
+
+	// Float all windows
 	processAllWindows(AllWindowsOptions{
 		Command:  "setfloating",
 		Monitors: []int{0, 1},
 	})
 
-	// // Unfloat windows in order
+	// Unfloat windows in order
 	processWindowsInOrder(OrderedWindowsOptions{
-		Command:  "togglefloating",
+		Command:  "settiled",
 		Monitors: []int{0, 1},
 		AppOrder: []AppOptions{
 			firefoxDev, obsidian, noSqlWorkbench,
 			firefox,
-			thunar, keepassxc, tidalHifi,
+
+			thunar,
+			keepassxc,
+			// tidalHifi,
+
 			nixosCode, cmsCode, kitty},
 	})
 
 	makeGroup(1, firefoxDev, obsidian, noSqlWorkbench)
-	makeGroup(1, thunar, keepassxc, tidalHifi)
+	makeGroup(1,
+		thunar,
+		keepassxc,
+		// tidalHifi,
+	)
 	makeGroup(0, nixosCode, cmsCode, kitty)
 
 	c.Dispatch("focusmonitor 0")

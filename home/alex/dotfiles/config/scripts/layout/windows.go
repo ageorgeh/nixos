@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"slices"
-	"strings"
 	"time"
 
 	"github.com/thiagokokada/hyprland-go"
@@ -39,8 +38,7 @@ type WindowsInSuccessionOptions struct {
 
 func processWindowsInSucession(args WindowsInSuccessionOptions) {
 	for _, monitorID := range args.Monitors {
-		println("Focusing monitor: ", monitorID)
-		c.Dispatch("focusmonitor " + fmt.Sprint(monitorID))
+		focusFirstWindow(monitorID)
 
 		activeWindow, err := c.ActiveWindow()
 		if err != nil {
@@ -49,7 +47,7 @@ func processWindowsInSucession(args WindowsInSuccessionOptions) {
 		}
 		// Check if the active window is actually on the focused monitor
 		if activeWindow.Monitor != monitorID {
-			println("Warning: Active window is not on the focused monitor", monitorID)
+			println("Warning: Active window is not on the focused monitor", activeWindow.Monitor, monitorID, activeWindow.Title)
 			continue // Skip to the next monitor
 		}
 		var startProcessing bool = args.After == nil
@@ -59,6 +57,7 @@ func processWindowsInSucession(args WindowsInSuccessionOptions) {
 		for range maxIterations {
 			// Check if we've cycled back or if the active window moved monitor
 			if activeWindow.Address == prevWindow || activeWindow.Monitor != monitorID {
+				println("activeWindow", activeWindow.Address, "prev window", prevWindow)
 				break // Reached the end or moved off the target monitor
 			}
 
@@ -89,14 +88,17 @@ func processWindowsInSucession(args WindowsInSuccessionOptions) {
 				println("Dispatching: ", args.Command, "on monitor", monitorID, "for window", client.Title)
 				// Note: The command here is applied to the *currently focused* window,
 				// which we are iterating through on the target monitor.
-				time.Sleep(sleepTime)
 				c.Dispatch(args.Command)
+				time.Sleep(sleepTime)
 			}
 
 			prevWindow = activeWindow.Address
 
+			println("Moving focus")
 			c.Dispatch("hy3:movefocus r, visible")
 			// c.Dispatch("hy3:movefocus u, visible")
+			time.Sleep(sleepTime)
+
 			activeWindow, err = c.ActiveWindow()
 			if err != nil {
 				println("Error getting next active window:", err)
@@ -136,7 +138,7 @@ func processWindowsInOrder(args OrderedWindowsOptions) {
 				}
 			}
 			if !found {
-				// fmt.Printf("Warning: App '%s' from AppOrder not found on monitor %d\n", app, monitorID)
+				fmt.Printf("Warning: App '%s' from AppOrder not found on monitor %d\n", app, monitorID)
 			}
 		}
 		for _, client := range orderedClients {
@@ -147,43 +149,6 @@ func processWindowsInOrder(args OrderedWindowsOptions) {
 		}
 	}
 
-}
-
-// Address returns the address of the app if it is running
-func Address(app AppOptions) (string, error) {
-	clients, err := c.Clients()
-	if err != nil {
-		return "", err
-	}
-	for _, client := range clients {
-		matches, err := matchesApp(client, app)
-		if err != nil {
-			continue
-		}
-		if matches {
-			return client.Address, nil
-		}
-	}
-	return "", fmt.Errorf("could not find address for app %s", app)
-}
-
-// matchesApp checks if a client matches the given app criteria
-func matchesApp(client hyprland.Client, app AppOptions) (bool, error) {
-	// Check by title if specified
-	if app.title != "" {
-		return strings.Contains(client.Title, app.title), nil
-	}
-	// Check by class if specified
-	if app.class != "" {
-		return client.Class == app.class, nil
-	}
-
-	// Otherwise check by app name
-	clientAppName, err := AppNameFromPid(client.Pid)
-	if err != nil {
-		return false, err
-	}
-	return clientAppName == getAppName(app.app), nil
 }
 
 // matchesApp checks if a client matches the given app criteria
@@ -220,9 +185,11 @@ func clientsOnMonitor(monitor int) []hyprland.Client {
 
 func makeGroup(monitor int, first AppOptions, rest ...AppOptions) {
 	firstAd := must(Address(first))
-	println("Focusing and making tab group for ", first.app+" on monitor", monitor)
+	println("Focusing and making tab group for ", first.app+" on monitor", monitor, "with address", firstAd)
 	c.Dispatch("focuswindow address:" + firstAd)
+	time.Sleep(sleepTime)
 	c.Dispatch("hy3:makegroup tab, toggle")
+	time.Sleep(sleepTime)
 
 	// Moves all the windows after thunar into the tab group
 	processWindowsInSucession(WindowsInSuccessionOptions{
@@ -231,4 +198,42 @@ func makeGroup(monitor int, first AppOptions, rest ...AppOptions) {
 		Monitors: []int{monitor},
 		Apps:     rest,
 	})
+}
+
+func focusFirstWindow(monitor int) {
+	println("Focusing first window on monitor: ", monitor)
+	c.Dispatch("focusmonitor " + fmt.Sprint(monitor))
+	time.Sleep(sleepTime)
+
+	activeWindow, err := c.ActiveWindow()
+	if err != nil {
+		println("Error getting active window for monitor", monitor, ":", err)
+	}
+
+	var prevWindow string = ""
+	maxIterations := 50 // Limit iterations per monitor
+
+	for range maxIterations {
+		// Check if we've cycled back or if the active window moved monitor
+		if activeWindow.Monitor != monitor {
+			println("WRong monitor going back to the right")
+			c.Dispatch("movefocus r")
+			time.Sleep(sleepTime)
+			break
+		}
+		if activeWindow.Address == prevWindow {
+			break // Reached the end or moved off the target monitor
+		}
+
+		prevWindow = activeWindow.Address
+
+		c.Dispatch("movefocus l, visible")
+		time.Sleep(sleepTime)
+
+		activeWindow, err = c.ActiveWindow()
+		if err != nil {
+			println("Error getting next active window:", err)
+			break // Break loop if error getting next window
+		}
+	}
 }

@@ -5,12 +5,25 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
-	"time"
+	"sync"
 
 	"github.com/thiagokokada/hyprland-go"
 	"github.com/thiagokokada/hyprland-go/event"
 )
+
+type MyHandler struct {
+	event.DefaultEventHandler
+	onOpen func(w event.OpenWindow)
+}
+
+func (e *MyHandler) OpenWindow(w event.OpenWindow) {
+	fmt.Println("OpenWindow", w)
+	if e.onOpen != nil {
+		e.onOpen(w)
+	}
+}
 
 type AppOptions struct {
 	app          string
@@ -20,103 +33,69 @@ type AppOptions struct {
 }
 
 func launchApps(apps map[int][]AppOptions) {
+	type launchTask struct {
+		window int
+		app    AppOptions
+	}
+
+	tasks := make([]launchTask, 0)
 	for window, list := range apps {
 		for _, app := range list {
-
-			if IsRunning(app) {
+			if !IsRunning(app) {
+				tasks = append(tasks, launchTask{window: window, app: app})
+			} else {
 				fmt.Printf("%s is already running\n", app.app)
-				continue
 			}
-
-			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-			done := make(chan struct{}) // channel to signal window opened
-
-			go func() {
-				e.Subscribe(ctx, &ev{
-					onOpen: func(w event.OpenWindow) {
-						if app.initialTitle != "" && w.Title == app.initialTitle {
-							close(done)
-						} else if IsRunning(app) {
-							close(done) // window opened, signal done
-						}
-
-					},
-				}, event.EventOpenWindow)
-			}()
-
-			c.Dispatch("focusmonitor " + fmt.Sprint(window))
-			c.Dispatch("exec " + app.app)
-			fmt.Println("Launching", "exec "+app.app)
-
-			select {
-			case <-done:
-				fmt.Printf("%s launched successfully\n", app)
-			case <-ctx.Done():
-				fmt.Printf("Timeout launching %s\n", app)
-			}
-
-			cancel() // cancel the subscription ctx manually after select
 		}
 	}
+
+	var wg sync.WaitGroup
+
+	ctx := context.Background()
+	go func() {
+		e.Subscribe(ctx, &MyHandler{
+			onOpen: func(w event.OpenWindow) {
+				for i, task := range tasks {
+					app := task.app
+					if (app.initialTitle != "" && w.Title == app.initialTitle) || IsRunning(app) {
+						wg.Done()
+						tasks = slices.Delete(tasks, i, i+1)
+						fmt.Println("App running: ", app.app)
+					}
+				}
+
+			},
+		}, event.EventOpenWindow)
+	}()
+
+	for _, task := range tasks {
+		wg.Add(1)
+		go func() {
+			c.Dispatch("exec " + task.app.app)
+			fmt.Println("Launching", "exec "+task.app.app)
+		}()
+	}
+
+	wg.Wait()
 }
 
-// IsRunning checks if the app is already running
-//
-// Checks by title first, then app name
-func IsRunning(i AppOptions) bool {
-	if i.title != "" {
-		return TitleRunning(i.title)
-	}
-	if i.class != "" {
-		return ClassRunning(i.class)
-	}
-	if i.app != "" {
-		return AppRunning(i.app)
-	}
-	return false
-}
-
-func AppRunning(app string) bool {
+func getPid(app string) (int, error) {
 	clients, err := c.Clients()
 	if err != nil {
-		return false
+		return 0, err
 	}
+
 	for _, client := range clients {
 		clientAppName, err := AppNameFromPid(client.Pid)
 		if err != nil {
 			continue
 		}
 		if clientAppName == getAppName(app) {
-			return true
+			return client.Pid, nil
 		}
 	}
-	return false
-}
 
-func ClassRunning(class string) bool {
-	clients, err := c.Clients()
-	if err != nil {
-		return false
-	}
-	for _, client := range clients {
-		if client.Class == class {
-			return true
-		}
-	}
-	return false
-}
-
-func TitleRunning(title string) bool {
-	clients, err := c.Clients()
-	if err != nil {
-		return false
-	}
-	for _, client := range clients {
-		if strings.Contains(client.Title, title) {
-			return true
-		}
-	}
-	return false
+	return 0, fmt.Errorf("process not found: %s", app)
 }
 
 func AppNameFromPid(pid int) (string, error) {
