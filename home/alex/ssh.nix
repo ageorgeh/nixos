@@ -38,7 +38,7 @@ in
 
       "media-server" = {
         hostname = "192.168.20.75"; # TODO parameterise this
-        user = "media-server";
+        user = "alex"; # TODO this too
         identityFile = p.keys.media;
       };
     };

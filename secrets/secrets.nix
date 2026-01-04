@@ -8,4 +8,9 @@ in
     media
   ];
   "media-ssh-key.age".publicKeys = [ workstation ];
+
+  "airvpn-private-key.age".publicKeys = [
+    workstation
+    media
+  ];
 }
