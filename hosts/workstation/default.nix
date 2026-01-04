@@ -44,6 +44,7 @@
   # xserver + sddm used as it looks good and works with minimal config
   services.xserver = {
     enable = true;
+    # keyboard layout
     xkb = {
       layout = "au";
       variant = "";

@@ -95,7 +95,7 @@
           hostName = "workstation";
           wayland = true;
         };
-        # media = mkHost { hostName = "media"; };
+        media = mkHost { hostName = "media"; };
         # laptop = mkHost { hostName = "laptop"; };
       };
 

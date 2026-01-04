@@ -8,5 +8,6 @@ in
   secretsDir = inputs.self + "/secrets";
   keys = {
     github = "${sshDir}/github_id";
+    media = "${sshDir}/media_id";
   };
 }

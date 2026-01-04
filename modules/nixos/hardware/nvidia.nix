@@ -1,5 +1,4 @@
-{ config, inputs, ... }:
-
+{ ... }:
 
 {
   boot.kernelParams = [ "nvidia-drm.modeset=1" ];

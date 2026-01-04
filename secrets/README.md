@@ -115,7 +115,7 @@ This controls **which machines can decrypt each secret**.
 ## 4. Re-encrypt and commit
 
 ```
-nix run github:ryantm/agenix -- -r
+nix run github:ryantm/agenix -- -r --identity ~/.ssh/id_ed25519_agenix
 git add .
 git commit -m "Add new secrets"
 git push

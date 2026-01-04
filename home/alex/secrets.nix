@@ -16,4 +16,10 @@ in
     path = p.keys.github;
     mode = "600";
   };
+
+  age.secrets."media-ssh-key" = {
+    file = secrets + "/media-ssh-key.age";
+    path = p.keys.media;
+    mode = "600";
+  };
 }

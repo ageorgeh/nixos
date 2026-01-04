@@ -37,9 +37,9 @@ in
       };
 
       "media-server" = {
-        hostname = "192.168.20.75";
+        hostname = "192.168.20.75"; # TODO parameterise this
         user = "media-server";
-        identityFile = "~/.ssh/media_server_id";
+        identityFile = p.keys.media;
       };
     };
   };
