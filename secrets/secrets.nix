@@ -17,4 +17,9 @@ in
     workstation
     media
   ];
+
+  "qbittorrent-password.age".publicKeys = [
+    workstation
+    media
+  ];
 }
