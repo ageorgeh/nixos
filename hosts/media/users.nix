@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ inputs, config, ... }:
 
 {
   users = {
@@ -20,4 +20,14 @@
       };
     };
   };
+
+  # Home Manager integration
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+
+  home-manager.extraSpecialArgs = {
+    inherit inputs;
+  };
+
+  home-manager.users.alex = import ../../home/media/default.nix;
 }
