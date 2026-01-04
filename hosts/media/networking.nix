@@ -19,10 +19,7 @@
         ipv4 = {
           method = "manual";
           addresses = [
-            {
-              address = "192.168.20.75";
-              prefixLength = 24;
-            }
+            "192.168.20.75/24"
           ];
           gateway = "192.168.20.1";
           dns = [
