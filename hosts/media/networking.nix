@@ -6,29 +6,22 @@
     interfaces = {
       # Might need dk yet
       # enp2s0.mtu = 1480;
+      enp2s0.ipv4.addresses = [
+        {
+          address = "192.168.20.75";
+          prefixLength = 24;
+        }
+      ];
+
     };
-    networkmanager = {
-      enable = true;
-      ensureProfiles.profiles.media-lan = {
-        connection = {
-          id = "media-lan";
-          type = "ethernet";
-          interface-name = "enp2s0";
-          autoconnect = true;
-        };
-        ipv4 = {
-          method = "manual";
-          addresses = [
-            "192.168.20.75/24"
-          ];
-          gateway = "192.168.20.1";
-          dns = [
-            "192.168.20.1"
-            "1.1.1.1"
-          ];
-        };
-      };
-    };
+
+    networkmanager.enable = true;
+
+    defaultGateway = "192.168.20.1";
+    nameservers = [
+      "192.168.20.1"
+      "1.1.1.1"
+    ];
 
     firewall = {
       enable = true;
