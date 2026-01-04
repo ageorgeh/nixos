@@ -1,10 +1,16 @@
 {
+  inputs,
   ...
 }:
-
+let
+  ssh = "/home/alex/.ssh";
+  secrets = inputs.self + "/secrets";
+in
 {
   # imports
   imports = [
+    inputs.agenix.nixosModules.default
+
     ./hardware-configuration.nix
     ./networking.nix
     ./packages.nix
@@ -41,6 +47,33 @@
 
   environment.shellAliases = {
     nixos-build = "sudo nixos-rebuild switch --flake ~/nixos-config#media";
+  };
+
+  systemd.tmpfiles.rules = [
+    # d <path> <mode> <user> <group> <age> <argument>
+
+    # Media libraries
+    "d /srv/media 2775 root media - -"
+    "d /srv/media/movies 2775 root media - -"
+    "d /srv/media/tv 2775 root media - -"
+
+    # Downloads owned by qBittorrent
+    "d /srv/downloads 2775 qbittorrent media - -"
+    "d /srv/downloads/incomplete 2775 qbittorrent media - -"
+    "d /srv/downloads/complete 2775 qbittorrent media - -"
+  ];
+
+  age.identityPaths = [
+    "${ssh}/id_ed25519_agenix"
+  ];
+
+  age.secrets."airvpn-private-key" = {
+    file = secrets + "/airvpn-private-key.age";
+    mode = "600";
+  };
+  age.secrets."airvpn-preshared-key" = {
+    file = secrets + "/airvpn-preshared-key.age";
+    mode = "600";
   };
 
   system.stateVersion = "24.11";

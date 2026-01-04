@@ -2,11 +2,18 @@
 
 {
   users = {
-    groups.qbittorrent = { };
+    groups = {
+      qbittorrent = { };
+      plex = { };
+      media = { };
+    };
     users = {
       alex = {
         isNormalUser = true;
-        extraGroups = [ "wheel" ];
+        extraGroups = [
+          "wheel"
+          "media"
+        ];
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOR+Q5C3CCcWO96jb3K5y8zepC01WfnrLvn9uzhHGMG8 media"
         ];
@@ -14,9 +21,12 @@
       qbittorrent = {
         isSystemUser = true;
         group = "qbittorrent";
-        home = "/var/lib/qbittorrent";
-        createHome = true;
-        # shell = pkgs.runCommand "nologin" { } "ln -s /sbin/nologin $out";
+        extraGroups = [ "media" ];
+      };
+      plex = {
+        isSystemUser = true;
+        group = "plex";
+        extraGroups = [ "media" ];
       };
     };
   };

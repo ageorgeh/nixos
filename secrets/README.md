@@ -179,6 +179,8 @@ Secrets will decrypt automatically.
 
 Once the GitHub SSH key secret is deployed, switch git remotes back to SSH.
 
+`git remote set-url origin git@github.com:ageorgeh/nixos.git`
+
 ---
 
 ## Security notes

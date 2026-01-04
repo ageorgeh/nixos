@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 {
   networking = {
@@ -33,13 +33,40 @@
 
       interfaces = {
         wg0 = {
-          # TODO update this once the name of the vpn interface is known
           allowedTCPPorts = [ 20882 ];
           allowedUDPPorts = [ 20882 ];
         };
       };
-
     };
 
+    # wireguard vpn interface
+    wg-quick.interfaces.wg0 = {
+      autostart = true;
+      address = [
+        "10.139.52.237/32"
+        "fd7d:76ee:e68f:a993:97df:96cb:44e6:32e7/128"
+      ];
+      dns = [
+        "10.128.0.1"
+        "fd7d:76ee:e68f:a993::1"
+      ];
+
+      privateKeyFile = config.age.secrets."airvpn-private-key".path;
+      mtu = 1320;
+
+      peers = [
+        {
+          publicKey = "PyLCXAQT8KkM4T+dUsOQfn+Ub3pGxfGlxkIApuig+hk=";
+          presharedKeyFile = config.age.secrets."airvpn-preshared-key".path;
+
+          endpoint = "oceania3.vpn.airdns.org:1637";
+          allowedIPs = [
+            "0.0.0.0/0"
+            "::/0"
+          ];
+          persistentKeepalive = 15;
+        }
+      ];
+    };
   };
 }
