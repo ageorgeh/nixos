@@ -13,4 +13,8 @@ in
     workstation
     media
   ];
+  "airvpn-preshared-key.age".publicKeys = [
+    workstation
+    media
+  ];
 }
