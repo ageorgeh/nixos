@@ -110,6 +110,7 @@ in
         # Resource monitoring
         btop # Better top
         nvtopPackages.nvidia # Nvidia top
+        iperf
 
         # Hyprland
         hyprsunset

@@ -135,7 +135,7 @@
   # https://nixos.wiki/wiki/Docker
   virtualisation.docker = {
     enable = true;
-    package = pkgs.docker_28;
+    package = pkgs.docker_29;
   };
 
   environment.systemPackages = with pkgs; [
