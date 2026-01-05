@@ -75,6 +75,12 @@ in
     file = secrets + "/airvpn-preshared-key.age";
     mode = "600";
   };
+  age.secrets."qbittorrent-password" = {
+    file = secrets + "/qbittorrent-password.age";
+    owner = "qbittorrent";
+    group = "qbittorrent";
+    mode = "0400";
+  };
 
   system.stateVersion = "24.11";
 }

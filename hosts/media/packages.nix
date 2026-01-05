@@ -6,6 +6,7 @@
     curl
     git
     btop
+    ripgrep
 
     #
     # ssh tools
