@@ -29,6 +29,11 @@
         22
         32400 # plex
         8080 # qbittorrent web ui
+
+        # Monitoring
+        9090
+        3000
+        # 5201 # iperf
       ];
 
       interfaces = {

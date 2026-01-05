@@ -7,6 +7,10 @@
     git
     btop
     ripgrep
+    ethtool
+    iperf
+    sysstat
+    toybox
 
     #
     # ssh tools

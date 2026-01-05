@@ -35,6 +35,51 @@ in
     group = "plex";
   };
 
+  services.samba = {
+    enable = true;
+    openFirewall = true;
+
+    settings = {
+      global = {
+        "server string" = "Media Server";
+        "workgroup" = "WORKGROUP";
+        "security" = "user";
+        "map to guest" = "never";
+
+        # performance / sanity
+        "socket options" = "TCP_NODELAY SO_RCVBUF=131072 SO_SNDBUF=131072";
+        "use sendfile" = "yes";
+
+        # permissions
+        "unix extensions" = "no";
+      };
+
+      media = {
+        path = "/srv/media";
+        browseable = "yes";
+        writable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "valid users" = "alex";
+        "force group" = "media";
+        "create mask" = "0664";
+        "directory mask" = "0775";
+      };
+
+      downloads = {
+        path = "/srv/downloads";
+        browseable = "yes";
+        writable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "valid users" = "alex";
+        "force group" = "media";
+        "create mask" = "0664";
+        "directory mask" = "0775";
+      };
+    };
+  };
+
   services.qbittorrent = {
     enable = true;
     user = "qbittorrent";
@@ -118,6 +163,48 @@ in
       argument = "${categoriesJson}";
     };
   systemd.services.qbittorrent.restartTriggers = lib.mkAfter [ categoriesJson ];
+
+  # monitoring
+  services.prometheus.exporters.node = {
+    enable = true;
+    openFirewall = true;
+    port = 9100;
+    enabledCollectors = [
+      "systemd"
+      "filesystem"
+      "diskstats"
+      "netdev"
+      "meminfo"
+      "cpu"
+      "loadavg"
+    ];
+  };
+
+  services.prometheus = {
+    enable = true;
+
+    scrapeConfigs = [
+      {
+        job_name = "node";
+        static_configs = [
+          { targets = [ "127.0.0.1:9100" ]; }
+        ];
+      }
+    ];
+  };
+
+  services.grafana = {
+    enable = true;
+    settings = {
+      server = {
+        http_addr = "0.0.0.0";
+        http_port = 3000;
+      };
+      security = {
+        admin_user = "admin";
+      };
+    };
+  };
 }
 # sudo rg "srv" /var/lib/qBittorrent/qBittorrent/
 # sudo rg "srv" /var/lib/qBittorrent/qBittorrent/config/ -L
