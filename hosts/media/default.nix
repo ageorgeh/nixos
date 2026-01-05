@@ -17,12 +17,20 @@ in
     ./services.nix
     ./users.nix
 
-    ../../modules/nixos/hardware/nvidia.nix
+  ];
+
+  # use iGPU instead of nvidia
+  services.xserver.videoDrivers = [ "amdgpu" ];
+  boot.blacklistedKernelModules = [
+    "nvidia"
+    "nvidia_drm"
+    "nvidia_modeset"
+    "nvidia_uvm"
   ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  security.sudo.wheelNeedsPassword = false;
+  security.sudo.wheelNeedsPassword = false; # TODO
 
   nix.settings = {
     experimental-features = [
@@ -63,6 +71,7 @@ in
     "d /srv/downloads/complete 2775 qbittorrent media - -"
   ];
 
+  # Secrets
   age.identityPaths = [
     "${ssh}/id_ed25519_agenix"
   ];
@@ -74,6 +83,32 @@ in
   age.secrets."airvpn-preshared-key" = {
     file = secrets + "/airvpn-preshared-key.age";
     mode = "600";
+  };
+  age.secrets."qbittorrent-password" = {
+    file = secrets + "/qbittorrent-password.age";
+    owner = "qbittorrent";
+    group = "qbittorrent";
+    mode = "0400";
+  };
+
+  # Power saving options
+  powerManagement = {
+    cpuFreqGovernor = "powersave";
+    powertop.enable = true;
+  };
+  services.xserver.enable = false;
+  services.printing.enable = false;
+  hardware.bluetooth.enable = false;
+
+  # https://nixos.wiki/wiki/Storage_optimization
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+  nix.optimise = {
+    automatic = true;
+    dates = [ "weekly" ];
   };
 
   system.stateVersion = "24.11";
