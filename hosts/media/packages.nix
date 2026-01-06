@@ -10,7 +10,6 @@
     ethtool
     iperf
     sysstat
-    toybox
 
     #
     # ssh tools
