@@ -195,5 +195,21 @@
     source = "${pkgs.nodejs_24}/bin/node";
   };
 
+  # run ./setup/setup-smb.sh to create the credentials file
+  # potentially just move it to agenix
+  fileSystems."/mnt/media" = {
+    device = "//192.168.20.75/media";
+    fsType = "cifs";
+
+    options = [
+      "credentials=/etc/nixos/secret/smb-credentials"
+      "iocharset=utf8"
+      "x-systemd.automount"
+      "noatime"
+      "_netdev"
+      "serverino"
+    ];
+  };
+
   system.stateVersion = "24.11";
 }
