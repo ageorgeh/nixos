@@ -57,7 +57,8 @@
       mkPkgs =
         system:
         import nixpkgs {
-          inherit system overlays;
+          inherit system;
+          overlays = overlays.default;
           config.allowUnfree = true;
         };
 
@@ -86,6 +87,8 @@
         };
     in
     {
+      inherit overlays;
+      overlay = overlays.default;
 
       # local
       lib = import ./lib/default.nix { };
