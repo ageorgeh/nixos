@@ -93,7 +93,7 @@ in
 
   # Power saving options
   powerManagement = {
-    cpuFreqGovernor = "powersave";
+    cpuFreqGovernor = "ondemand";
     powertop.enable = true;
   };
   services.xserver.enable = false;
