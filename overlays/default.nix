@@ -7,9 +7,7 @@ in
 {
   inherit awsSam nur;
 
-  default = [
-    awsSam
-    nur
-  ];
+  # function form (what many consumers expect)
+  default = final: prev: (awsSam final prev) // (nur final prev);
 
 }

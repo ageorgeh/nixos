@@ -10,7 +10,9 @@ Some aspects may be shared on multiple machines, e.g. nvidia config. Shared conf
 
 ### Home
 
-Each of these is a home configuration. Think of this as representing a role, e.g. the `alex` home config is specifially a setup for programming. It can be used on different machines and OS'. On occasion this requires host specific or OS specific conditionals in the config e.g. hyprland config is not required when this config is used on nix-darwin (MACOS)
+Each of these is a home configuration. Think of this as representing a role, e.g. the `alex` home config is specifially a setup for programming. It can be used on different machines and OS'. On occasion this requires host specific or OS specific conditionals in the config e.g. hyprland config is not required when this config is used on nix-darwin (macOS)
+
+### [Overlays](./overlays/README.md)
 
 ## Secret management
 

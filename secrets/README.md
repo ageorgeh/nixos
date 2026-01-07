@@ -1,4 +1,4 @@
-# nix-secrets
+# Secrets
 
 This folder contains **encrypted secrets** managed with **agenix**.
 All sensitive material is stored as `.age` files and can only be decrypted by authorized machines.

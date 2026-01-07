@@ -56,7 +56,7 @@
         system:
         import nixpkgs {
           inherit system;
-          overlays = overlays.default;
+          overlays = [ overlays.default ];
           config.allowUnfree = true;
         };
 
