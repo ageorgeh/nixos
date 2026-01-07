@@ -3,8 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    # TODO remove this once unstable has 1.146.0 of aws sam
-    nixpkgs-sam-pr.url = "github:NixOS/nixpkgs/pull/459380/head";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";

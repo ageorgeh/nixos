@@ -580,22 +580,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-sam-pr": {
-      "locked": {
-        "lastModified": 1762551177,
-        "narHash": "sha256-9IWfeom+DIki1RiF55tjXRsBtFV0Bnqs8pYkXUZrPpk=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "3ea6ede42462222794c7f922a3e9b9ddac1a75d4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "pull/459380/head",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1717196966,
@@ -697,7 +681,6 @@
         "hyprland": "hyprland",
         "hyprland-plugins": "hyprland-plugins",
         "nixpkgs": "nixpkgs_4",
-        "nixpkgs-sam-pr": "nixpkgs-sam-pr",
         "nur": "nur",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor"
       }

@@ -1,10 +1,6 @@
 { inputs }:
 let
-  awsSam = (
-    import ./aws-sam-pr.nix {
-      inherit (inputs) nixpkgs-sam-pr;
-    }
-  );
+  awsSam = import ./aws-sam-pr.nix;
   nur = inputs.nur.overlays.default;
 
 in
