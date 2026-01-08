@@ -1,5 +1,15 @@
 {
   // "editor.fontFamily": "'JetBrainsMono Nerd Font', 'monospace'",
   "editor.fontLigatures": true,
-  "typescript.tsserver.nodePath": "/home/alex/.nix-profile/bin/node"
+  "typescript.tsserver.nodePath": "/home/alex/.nix-profile/bin/node",
+
+  // Lua
+  "Lua.runtime.version": "LuaJIT",
+  "Lua.diagnostics.globals": ["vim"],
+  "Lua.workspace.checkThirdParty": false,
+  "Lua.workspace.library": [
+    "${env:VIMRUNTIME}/lua",
+    "${env:VIMRUNTIME}/lua/vim",
+    "${3rd}/luv/library"
+  ]
 }

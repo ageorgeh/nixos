@@ -1,9 +1,59 @@
--- Starting point for new LSP https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/configs
 local util = require("lspconfig.util")
 local vs = require("utils.vscode.settings")
 
 vim.lsp.enable("lua_ls")
+-- vim.lsp.config('lua_ls', {
+-- 	on_init = function(client)
+-- 		if client.workspace_folders then
+-- 			local path = client.workspace_folders[1].name
+-- 			if
+-- 				path ~= vim.fn.stdpath('config')
+-- 				and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
+-- 			then
+-- 				return
+-- 			end
+-- 		end
 
+-- 		client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+-- 			runtime = {
+-- 				-- Tell the language server which version of Lua you're using (most
+-- 				-- likely LuaJIT in the case of Neovim)
+-- 				version = 'LuaJIT',
+-- 				-- Tell the language server how to find Lua modules same way as Neovim
+-- 				-- (see `:h lua-module-load`)
+-- 				path = {
+-- 					'lua/?.lua',
+-- 					'lua/?/init.lua',
+-- 				},
+-- 			},
+-- 			-- Make the server aware of Neovim runtime files
+-- 			workspace = {
+-- 				checkThirdParty = false,
+-- 				library = {
+-- 					vim.env.VIMRUNTIME
+-- 					-- Depending on the usage, you might want to add additional paths
+-- 					-- here.
+-- 					-- '${3rd}/luv/library'
+-- 					-- '${3rd}/busted/library'
+-- 				}
+-- 				-- Or pull in all of 'runtimepath'.
+-- 				-- NOTE: this is a lot slower and will cause issues when working on
+-- 				-- your own configuration.
+-- 				-- See https://github.com/neovim/nvim-lspconfig/issues/3189
+-- 				-- library = {
+-- 				--   vim.api.nvim_get_runtime_file('', true),
+-- 				-- }
+-- 			}
+-- 		})
+-- 	end,
+-- 	settings = {
+-- 		Lua = {}
+-- 	}
+-- })
+
+
+-- svelte
+vim.lsp.enable("svelte")
 vim.lsp.config("svelte", {
 	filetypes = { "svelte", "svx" },
 	on_attach = function(client, bufnr)
@@ -17,13 +67,21 @@ vim.lsp.config("svelte", {
 		end
 	end,
 })
-vim.lsp.enable("svelte")
+
+--
+-- typescript
+--
+
+vim.lsp.enable("tsgo")
 
 -- vim.lsp.config("ts_ls", require("lsp.ts_ls"))
 -- vim.lsp.enable("ts_ls")
 
-vim.lsp.enable("typescript-tools")
+-- vim.lsp.enable("typescript-tools")
 
+
+
+-- tailwind
 vim.lsp.config("tailwindcss", {
 	settings = {
 		tailwindCSS = {
@@ -96,10 +154,18 @@ vim.lsp.config('nixd', {
 	},
 })
 
--- vim.lsp.config("jsonls", {
--- 	cmd = { "vscode-json-languageserver", "--stdio" },
--- })
+-- json
 vim.lsp.enable("jsonls")
+vim.lsp.config("jsonls", {
+	settings = {
+		json = {
+			schemas = require('schemastore').json.schemas(),
+			validate = { enable = true },
+		},
+	},
+})
+
+
 vim.lsp.enable("bashls")
 vim.lsp.enable("glsl_analyzer")
 vim.lsp.enable("gopls")

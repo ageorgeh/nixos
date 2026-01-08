@@ -31,6 +31,7 @@ in
       lua
       playwright-test
       playwright-driver.browsers
+      direnv
 
       # Formatters
       prettierd # Prettier
