@@ -2,7 +2,41 @@
   pkgs,
   ...
 }:
+let
+  commonVsExtensions = with pkgs.nix-vscode-extensions.vscode-marketplace; [
+    ms-vscode-remote.remote-ssh
+    ms-vscode-remote.remote-ssh-edit
+    ms-vscode.remote-explorer
 
+    mvllow.rose-pine
+
+    openai.chatgpt
+
+    # ms-vscode-remote.remote-wsl # windows?
+
+    # ms-azuretools.vscode-containers
+    # ms-vscode-remote.remote-containers
+    # docker.docker
+
+    grapecity.gc-excelviewer # csv
+    mechatroner.rainbow-csv
+    zainchen.json # json
+    jock.svg
+    jnoortheen.nix-ide
+
+    esbenp.prettier-vscode
+
+    jakob101.relativepath
+    gruntfuggly.todo-tree
+
+    spmeesseman.vscode-taskexplorer
+    actboy168.tasks
+    iulian-radu-at.vscode-tasks-sidebar
+
+    vscodevim.vim
+    formulahendry.code-runner
+  ];
+in
 {
   # Git
   programs.git = {
@@ -18,18 +52,72 @@
   # KeepassXC
   programs.keepassxc.enable = true;
 
-  # VScode
+  # vscode
+  # currently i do extensions through nix here and then all other vscode config through their UI
+  # its too difficult to do it here
   programs.vscode = {
     enable = true;
     package = pkgs.vscode;
-    profiles.default.extensions = with pkgs.vscode-extensions; [ ];
+    mutableExtensionsDir = false;
+
+    profiles = {
+      default = {
+        # enableUpdateCheck = false;
+        # enableExtensionUpdateCheck = false;
+
+        extensions =
+          commonVsExtensions
+          ++ (with pkgs.nix-vscode-extensions.vscode-marketplace; [
+
+            # ---- config ---- #
+            sumneko.lua
+            ms-vscode.makefile-tools
+            golang.go
+
+            # ---- python ---- #
+            ms-python.black-formatter
+            ms-python.isort
+            ms-python.vscode-pylance
+            ms-python.python
+            ms-python.debugpy
+            ms-python.vscode-python-envs
+
+            ms-toolsai.jupyter
+            ms-toolsai.vscode-jupyter-cell-tags
+            ms-toolsai.jupyter-keymap
+            ms-toolsai.jupyter-renderers
+            ms-toolsai.vscode-jupyter-slideshow
+
+            # ---- web ---- #
+            nicoespeon.abracadabra
+            dbaeumer.vscode-eslint
+
+            # glsl
+            nolanderc.glsl-analyzer
+            circledev.glsl-canvas
+
+            george-alisson.html-preview-vscode
+            svelte.svelte-vscode
+            sebsojeda.vscode-svx
+            bradlc.vscode-tailwindcss
+            typescriptteam.native-preview
+
+            christian-kohler.npm-intellisense
+
+            # testing
+            ms-playwright.playwright
+            vitest.explorer
+
+          ]);
+      };
+    };
   };
 
   # Vim
   programs.vim.enable = true;
 
   # Yazi file manager
-  # home/alex/dotfiles/config/yazi - for theme configuration
+  # ./dotfiles/config/yazi - for theme configuration
   programs.yazi = {
     enable = true;
     # enableZshIntegration = true;
