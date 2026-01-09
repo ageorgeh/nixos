@@ -60,5 +60,22 @@
         WantedBy = [ "default.target" ];
       };
     };
+
+    nosql-workbench-credentials = {
+      Unit = {
+        Description = "Refresh NoSQL Workbench credentials";
+        After = "network.target";
+      };
+
+      Service = {
+        Type = "oneshot";
+        ExecStart = "/home/alex/scripts/write-aws-credentials.sh";
+      };
+    };
+
+  };
+
+  systemd.user.timers = {
+
   };
 }
