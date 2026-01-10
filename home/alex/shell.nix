@@ -17,6 +17,7 @@ in
   // lib.optionalAttrs isLinux {
     # nixos
     nixos-build = "sudo nixos-rebuild switch --flake ~/nixos-config#workstation";
+    nixos-build-logs = "sudo nixos-rebuild switch --flake ~/nixos-config#workstation -L --show-trace --verbose";
     nixos-update = "sudo nix flake update --flake ~/nixos-config";
 
     # hyprland

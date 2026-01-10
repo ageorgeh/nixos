@@ -3,7 +3,8 @@
   ...
 }:
 let
-  commonVsExtensions = with pkgs.nix-vscode-extensions.vscode-marketplace; [
+  extensions = pkgs.nix-vscode-extensions.vscode-marketplace;
+  commonVsExtensions = with extensions; [
     ms-vscode-remote.remote-ssh
     ms-vscode-remote.remote-ssh-edit
     ms-vscode.remote-explorer
@@ -67,7 +68,7 @@ in
 
         extensions =
           commonVsExtensions
-          ++ (with pkgs.nix-vscode-extensions.vscode-marketplace; [
+          ++ (with extensions; [
 
             # ---- config ---- #
             sumneko.lua
