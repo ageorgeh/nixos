@@ -34,10 +34,8 @@ in
 
   };
 
-  # substituteStream() in derivation catppuccin-sddm-1.1.2: ERROR: pattern CustomBackground=\"false\" doesn't match anything in file '/nix/store/wr1wkhyni95kcnr3z3ax7zh06f7bzy0g-catppuccin-sddm-1.1.2/share/sddm/themes/catppuccin-mocha-mauve/theme.conf'
-  #      For full logs, run:
-
   # Delete unreachable store paths: sudo nix-collect-garbage -d
+  # run the above without sudo to do it only for the user?
   # Deduplicate the store: sudo nix store optimise
 
   programs.bash = {

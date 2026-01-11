@@ -74,10 +74,10 @@ func main() {
 		app:   "keepassxc",
 		class: "org.keepassxc.KeePassXC",
 	}
-	// tidalHifi := AppOptions{
-	// 	app:   "tidal-hifi",
-	// 	class: "tidal-hifi",
-	// }
+	tidalHifi := AppOptions{
+		app:   "tidal-hifi",
+		class: "tidal-hifi",
+	}
 
 	apps := map[int][]AppOptions{
 		0: {nixosCode, kitty, cmsCode},
@@ -86,7 +86,7 @@ func main() {
 
 			thunar,
 			keepassxc,
-			// tidalHifi,
+			tidalHifi,
 		},
 	}
 
@@ -123,7 +123,7 @@ func main() {
 
 			thunar,
 			keepassxc,
-			// tidalHifi,
+			tidalHifi,
 
 			nixosCode, cmsCode, kitty},
 	})
@@ -132,7 +132,7 @@ func main() {
 	makeGroup(1,
 		thunar,
 		keepassxc,
-		// tidalHifi,
+		tidalHifi,
 	)
 	makeGroup(0, nixosCode, cmsCode, kitty)
 
