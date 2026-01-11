@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   isLinux = pkgs.stdenv.isLinux;
@@ -42,6 +47,7 @@ in
     enable = true;
     bashrcExtra = ''
       eval "$(direnv hook bash)"
+      export NPM_ACCESS_TOKEN="$(cat ${config.age.secrets.npm-access-key.path})"
     '';
   };
 }

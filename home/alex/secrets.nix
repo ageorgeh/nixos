@@ -22,4 +22,9 @@ in
     path = p.keys.media;
     mode = "600";
   };
+
+  age.secrets."npm-access-key" = {
+    file = secrets + "/npm-access-key.age";
+    mode = "600";
+  };
 }

@@ -1,6 +1,7 @@
 { pkgs, lib, ... }:
 
 {
+  services.xsettingsd.enable = true;
   gtk = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
     theme = {
