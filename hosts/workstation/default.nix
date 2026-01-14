@@ -1,5 +1,4 @@
 {
-  config,
   inputs,
   pkgs,
   ...
@@ -22,14 +21,20 @@
       "flakes"
     ];
     substituters = [
-      "https://cache.nixos.org/"
       "https://hyprland.cachix.org"
+      "https://nix-community.cachix.org"
+      "https://cache.nixos-cuda.org"
     ];
     trusted-substituters = [
-      "https://cache.nixos.org/"
       "https://hyprland.cachix.org"
+      "https://nix-community.cachix.org"
+      "https://cache.nixos-cuda.org"
     ];
-    trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+    trusted-public-keys = [
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+    ];
   };
 
   # boot
@@ -119,6 +124,8 @@
       inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
+  programs.dconf.enable = true;
+
   services.printing.enable = true;
 
   # Not required with pipewire
@@ -135,7 +142,7 @@
   # https://nixos.wiki/wiki/Docker
   virtualisation.docker = {
     enable = true;
-    package = pkgs.docker_29;
+    package = pkgs.docker_28;
   };
 
   environment.systemPackages = with pkgs; [

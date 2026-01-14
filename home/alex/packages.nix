@@ -31,6 +31,7 @@ in
       lua
       playwright-test
       playwright-driver.browsers
+      direnv
 
       # Formatters
       prettierd # Prettier
@@ -119,9 +120,9 @@ in
         hyprshot # Screenshot tool
 
         # File system tools
-        xfce.thunar # File manager
-        xfce.tumbler # Thumbnailing service
-        xfce.thunar-volman # Volume management
+        thunar # File manager
+        tumbler # Thumbnailing service
+        thunar-volman # disk volume management
 
         mako # Notification daemon
         libnotify
@@ -133,7 +134,7 @@ in
 
         # Settings
         wdisplays # display settings
-        pavucontrol # volume manager
+        lxqt.pavucontrol-qt # sound volume manager
         wlogout # logout/lock GUI
 
         tidal-hifi

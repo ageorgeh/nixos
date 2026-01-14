@@ -7,6 +7,10 @@ in
     workstation
     media
   ];
+  "npm-access-key.age".publicKeys = [
+    workstation
+  ];
+
   "media-ssh-key.age".publicKeys = [ workstation ];
 
   "airvpn-private-key.age".publicKeys = [

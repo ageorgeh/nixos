@@ -2,11 +2,16 @@
   description = "NixOS config with NVIDIA + GNOME + Home Manager";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    # TODO remove this once unstable has 1.146.0 of aws sam
-    nixpkgs-sam-pr.url = "github:NixOS/nixpkgs/pull/459380/head";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # https://github.com/nix-community/nix4vscode
+    # This is an alternative and might be better but requires unstable (as does the below)
+    # i think when nix4vscode works with a stable channel we should switch to that
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -29,6 +34,7 @@
     # secrets
     agenix = {
       url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # firefox addons
@@ -37,7 +43,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    clipboard-sync.url = "github:dnut/clipboard-sync";
+    clipboard-sync = {
+      url = "github:dnut/clipboard-sync";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
   };
 
@@ -57,7 +66,8 @@
       mkPkgs =
         system:
         import nixpkgs {
-          inherit system overlays;
+          inherit system;
+          overlays = [ overlays.default ];
           config.allowUnfree = true;
         };
 
@@ -86,6 +96,8 @@
         };
     in
     {
+      inherit overlays;
+      overlay = overlays.default;
 
       # local
       lib = import ./lib/default.nix { };

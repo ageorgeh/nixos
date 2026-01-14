@@ -3,30 +3,13 @@
   "editor.fontLigatures": true,
   "typescript.tsserver.nodePath": "/home/alex/.nix-profile/bin/node",
 
-  "nix.enableLanguageServer": true,
-  "nix.serverPath": "nixd",
-  // LSP config can be passed via the ``nix.serverSettings.{lsp}`` as shown below.
-  "nix.serverSettings": {
-    // check https://github.com/nix-community/nixd/blob/main/nixd/docs/configuration.md for all nixd config
-    "nixd": {
-      "formatting": {
-        "command": ["nixfmt"]
-      }
-      // "options": {
-      //   // By default, this entry will be read from `import <nixpkgs> { }`.
-      //   // You can write arbitrary Nix expressions here, to produce valid "options" declaration result.
-      //   // Tip: for flake-based configuration, utilize `builtins.getFlake`
-      //   "nixos": {
-      //     "expr": "(builtins.getFlake \"/absolute/path/to/flake\").nixosConfigurations.<name>.options"
-      //   },
-      //   "home-manager": {
-      //     "expr": "(builtins.getFlake \"/absolute/path/to/flake\").homeConfigurations.<name>.options"
-      //   },
-      //   // Tip: use ${workspaceFolder} variable to define path
-      //   "nix-darwin": {
-      //     "expr": "(builtins.getFlake \"${workspaceFolder}/path/to/flake\").darwinConfigurations.<name>.options"
-      //   }
-      // }
-    }
-  }
+  // Lua
+  "Lua.runtime.version": "LuaJIT",
+  "Lua.diagnostics.globals": ["vim"],
+  "Lua.workspace.checkThirdParty": false,
+  "Lua.workspace.library": [
+    "${env:VIMRUNTIME}/lua",
+    "${env:VIMRUNTIME}/lua/vim",
+    "${3rd}/luv/library"
+  ]
 }
