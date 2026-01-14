@@ -47,6 +47,7 @@ in
         sso_registration_scopes = sso:account:access
       '';
     };
+
   }
   // lib.optionalAttrs (!isDarwin) {
     # Linux-style font path
@@ -71,6 +72,10 @@ in
 
     ".tmux.conf" = {
       source = ./dotfiles/.tmux.conf;
+      outOfStoreSymlink = true;
+    };
+    ".npmrc" = {
+      source = ./dotfiles/.npmrc;
       outOfStoreSymlink = true;
     };
 
