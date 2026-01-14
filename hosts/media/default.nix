@@ -71,6 +71,33 @@ in
     "d /srv/downloads/complete 2775 qbittorrent media - -"
   ];
 
+  # TODO make sure the plex service is readonly
+
+  fileSystems = {
+    # noexec on downloads
+    "/srv/downloads" = {
+      device = "/srv/downloads";
+      fsType = "none";
+      options = [
+        "bind"
+        "noexec"
+        "nodev"
+        "nosuid"
+      ];
+    };
+    # noexec on media
+    "/srv/media" = {
+      device = "/srv/media";
+      fsType = "none";
+      options = [
+        "bind"
+        "noexec"
+        "nodev"
+        "nosuid"
+      ];
+    };
+  };
+
   # Secrets
   age.identityPaths = [
     "${ssh}/id_ed25519_agenix"
