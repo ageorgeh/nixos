@@ -60,18 +60,16 @@ in
   systemd.tmpfiles.rules = [
     # d <path> <mode> <user> <group> <age> <argument>
 
-    # Media libraries
-    "d /srv/media 2775 root media - -"
-    "d /srv/media/movies 2775 root media - -"
-    "d /srv/media/tv 2775 root media - -"
+    # media - media group has read, execute
+    "d /srv/media 2750 root media - -"
+    "d /srv/media/movies 2750 root media - -"
+    "d /srv/media/tv 2750 root media - -"
 
-    # Downloads owned by qBittorrent
-    "d /srv/downloads 2775 qbittorrent media - -"
-    "d /srv/downloads/incomplete 2775 qbittorrent media - -"
-    "d /srv/downloads/complete 2775 qbittorrent media - -"
+    # downloads - downloads group has read, execute. qbittorrent owns
+    "d /srv/downloads 2750 qbittorrent downloads - -"
+    "d /srv/downloads/incomplete 2750 qbittorrent downloads - -"
+    "d /srv/downloads/complete 2750 qbittorrent downloads - -"
   ];
-
-  # TODO make sure the plex service is readonly
 
   fileSystems = {
     # noexec on downloads
