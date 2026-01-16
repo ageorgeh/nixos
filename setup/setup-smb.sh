@@ -7,7 +7,7 @@ cred_file="$cred_dir/smb-credentials"
 sudo mkdir -p "$cred_dir"
 sudo chmod 700 "$cred_dir"
 
-read -rp "SMB username: " smb_user
+read -rp "SMB username: (alex) " smb_user
 read -rsp "SMB password: " smb_pass
 echo
 

@@ -47,6 +47,9 @@ in
         email = "aghornung@gmail.com";
         name = "Alexander Hornung";
       };
+      pull = {
+        rebase = false;
+      };
     };
   };
 
