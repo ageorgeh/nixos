@@ -21,18 +21,16 @@ local function open_task_in_tasks_tab(task)
 		-- Create new 'Tasks' tab and name it
 		vim.cmd("tabnew")
 		vim.t[vim.fn.tabpagenr()].tabname = "Tasks"
-		-- Open the task list in the first window
-		overseer.open({ enter = false })
-	end
+		pcall(vim.cmd, "Tabby rename_tab Tasks")
 
-	-- Open the task log in a new window within the 'Tasks' tab
-	-- Don't like this so much prefer to just use the overseer tasks view
-	-- local bufnr = task:get_bufnr()
-	-- if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
-	-- 	vim.cmd("vsplit")
-	-- 	vim.api.nvim_win_set_buf(0, bufnr)
-	-- 	util.scroll_to_end(0)
-	-- end
+		-- overseer.open({ enter = false })
+
+		-- Open the task list in the first window
+		overseer.open({ enter = false, direction = "bottom" })
+
+		-- Quit the initial window (using the winid opt in open(...) causes it to be tiny)
+		vim.cmd(":q")
+	end
 
 	vim.cmd("tabprevious " .. (tasks_tabnr or 1))
 end

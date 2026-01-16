@@ -207,3 +207,12 @@ end, { silent = true, noremap = true })
 vim.keymap.set({ "i" }, "<C-K>", function()
 	require("luasnip").expand()
 end, { silent = true })
+
+vim.keymap.set("n", "<leader>rl", function()
+	for k in pairs(package.loaded) do
+		if k:match("^termui") then
+			package.loaded[k] = nil
+		end
+	end
+	vim.notify("termui reloaded")
+end)

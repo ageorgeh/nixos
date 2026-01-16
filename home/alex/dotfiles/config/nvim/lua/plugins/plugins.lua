@@ -6,4 +6,10 @@ return {
 	-- "L3MON4D3/LuaSnip",
 	"mbbill/undotree",
 	"b0o/schemastore.nvim",
+	{
+		dir = vim.fn.stdpath("config") .. "/local/termui",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		name = "termui",
+		lazy = false,
+	},
 }
