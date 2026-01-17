@@ -3,13 +3,12 @@ return {
 	dependencies = "nvim-tree/nvim-web-devicons",
 	config = function()
 		local theme = {
-			-- this is carbonfox theme
 			fill = "TabLineFill",
-			head = { fg = "#75beff", bg = "#1c1e26", style = "italic" },
-			current_tab = { fg = "#f6c177", bg = "#21202e", style = "italic" },
-			tab = { fg = "#c5cdd9", bg = "#1c1e26", style = "italic" },
-			win = { fg = "#1c1e26", bg = "#75beff", style = "italic" },
-			tail = { fg = "#75beff", bg = "#1c1e26", style = "italic" },
+			head = "TabLine",
+			current_tab = "TabLineSel",
+			tab = "TabLine",
+			win = "TabLine",
+			tail = "TabLine",
 		}
 
 		local function normalize(path)
@@ -21,6 +20,10 @@ return {
 			local current_file = normalize(vim.api.nvim_buf_get_name(current_buf))
 
 			local tabs = {
+				{
+					{ "  ", hl = { fg = "#7FBBB3", bg = "#414B50" } },
+					line.sep("", theme.head, theme.fill),
+				},
 				line.tabs().foreach(function(tab)
 					local hl = tab.is_current() and theme.current_tab or theme.tab
 
@@ -42,34 +45,40 @@ return {
 					end
 
 					return {
-						line.sep("", hl, theme.fill),
+						line.sep("", hl, theme.fill),
+						tab.number(),
 						tab_name,
 						modified and "",
-						line.sep("", hl, theme.fill),
+						tab.close_btn(""),
+						line.sep("", hl, theme.fill),
 						hl = hl,
 						margin = " ",
 					}
 				end),
 				line.spacer(),
+				{
+					line.sep("", theme.tail, theme.fill),
+					{ "  ", hl = theme.tail },
+				},
 				hl = theme.fill,
 			}
 
 			-- Add harpoon items to the end
-			if harpoon.items then
-				for _, item in ipairs(harpoon.items) do
-					local full_path = normalize(item.value) or item.value
-					local relative_path = vim.fn.fnamemodify(item.value, ":.")
-					local is_active = (full_path == current_file)
-					local hl = is_active and theme.current_tab or theme.tab
-
-					table.insert(tabs, {
-						line.sep("", hl, theme.fill),
-						relative_path,
-						hl = hl,
-						line.sep("", hl, theme.fill),
-					})
-				end
-			end
+			-- if harpoon.items then
+			-- 	for _, item in ipairs(harpoon.items) do
+			-- 		local full_path = normalize(item.value) or item.value
+			-- 		local relative_path = vim.fn.fnamemodify(item.value, ":.")
+			-- 		local is_active = (full_path == current_file)
+			-- 		local hl = is_active and theme.current_tab or theme.tab
+			--
+			-- 		table.insert(tabs, {
+			-- 			line.sep("", hl, theme.fill),
+			-- 			relative_path,
+			-- 			hl = hl,
+			-- 			line.sep("", hl, theme.fill),
+			-- 		})
+			-- 	end
+			-- end
 
 			return tabs
 		end)

@@ -53,7 +53,7 @@ end
 -- Renders the TermUI list buffer
 function Manager:render()
 	if not self.ui_buf or not vim.api.nvim_buf_is_valid(self.ui_buf) then
-		vim.notify("termui:Manager:render: ui_buf not valid")
+		log.error("render: ui_buf not valid")
 		return
 	end
 

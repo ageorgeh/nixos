@@ -23,6 +23,17 @@ require("lazy").setup({
     spec = {
         { import = "plugins" }, -- imports all plugins from nvim/lua/plugins/*.lua
     },
-    install = { colorscheme = { "rose-pine" } },
+    change_detection = {
+        -- automatically check for config file changes and reload the ui
+        enabled = true,
+        notify = false, -- get a notification when changes are found
+    },
+    install = {
+        colorscheme = {
+            -- "rose-pine"
+            -- "catppuccin"
+            "gruvbox"
+        }
+    },
     checker = { enabled = true },
 })
