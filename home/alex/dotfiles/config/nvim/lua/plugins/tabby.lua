@@ -3,23 +3,16 @@ return {
 	dependencies = "nvim-tree/nvim-web-devicons",
 	config = function()
 		local sel = vim.api.nvim_get_hl(0, { name = "TabLineSel", link = false })
-		local cur = vim.api.nvim_get_hl(0, { name = "Cursor", link = false })
-		local fill = vim.api.nvim_get_hl(0, { name = "TabLineFill", link = false })
-
-		vim.api.nvim_set_hl(0, "TabbyCurrent", {
-			fg = sel.fg,
-			bg = fill.bg,
-			-- bg = 0xc918b8,
-			sp = sel.sp, -- underline/undercurl color if present
-			bold = true,
-			-- underline = true,
-		})
+		local normal = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
 
 		local theme = {
 			fill = "TabLineFill",
-			current_tab = "TabbyCurrent",
+			current_tab = {
+				fg = sel.fg,
+				bg = normal.bg,
+			},
+			inactive_tab = "TabLine",
 			tab = "TabLine",
-			line_sep = "Cursor",
 		}
 
 		local function normalize(path)
@@ -39,8 +32,10 @@ return {
 
 			local segments = {
 				{
-					{ "  ", hl = { fg = "#7FBBB3", bg = "#414B50" } },
+					{ "  ", hl = theme.current_tab },
+					line.sep("", theme.current_tab, theme.fill),
 				},
+
 				line.tabs().foreach(function(tab)
 					local hl = tab.is_current() and theme.current_tab or theme.tab
 
@@ -61,16 +56,21 @@ return {
 					local left_dot = tab.is_current() and "●" or "○"
 
 					return {
-						"▎",
+						line.sep("", tab.is_current() and theme.current_tab or theme.fill, theme.fill),
+						" ",
 						left_dot,
+						" ",
 						tab.number(),
+						" ",
+						"▎",
 						tab_name,
-						modified and "",
+						" ",
+						modified and "" or " ",
+						" ",
 						tab.close_btn(""),
 						" ",
-
+						line.sep("", tab.is_current() and theme.current_tab or theme.fill, theme.fill),
 						hl = hl,
-						margin = " ",
 					}
 				end),
 				line.spacer(),
@@ -89,17 +89,23 @@ return {
 					local key = keys[i] or ""
 
 					table.insert(segments, {
-						"▎",
+						line.sep("", hl, theme.fill),
+						" ",
 						key,
-						": ",
+						" ",
+						"▎",
 						relative_path,
 						" ",
+						line.sep("", hl, theme.fill),
 						hl = hl,
 					})
 				end
 			end
 
-			table.insert(segments, { " " })
+			table.insert(segments, {
+				line.sep("", theme.current_tab, theme.fill),
+				{ "  ", hl = theme.current_tab },
+			})
 
 			return segments
 		end)
