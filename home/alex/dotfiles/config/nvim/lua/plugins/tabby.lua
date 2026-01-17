@@ -2,85 +2,106 @@ return {
 	"nanozuki/tabby.nvim",
 	dependencies = "nvim-tree/nvim-web-devicons",
 	config = function()
+		local sel = vim.api.nvim_get_hl(0, { name = "TabLineSel", link = false })
+		local cur = vim.api.nvim_get_hl(0, { name = "Cursor", link = false })
+		local fill = vim.api.nvim_get_hl(0, { name = "TabLineFill", link = false })
+
+		vim.api.nvim_set_hl(0, "TabbyCurrent", {
+			fg = sel.fg,
+			bg = fill.bg,
+			-- bg = 0xc918b8,
+			sp = sel.sp, -- underline/undercurl color if present
+			bold = true,
+			-- underline = true,
+		})
+
 		local theme = {
 			fill = "TabLineFill",
-			head = "TabLine",
-			current_tab = "TabLineSel",
+			current_tab = "TabbyCurrent",
 			tab = "TabLine",
-			win = "TabLine",
-			tail = "TabLine",
+			line_sep = "Cursor",
 		}
 
 		local function normalize(path)
-			return vim.loop.fs_realpath(path)
+			if not path or path == "" then
+				return ""
+			end
+			return vim.loop.fs_realpath(path) or path
 		end
+
+		local api = require("tabby.module.api")
+		local harpoon = require("harpoon")
+
 		require("tabby.tabline").set(function(line)
-			local harpoon = require("harpoon"):list()
+			local harpoon_list = harpoon:list()
 			local current_buf = vim.api.nvim_get_current_buf()
 			local current_file = normalize(vim.api.nvim_buf_get_name(current_buf))
 
-			local tabs = {
+			local segments = {
 				{
 					{ "  ", hl = { fg = "#7FBBB3", bg = "#414B50" } },
-					line.sep("", theme.head, theme.fill),
 				},
 				line.tabs().foreach(function(tab)
 					local hl = tab.is_current() and theme.current_tab or theme.tab
 
 					-- Get the tab name up til the [
-					local name = tab.name()
-					local index = string.find(name, "%[%d")
-					local tab_name = index and string.sub(name, 1, index - 1) or name
+					local tab_name = tab.name():gsub("%[%d.*$", ""):gsub("%s+$", "")
 
 					local modified = false
-					local win_ids = require("tabby.module.api").get_tab_wins(tab.id)
-					for _, win_id in ipairs(win_ids) do
-						if pcall(vim.api.nvim_win_get_buf, win_id) then
-							local bufid = vim.api.nvim_win_get_buf(win_id)
-							if vim.api.nvim_buf_get_option(bufid, "modified") then
+					for _, win in ipairs(api.get_tab_wins(tab.id)) do
+						if vim.api.nvim_win_is_valid(win) then
+							local buf = vim.api.nvim_win_get_buf(win)
+							if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].modified then
 								modified = true
 								break
 							end
 						end
 					end
 
+					local left_dot = tab.is_current() and "●" or "○"
+
 					return {
-						line.sep("", hl, theme.fill),
+						"▎",
+						left_dot,
 						tab.number(),
 						tab_name,
 						modified and "",
 						tab.close_btn(""),
-						line.sep("", hl, theme.fill),
+						" ",
+
 						hl = hl,
 						margin = " ",
 					}
 				end),
 				line.spacer(),
-				{
-					line.sep("", theme.tail, theme.fill),
-					{ "  ", hl = theme.tail },
-				},
 				hl = theme.fill,
 			}
 
+			local keys = { "h", "j", "k", "l" }
 			-- Add harpoon items to the end
-			-- if harpoon.items then
-			-- 	for _, item in ipairs(harpoon.items) do
-			-- 		local full_path = normalize(item.value) or item.value
-			-- 		local relative_path = vim.fn.fnamemodify(item.value, ":.")
-			-- 		local is_active = (full_path == current_file)
-			-- 		local hl = is_active and theme.current_tab or theme.tab
-			--
-			-- 		table.insert(tabs, {
-			-- 			line.sep("", hl, theme.fill),
-			-- 			relative_path,
-			-- 			hl = hl,
-			-- 			line.sep("", hl, theme.fill),
-			-- 		})
-			-- 	end
-			-- end
+			if harpoon_list.items then
+				for i, item in ipairs(harpoon_list.items) do
+					local full_path = normalize(item.value) or item.value
+					local relative_path = vim.fn.fnamemodify(item.value, ":.")
+					local is_active = (full_path == current_file)
+					local hl = is_active and theme.current_tab or theme.tab
 
-			return tabs
+					local key = keys[i] or ""
+
+					table.insert(segments, {
+						"▎",
+						key,
+						": ",
+						relative_path,
+						" ",
+						hl = hl,
+					})
+				end
+			end
+
+			table.insert(segments, { " " })
+
+			return segments
 		end)
 	end,
 }
