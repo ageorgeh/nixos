@@ -118,10 +118,10 @@ function Manager:new_terminal(cwd)
 	-- Start terminal job inside that buffer
 	local job_id
 	vim.api.nvim_buf_call(buf, function()
-		job_id = vim.fn.jobstart({
-			vim.o.shell,
-			"-ic",
-			[[
+		local shell = vim.o.shell or vim.env.SHELL or "sh"
+		local is_fish = shell:match("fish$") ~= nil
+
+		local bash_init = [[
 print_osc7() { printf '\033]7;file://%s\033\\' "$PWD"; }
 
 # keep any existing PROMPT_COMMAND
@@ -132,8 +132,33 @@ export PROMPT_COMMAND
 export -f print_osc7
 
 exec "$SHELL" -i
-]],
-		}, { term = true, cwd = cwd })
+]]
+
+		local fish_init = [[
+function __print_osc7
+  printf '\e]7;file://%s\e\\' (pwd)
+end
+
+# Preserve existing fish_prompt by renaming it, then wrap it.
+if functions -q fish_prompt
+  functions --copy fish_prompt __orig_fish_prompt
+  functions --erase fish_prompt
+else
+  function __orig_fish_prompt
+  end
+end
+
+function fish_prompt
+  __print_osc7
+  __orig_fish_prompt
+end
+
+exec fish -i
+]]
+
+		local argv = is_fish and { shell, "-ic", fish_init } or { shell, "-ic", bash_init }
+
+		job_id = vim.fn.jobstart(argv, { term = true, cwd = cwd })
 	end)
 
 	local idx = #self.terms + 1 -- +1 because tables are 1 indexed

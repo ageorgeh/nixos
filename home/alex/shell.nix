@@ -49,5 +49,26 @@ in
       eval "$(direnv hook bash)"
       export NPM_ACCESS_TOKEN="$(cat ${config.age.secrets.npm-access-key.path})"
     '';
+    # Open into fish if not already in fish
+    # Cant put fish as login shell as it may cause issues https://nixos.wiki/wiki/Fish
+    initExtra = ''
+      if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
+      then
+        shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
+        exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
+      fi
+    '';
+  };
+
+  programs.fish = {
+    enable = true;
+
+    interactiveShellInit = ''
+      direnv hook fish | source
+      set -x NPM_ACCESS_TOKEN (cat ${
+        lib.replaceStrings [ "\${XDG_RUNTIME_DIR}" ] [ "$XDG_RUNTIME_DIR" ]
+          config.age.secrets.npm-access-key.path
+      }) 
+    '';
   };
 }

@@ -1,7 +1,10 @@
--- Telescope
-local builtin = require("telescope.builtin")
+--
+-- telescope
+--
+local telescope_builtin = require("telescope.builtin")
 local lga = require("telescope").extensions.live_grep_args
-vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find Files" })
+
+vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, { desc = "Find Files" })
 vim.keymap.set("n", "<leader>fg", function()
 	lga.live_grep_args({
 		auto_quoting = true,
@@ -9,6 +12,7 @@ vim.keymap.set("n", "<leader>fg", function()
 		postfix = " -U ",
 	})
 end, { desc = "Live Grep" })
+
 vim.keymap.set("n", "<leader>fc", function()
 	require("telescope.builtin").find_files({
 		prompt_title = "Find in ~/code",
@@ -16,6 +20,7 @@ vim.keymap.set("n", "<leader>fc", function()
 		hidden = true, -- optional: include dotfiles
 	})
 end, { desc = "Find files in ~/code" })
+
 vim.keymap.set("n", "<leader>gc", function()
 	require("telescope.builtin").live_grep({
 		prompt_title = "Grep in ~/code",
@@ -23,11 +28,11 @@ vim.keymap.set("n", "<leader>gc", function()
 	})
 end, { desc = "Grep in ~/code" })
 
-vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Git files" })
-vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find Buffers" })
-vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Find Help" })
+vim.keymap.set("n", "<C-p>", telescope_builtin.git_files, { desc = "Git files" })
 
--- Alt for splitting same as in my tmux
+--
+-- navigation
+--
 vim.keymap.set("n", "<M-->", "<cmd>split<CR>", { desc = "Horizontal Split" })
 vim.keymap.set("n", "<M-\\>", "<cmd>vsplit<CR>", { desc = "Vertical Split" })
 
@@ -46,39 +51,39 @@ vim.keymap.set("n", "<leader>tw", function()
 	os.execute(cmd)
 end, { desc = "Open tmux window in buffer's directory" })
 
+--
 -- Nvim-tree
+--
 vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeFindFile<cr>", { desc = "Toggle NvimTree" })
 
+--
 -- Undotree
-vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { desc = "Toggle Undotree" })
+--
+-- vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { desc = "Toggle Undotree" })
 
+--
 -- Tmux navigator
+--
 vim.keymap.set("n", "<M-h>", ":<C-U>TmuxNavigateLeft<CR>")
 vim.keymap.set("n", "<M-j>", ":<C-U>TmuxNavigateDown<CR>")
 vim.keymap.set("n", "<M-k>", ":<C-U>TmuxNavigateUp<CR>")
 vim.keymap.set("n", "<M-l>", ":<C-U>TmuxNavigateRight<CR>")
 vim.keymap.set("n", "<C-\\>", ":<C-U>TmuxNavigatePrevious<CR>")
 
+--
 -- LazyGit
+--
 vim.keymap.set("n", "<leader>lg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
-
-vim.keymap.set("n", "<leader>lr", function()
-	vim.cmd("LspRestart")
-	-- vim.cmd("LspStop")
-	-- Need to let everything settle before remounting
-	-- vim.defer_fn(function()
-	-- vim.cmd("e")
-	-- end, 1000)
-end, { desc = "Restart LSP" })
 
 ---------------------- LSP ----------------------
 -- https://neovim.io/doc/user/lsp.html#vim.lsp.buf.hover()
-vim.keymap.set("n", "K", function()
-	vim.lsp.buf.hover({ border = "rounded", max_height = 25, title = "Hover" })
-end)
 
+vim.keymap.set("n", "<leader>lr", function()
+	vim.cmd("LspRestart")
+end, { desc = "Restart LSP" })
+
+-- C-K hover https://neovim.io/doc/user/lsp.html#vim.lsp.buf.hover()
 -- C-] Jump to definition. C-t to go back
--- C-x C-o Trigger code completion menu
 -- [-d and ]-d to move the cursor to previous / next errors
 -- grn renames all references of the symbol under the cursor
 -- grr lists all references of the symbol under the cursor
@@ -110,26 +115,10 @@ vim.keymap.set("n", "<leader>x", function()
 	vim.cmd("echo 'Made executable: " .. vim.fn.expand("%") .. "'")
 end, { silent = true })
 
+--
 -- Harpoon
+--
 local harpoon = require("harpoon")
-local conf = require("telescope.config").values
-local function toggle_telescope(harpoon_files)
-	local file_paths = {}
-	for _, item in ipairs(harpoon_files.items) do
-		table.insert(file_paths, item.value)
-	end
-
-	require("telescope.pickers")
-		.new({}, {
-			prompt_title = "Harpoon",
-			finder = require("telescope.finders").new_table({
-				results = file_paths,
-			}),
-			previewer = conf.file_previewer({}),
-			sorter = conf.generic_sorter({}),
-		})
-		:find()
-end
 
 vim.keymap.set("n", "<leader>a", function()
 	harpoon:list():add()
@@ -159,10 +148,6 @@ vim.keymap.set("n", "<C-S-N>", function()
 	harpoon:list():next()
 end)
 
--- Nvim Tree TODO
--- Find and focus directory
--- Move functions pertaining to key commands to lua/utils/...
-
 -- Formatting
 vim.keymap.set("n", "<leader>lf", function()
 	require("conform").format({ async = true, lsp_fallback = true })
@@ -184,14 +169,15 @@ vim.keymap.set("n", "<leader>tsd", ":TSToolsGoToSourceDefinition<CR>", { desc = 
 vim.keymap.set("n", "<leader>tsn", ":TSToolsRenameFile<CR>", { desc = "Rename File" })
 vim.keymap.set("n", "<leader>tsF", ":TSToolsFileReferences<CR>", { desc = "File References" })
 
+--
 -- Overseer
--- vim.keymap.set("n", "<leader>or", ":OverseerRun<CR>", { desc = "Overseer run" })
-
+--
+local open_tasks_in_task_bar = require("utils.overseer.tasksTab")
 vim.keymap.set("n", "<leader>or", function()
 	local overseer = require("overseer")
 	overseer.run_task({}, function(task)
 		if task then
-			overseer.run_action(task, "Open in tasks tab")
+			open_tasks_in_task_bar()
 		end
 	end)
 end, { desc = "Overseer toggle" })
@@ -208,11 +194,13 @@ vim.keymap.set({ "i" }, "<C-K>", function()
 	require("luasnip").expand()
 end, { silent = true })
 
-vim.keymap.set("n", "<leader>rl", function()
-	for k in pairs(package.loaded) do
-		if k:match("^termui") then
-			package.loaded[k] = nil
-		end
-	end
-	vim.notify("termui reloaded")
-end)
+--
+-- trouble
+--
+vim.keymap.set(
+	"n",
+	"<leader>xx",
+	":Trouble diagnostics toggle filter.buf=0<CR>",
+	{ desc = "Buffer diagnostics (Trouble)" }
+)
+vim.keymap.set("n", "grr", ":Trouble lsp_references toggle<CR>", { desc = "LSP references (Trouble)" })

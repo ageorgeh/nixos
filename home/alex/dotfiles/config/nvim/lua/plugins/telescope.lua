@@ -22,7 +22,8 @@ return {
 		local action_state = require("telescope.actions.state")
 		local actions = require("telescope.actions")
 		local lga_actions = require("telescope-live-grep-args.actions")
-		local troubleSource = require("trouble.sources.telescope")
+
+		local open_with_trouble = require("trouble.sources.telescope").open
 
 		function telescope_custom_actions._multiopen(prompt_bufnr, open_cmd)
 			local picker = action_state.get_current_picker(prompt_bufnr)
@@ -34,15 +35,19 @@ return {
 			actions.send_selected_to_qflist(prompt_bufnr)
 			vim.cmd("cfdo " .. open_cmd)
 		end
+
 		function telescope_custom_actions.multi_selection_open_vsplit(prompt_bufnr)
 			telescope_custom_actions._multiopen(prompt_bufnr, "vsplit")
 		end
+
 		function telescope_custom_actions.multi_selection_open_split(prompt_bufnr)
 			telescope_custom_actions._multiopen(prompt_bufnr, "split")
 		end
+
 		function telescope_custom_actions.multi_selection_open_tab(prompt_bufnr)
 			telescope_custom_actions._multiopen(prompt_bufnr, "tabe")
 		end
+
 		function telescope_custom_actions.multi_selection_open(prompt_bufnr)
 			telescope_custom_actions._multiopen(prompt_bufnr, "edit")
 		end
@@ -55,9 +60,7 @@ return {
 							actions.smart_send_to_qflist(prompt_bufnr)
 							require("trouble").open({ mode = "qflist" })
 						end,
-						["<c-t>"] = function(args)
-							require("trouble.sources.telescope").open(args)
-						end,
+						["<c-t>"] = open_with_trouble,
 						["<C-k>"] = lga_actions.quote_prompt({ postfix = " -U " }),
 					},
 					n = {
@@ -65,14 +68,11 @@ return {
 						--  = telescope_custom_actions.multi_selection_open,
 						["<C-V>"] = telescope_custom_actions.multi_selection_open_vsplit,
 						["<C-S>"] = telescope_custom_actions.multi_selection_open_split,
-						["<C-T>"] = telescope_custom_actions.multi_selection_open_tab,
 						["<C-q>"] = function(prompt_bufnr)
 							actions.smart_send_to_qflist(prompt_bufnr)
 							require("trouble").open({ mode = "qflist" })
 						end,
-						["<c-t>"] = function()
-							troubleSource.open()
-						end,
+						["<c-t>"] = open_with_trouble,
 					},
 				},
 			},

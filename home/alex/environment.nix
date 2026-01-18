@@ -66,9 +66,6 @@ in
     lib.mapAttrsToList (k: v: "${k},${v}") hyprEnv
   );
 
-  # aliases, prompt, functions...
-  programs.bash.initExtra = '''';
-
   home.sessionPath = [
     "${homeDir}/.config/pomo"
     "${homeDir}/.local/share/pnpm"
