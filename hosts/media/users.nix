@@ -5,6 +5,9 @@
     groups = {
       media = { };
       downloads = { };
+
+      plex = { };
+      qbittorrent = { };
     };
     users = {
       alex = {
@@ -20,6 +23,7 @@
       };
       qbittorrent = {
         isSystemUser = true;
+        group = "qbittorrent";
         extraGroups = [
           "media"
           "downloads"
@@ -27,6 +31,7 @@
       };
       plex = {
         isSystemUser = true;
+        group = "plex";
         extraGroups = [ "media" ];
       };
     };

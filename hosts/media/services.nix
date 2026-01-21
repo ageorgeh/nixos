@@ -28,9 +28,9 @@ in
     };
   };
 
-  services.plex = {
+  services.jellyfin = {
     enable = true;
-    openFirewall = true; # TCP 32400
+    openFirewall = true; # http://192.168.20.75:8096
     user = "plex";
     group = "plex";
   };
@@ -206,9 +206,3 @@ in
     };
   };
 }
-# sudo rg "srv" /var/lib/qBittorrent/qBittorrent/
-# sudo rg "srv" /var/lib/qBittorrent/qBittorrent/config/ -L
-# /var/lib/qBittorrent/qBittorrent/config/categories.json
-
-# wrong: -rw------- 1 qbittorrent qbittorrent   77 Jan  1  1970 categories.json
-# correct: -rw-r--r-- 1 qbittorrent qbittorrent    4 Jan  5 10:34 categories.json

@@ -1,5 +1,4 @@
-- add npm config, in particular the verdaccio part
-- Malware scanning on media server
-- make dynamodb local a systemd service and connect to it through the nosql workbench rather than using its internal dynamodb-local
-
-- darwin host
+- Media server
+    - Document all the steps for ugoos setup
+    - Export kodi configuration and store it here if possible 
+- Darwin host
