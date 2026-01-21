@@ -1,39 +1,39 @@
-local function open_task_in_tasks_tab(task)
-	local util = require("overseer.util")
+local function open_task_in_tasks_tab()
 	local overseer = require("overseer")
 
-	local tasks_tabnr = nil
-	local tab_count = vim.fn.tabpagenr("$")
+	local cur_tab = vim.api.nvim_get_current_tabpage()
 
-	-- Check for existing 'Tasks' tab
-	for i = 1, tab_count do
-		local tabname = vim.t[i].tabname
-		if tabname == "Tasks" then
-			tasks_tabnr = i
-			break
+	local function find_tasks_tab()
+		for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
+			local ok, name = pcall(vim.api.nvim_tabpage_get_var, tab, "tabname")
+			if ok and name == "Tasks" then
+				return tab
+			end
 		end
 	end
 
-	if tasks_tabnr then
-		-- Switch to existing 'Tasks' tab
-		vim.cmd("tabnext " .. tasks_tabnr)
+	local tasks_tab = find_tasks_tab()
+
+	if tasks_tab and vim.api.nvim_tabpage_is_valid(tasks_tab) then
+		vim.api.nvim_set_current_tabpage(tasks_tab)
 	else
-		-- Create new 'Tasks' tab and name it
 		vim.cmd("tabnew")
-		vim.t[vim.fn.tabpagenr()].tabname = "Tasks"
-		-- Open the task list in the first window
-		overseer.open({ enter = false })
+		tasks_tab = vim.api.nvim_get_current_tabpage()
+
+		-- Proper tabpage-scoped variable (no numeric indexing)
+		vim.api.nvim_tabpage_set_var(tasks_tab, "tabname", "Tasks")
+		pcall(vim.cmd, "Tabby rename_tab Tasks")
+
+		overseer.open({ enter = false, direction = "bottom" })
+
+		-- Close the initial window created by :tabnew
+		vim.cmd("q")
 	end
 
-	-- Open the task log in a new window within the 'Tasks' tab
-	-- Don't like this so much prefer to just use the overseer tasks view
-	-- local bufnr = task:get_bufnr()
-	-- if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
-	-- 	vim.cmd("vsplit")
-	-- 	vim.api.nvim_win_set_buf(0, bufnr)
-	-- 	util.scroll_to_end(0)
-	-- end
-
-	vim.cmd("tabprevious " .. (tasks_tabnr or 1))
+	-- Return to where you were originally (instead of tabprevious ...)
+	if vim.api.nvim_tabpage_is_valid(cur_tab) then
+		vim.api.nvim_set_current_tabpage(cur_tab)
+	end
 end
+
 return open_task_in_tasks_tab

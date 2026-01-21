@@ -175,7 +175,7 @@
       accent = "peach";
       font = "Noto Sans";
       fontSize = "9";
-      background = "${../../home/alex/wallpapers/min-linux.jpg}";
+      background = "${../../home/alex/wallpapers/gruvbox-nix.png}";
       loginBackground = false;
     })
   ];

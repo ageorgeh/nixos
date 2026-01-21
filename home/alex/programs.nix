@@ -9,7 +9,11 @@ let
     ms-vscode-remote.remote-ssh-edit
     ms-vscode.remote-explorer
 
-    mvllow.rose-pine
+    # theme
+    # mvllow.rose-pine
+    # catppuccin.catppuccin-vsc
+    # catppuccin.catppuccin-vsc-icons
+    jdinhlife.gruvbox
 
     openai.chatgpt
 
@@ -46,6 +50,9 @@ in
       user = {
         email = "aghornung@gmail.com";
         name = "Alexander Hornung";
+      };
+      pull = {
+        rebase = false;
       };
     };
   };
@@ -168,13 +175,19 @@ in
         extensions = {
           force = true;
           packages = with pkgs.nur.repos.rycee.firefox-addons; [
+            # search here
+            # https://nur.nix-community.org/repos/rycee/
+
             ublock-origin
             keepassxc-browser
             darkreader
             vimium
             floccus
+
             # https://color.firefox.com/?theme=XQAAAAJeAQAAAAAAAABBqYhm849SCia48_6EGccwS-xMDPr6BEKkYVSt2yMiAsBLvzmxZf3j0v9IRknMzArcpsl645Ge7EzJvXkxnR-IdpUfjuoH0j2fU5z119YfdJkFCZr51wD39X1AG95aQjSf047Gsfg1eLa-yQmEuzaYNrnHf14SvHw9S9ScswXTOZbWwmf1JWZimp73kln7qUWzPieoSAtTvOMSnh-_0rQgIAgRFJJmsMtlxHeL_7_RO1PDjOCPnSpqZVvvdez9JEkZPIodlTKsU6P-62x-rt27JQGm6FBGeeFfDv9hn2AA
-            firefox-color
+            # firefox-color
+
+            gruvbox-dark-theme
           ];
         };
       };
