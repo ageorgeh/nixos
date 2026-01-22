@@ -1,4 +1,1 @@
-- Media server
-    - Export kodi configuration and store it here if possible 
-    - add media-client to ssh config
 - Darwin host

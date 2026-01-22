@@ -41,6 +41,11 @@ in
         user = "alex"; # TODO this too
         identityFile = p.keys.media;
       };
+
+      "media-client" = {
+        hostname = "192.168.20.39";
+        user = "root";
+      };
     };
   };
 }

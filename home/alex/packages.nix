@@ -66,6 +66,7 @@ in
       zip # Easier zipping
       ripgrep # faster grep - Used by nvim plugs
       tree
+      util-linux
 
       lynx # Used by nvim plugs
       lua51Packages.tiktoken_core # Used by copilot-chat nvim: https://github.com/CopilotC-Nvim/CopilotChat.nvim#optional-dependencies
@@ -76,6 +77,12 @@ in
       tmux # Terminal multiplexer
       webfontkitgenerator # Generating fonts
       # polypane # Browser dev tool - REMOVED from nix packages due to lack of support
+
+      # images
+      gimp
+      loupe
+
+      vlc
 
       #
       # Nvim

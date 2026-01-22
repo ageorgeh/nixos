@@ -156,7 +156,12 @@ end)
 -- Tabs
 vim.keymap.set("n", "<leader>tb", ":tabnew<CR>", { desc = "New tab" })
 vim.keymap.set("n", "<leader>tn", ":tabn<CR>", { desc = "Next tab" })
+vim.keymap.set("n", "<leader>tp", ":tabprevious<CR>", { desc = "Previous tab" })
 vim.keymap.set("n", "<leader>tx", ":tabclose<CR>", { desc = "Close tab" })
+
+for i = 1, 3, 1 do
+	vim.keymap.set("n", "<leader>t" .. i, ":tabn" .. i .. "<CR>", { desc = "Open tab " .. i })
+end
 
 -- Typescript tools
 vim.keymap.set("n", "<leader>tso", ":TSToolsOrganizeImports<CR>", { desc = "Organize Imports" })
@@ -168,6 +173,27 @@ vim.keymap.set("n", "<leader>tsf", ":TSToolsFixAll<CR>", { desc = "Fix All" })
 vim.keymap.set("n", "<leader>tsd", ":TSToolsGoToSourceDefinition<CR>", { desc = "Go To Source Definition" })
 vim.keymap.set("n", "<leader>tsn", ":TSToolsRenameFile<CR>", { desc = "Rename File" })
 vim.keymap.set("n", "<leader>tsF", ":TSToolsFileReferences<CR>", { desc = "File References" })
+
+--
+-- Neotest
+--
+local neotest = require('neotest')
+-- Run the test nearest to the cursor (your main use case)
+vim.keymap.set("n", "<leader>ten", function()
+	neotest.run.run()
+end, { desc = "Run nearest test" })
+
+-- Run all tests in the current file
+vim.keymap.set("n", "<leader>tef", function()
+	neotest.run.run(vim.fn.expand("%"))
+end, { desc = "Run test file" })
+
+-- -- Optional quality-of-life mappings
+vim.keymap.set("n", "<leader>teo", function()
+	require("neotest").output_panel.open()
+end)
+-- vim.keymap.set("n", "<leader>ts", neotest.summary.toggle, { desc = "Toggle test summary" })
+
 
 --
 -- Overseer
@@ -202,5 +228,11 @@ vim.keymap.set(
 	"<leader>xx",
 	":Trouble diagnostics toggle filter.buf=0<CR>",
 	{ desc = "Buffer diagnostics (Trouble)" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>xs",
+	":Trouble symbols toggle filter.buf=0<CR>",
+	{ desc = "Buffer symbols (Trouble)" }
 )
 vim.keymap.set("n", "grr", ":Trouble lsp_references toggle<CR>", { desc = "LSP references (Trouble)" })
