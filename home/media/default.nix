@@ -27,6 +27,9 @@ in
         email = "aghornung@gmail.com";
         name = "Alexander Hornung - media";
       };
+      pull = {
+        rebase = false;
+      };
     };
   };
 

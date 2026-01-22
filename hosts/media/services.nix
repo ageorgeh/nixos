@@ -39,6 +39,10 @@ in
     enable = true;
     openFirewall = true;
 
+    # Info testparm -s
+    # List users: sudo pdbedit -L
+    # Create user: sudo smbpasswd -a <user>
+
     settings = {
       global = {
         "server string" = "Media Server";
@@ -77,6 +81,18 @@ in
         "create mask" = "0664";
         "directory mask" = "0775";
       };
+
+      backups = {
+        path = "/srv/backups";
+        browseable = "yes";
+        writeable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "valid users" = "kodi";
+        "force group" = "backup";
+        "create mask" = "0664";
+        "directory mask" = "0775";
+      };
     };
   };
 
@@ -106,8 +122,8 @@ in
           MaxUploads = "30";
           MaxUploadsPerTorrent = "8";
           Port = "20882";
-          TempPath = "/srv/downloads/incomplete";
-          TempPathEnabled = "true";
+          # TempPath = "/srv/downloads/incomplete";
+          # TempPathEnabled = "true";
         };
       };
       Preferences = {

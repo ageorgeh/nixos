@@ -61,14 +61,18 @@ in
     # d <path> <mode> <user> <group> <age> <argument>
 
     # media - media group has read, execute
-    "d /srv/media 2750 root media - -"
-    "d /srv/media/movies 2750 root media - -"
-    "d /srv/media/tv 2750 root media - -"
+    "d /srv/media 2770 root media - -"
+    "d /srv/media/movies 2770 root media - -"
+    "d /srv/media/tv 2770 root media - -"
 
     # downloads - downloads group has read, execute. qbittorrent owns
     "d /srv/downloads 2750 qbittorrent downloads - -"
     "d /srv/downloads/incomplete 2750 qbittorrent downloads - -"
     "d /srv/downloads/complete 2750 qbittorrent downloads - -"
+
+    # backups - backup group has read, execute. root owns
+    "d /srv/backups 2750 root backup - -"
+    "d /srv/backups/kodi 2750 kodi backup - -"
   ];
 
   fileSystems = {

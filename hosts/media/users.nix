@@ -5,9 +5,11 @@
     groups = {
       media = { };
       downloads = { };
+      backup = { };
 
       plex = { };
       qbittorrent = { };
+      kodi = { };
     };
     users = {
       alex = {
@@ -16,6 +18,7 @@
           "wheel"
           "media"
           "downloads"
+          "backup"
         ];
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOR+Q5C3CCcWO96jb3K5y8zepC01WfnrLvn9uzhHGMG8 media"
@@ -33,6 +36,12 @@
         isSystemUser = true;
         group = "plex";
         extraGroups = [ "media" ];
+      };
+
+      kodi = {
+        isSystemUser = true;
+        group = "kodi";
+        extraGroups = [ "backup" ];
       };
     };
   };
