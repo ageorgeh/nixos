@@ -39,6 +39,10 @@ in
       eslint_d # Eslint
       nixfmt # Nix formatter
 
+      # install via npm for project versioning
+      # oxlint
+      # oxfmt
+
       dart-sass # SASS globally installed
       imagemagick # Image manipulation
       socat # Socket connection

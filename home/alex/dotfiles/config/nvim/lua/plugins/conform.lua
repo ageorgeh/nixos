@@ -2,18 +2,6 @@ return {
 	"stevearc/conform.nvim",
 	event = { "BufWritePre" },
 	cmd = { "ConformInfo" },
-	keys = {
-		{
-			-- Customize or remove this keymap to your liking
-			"<leader>f",
-			function()
-				require("conform").format({ async = true })
-			end,
-			mode = "",
-			desc = "Format buffer",
-		},
-	},
-	-- This will provide type hinting with LuaLS
 	---@module "conform"
 	---@type conform.setupOpts
 	opts = {
@@ -23,16 +11,16 @@ return {
 			python = { "isort", "black" },
 			javascript = { "eslint_d", "prettierd" },
 			typescript = { "eslint_d", "prettierd" },
-			-- svelte = { "svx_split_formatter", "eslint_d", "prettierd" },
 			svelte = function(bufnr)
 				local filename = vim.api.nvim_buf_get_name(bufnr)
 				local function ends_with(str, ending)
-					return ending == "" or str:sub(-#ending) == ending
+					return ending == "" or str:sub(- #ending) == ending
 				end
 				if ends_with(filename, ".md.svelte") then
 					return { "eslint_d", "svx_split_formatter" }
 				else
-					return { "eslint_d", "prettierd" }
+					-- return { "eslint_d", "prettierd" }
+					return {}
 				end
 			end,
 			css = { "eslint_d", "prettierd" },

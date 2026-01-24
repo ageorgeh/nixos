@@ -140,6 +140,7 @@ vim.lsp.config("tailwindcss", {
 	end,
 })
 vim.lsp.enable("tailwindcss")
+
 vim.lsp.enable("nixd")
 vim.lsp.config('nixd', {
 	cmd = { 'nixd' },
@@ -169,6 +170,41 @@ vim.lsp.config("jsonls", {
 vim.lsp.enable("bashls")
 vim.lsp.enable("glsl_analyzer")
 vim.lsp.enable("gopls")
+
+
+
+vim.lsp.enable("oxlin")
+vim.lsp.config("oxlin", {
+	cmd = function(dispatchers, config)
+		local cmd = 'oxlint'
+		local local_cmd = (config or {}).root_dir and config.root_dir .. '/node_modules/.bin/oxlint'
+		if local_cmd and vim.fn.executable(local_cmd) == 1 then
+			cmd = local_cmd
+		end
+		return vim.lsp.rpc.start({ cmd, '--lsp' }, dispatchers)
+	end,
+	filetypes = {
+		'javascript',
+		'javascriptreact',
+		'javascript.jsx',
+		'typescript',
+		'typescriptreact',
+		'typescript.tsx',
+		"svelte"
+	},
+	settings = {
+		oxc = {
+			-- typeAware = true
+		}
+	},
+	workspace_required = true,
+	root_dir = function(bufnr, on_dir)
+		local fname = vim.api.nvim_buf_get_name(bufnr)
+		local root_markers = util.insert_package_json({ '.oxlintrc.json' }, 'oxlint', fname)
+		on_dir(vim.fs.dirname(vim.fs.find(root_markers, { path = fname, upward = true })[1]))
+	end,
+})
+
 
 -- vim.api.nvim_create_autocmd("LspAttach", {
 -- 	callback = function(args)
