@@ -9,21 +9,20 @@ return {
 		formatters_by_ft = {
 			lua = { "stylua" },
 			python = { "isort", "black" },
-			javascript = { "eslint_d", "prettierd" },
-			typescript = { "eslint_d", "prettierd" },
+			javascript = { "prettierd" },
+			typescript = { "prettierd" },
 			svelte = function(bufnr)
 				local filename = vim.api.nvim_buf_get_name(bufnr)
 				local function ends_with(str, ending)
 					return ending == "" or str:sub(- #ending) == ending
 				end
 				if ends_with(filename, ".md.svelte") then
-					return { "eslint_d", "svx_split_formatter" }
+					return { "svx_split_formatter" }
 				else
-					-- return { "eslint_d", "prettierd" }
-					return {}
+					return { "prettierd" }
 				end
 			end,
-			css = { "eslint_d", "prettierd" },
+			css = { "prettierd" },
 			svx = { "svx_split_formatter" },
 			json = { "prettierd" },
 			jsonc = { "prettierd" },

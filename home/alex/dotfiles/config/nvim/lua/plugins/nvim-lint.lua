@@ -7,10 +7,10 @@ return {
 	-- 		svelte = { "eslint_d" },
 	-- 		svx = {},
 	-- 	}
-	-- 	-- vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
-	-- 	-- 	callback = function()
-	-- 	-- 		require("lint").try_lint()
-	-- 	-- 	end,
-	-- 	-- })
+	-- 	vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
+	-- 		callback = function()
+	-- 			require("lint").try_lint()
+	-- 		end,
+	-- 	})
 	-- end,
 }
