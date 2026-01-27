@@ -2,11 +2,35 @@
   description = "NixOS config with NVIDIA + GNOME + Home Manager";
 
   inputs = {
+    # NixOS
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+  
+    darwin = {
+      url = "github:LnL7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-homebrew = {
+      url = "github:zhaofengli-wip/nix-homebrew";
+    };
+    homebrew-bundle = {
+      url = "github:homebrew/homebrew-bundle";
+      flake = false;
+    };
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
+
+
     # https://github.com/nix-community/nix4vscode
     # This is an alternative and might be better but requires unstable (as does the below)
     # i think when nix4vscode works with a stable channel we should switch to that
@@ -57,6 +81,12 @@
       nixpkgs,
       clipboard-sync,
       home-manager,
+      # darwin
+      darwin,
+      nix-homebrew,
+      homebrew-core,
+      homebrew-cask,
+      homebrew-bundle,
       self,
       ...
     }:
@@ -110,8 +140,31 @@
           wayland = true;
         };
         media = mkHost { hostName = "media"; };
-        # laptop = mkHost { hostName = "laptop"; };
       };
+
+      darwinConfigurations = {
+        laptop = darwin.lib.darwinSystem {
+          system  = "aarch64-darwin";
+          specialArgs = inputs;
+          modules = [
+            home-manager.darwinModules.home-manager
+            nix-homebrew.darwinModules.nix-homebrew
+            {
+              nix-homebrew = {
+                user = "alex";
+                enable = true;
+                taps = {
+                  "homebrew/homebrew-core" = homebrew-core;
+                  "homebrew/homebrew-cask" = homebrew-cask;
+                  "homebrew/homebrew-bundle" = homebrew-bundle;
+                };
+                mutableTaps = false;
+                autoMigrate = true;
+              };
+            }
+            ./hosts/laptop/default.nix
+          ];
+        };
 
       homeConfigurations = {
         alex-darwin = home-manager.lib.homeManagerConfiguration {
@@ -123,5 +176,7 @@
           modules = [ ./home/alex/default.nix ];
         };
       };
+      } ;
+        
     };
 }
