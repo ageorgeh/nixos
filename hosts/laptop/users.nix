@@ -1,4 +1,4 @@
-{ inputs, config, ... }:
+{ inputs, pkgs, config, ... }:
 
 {
   users = {
@@ -11,7 +11,6 @@
     home     = "/Users/alex";
     isHidden = false;
     shell    = pkgs.zsh;
-    isNormalUser = true;
       };
     };
   };
@@ -27,5 +26,5 @@
     users = {
      alex =  import ../../home/alex/default.nix;
     };
-  }
+  };
 }

@@ -17,7 +17,7 @@ let
 in
 {
   # Directory structure
-  xdg.userDirs = {
+  xdg.userDirs = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
     createDirectories = true;
     extraConfig = {

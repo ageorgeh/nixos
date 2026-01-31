@@ -73,50 +73,50 @@ in
         # enableUpdateCheck = false;
         # enableExtensionUpdateCheck = false;
 
-        extensions =
-          commonVsExtensions
-          ++ (with extensions; [
+        # extensions =
+        #   commonVsExtensions
+        #   ++ (with extensions; [
 
-            # ---- config ---- #
-            sumneko.lua
-            ms-vscode.makefile-tools
-            golang.go
+        #     # ---- config ---- #
+        #     sumneko.lua
+        #     ms-vscode.makefile-tools
+        #     golang.go
 
-            # ---- python ---- #
-            ms-python.black-formatter
-            ms-python.isort
-            ms-python.vscode-pylance
-            ms-python.python
-            ms-python.debugpy
-            ms-python.vscode-python-envs
+        #     # ---- python ---- #
+        #     ms-python.black-formatter
+        #     ms-python.isort
+        #     ms-python.vscode-pylance
+        #     ms-python.python
+        #     ms-python.debugpy
+        #     ms-python.vscode-python-envs
 
-            ms-toolsai.jupyter
-            ms-toolsai.vscode-jupyter-cell-tags
-            ms-toolsai.jupyter-keymap
-            ms-toolsai.jupyter-renderers
-            ms-toolsai.vscode-jupyter-slideshow
+        #     ms-toolsai.jupyter
+        #     ms-toolsai.vscode-jupyter-cell-tags
+        #     ms-toolsai.jupyter-keymap
+        #     ms-toolsai.jupyter-renderers
+        #     ms-toolsai.vscode-jupyter-slideshow
 
-            # ---- web ---- #
-            nicoespeon.abracadabra
-            dbaeumer.vscode-eslint
+        #     # ---- web ---- #
+        #     nicoespeon.abracadabra
+        #     dbaeumer.vscode-eslint
 
-            # glsl
-            nolanderc.glsl-analyzer
-            circledev.glsl-canvas
+        #     # glsl
+        #     nolanderc.glsl-analyzer
+        #     circledev.glsl-canvas
 
-            george-alisson.html-preview-vscode
-            svelte.svelte-vscode
-            sebsojeda.vscode-svx
-            bradlc.vscode-tailwindcss
-            typescriptteam.native-preview
+        #     george-alisson.html-preview-vscode
+        #     svelte.svelte-vscode
+        #     sebsojeda.vscode-svx
+        #     bradlc.vscode-tailwindcss
+        #     typescriptteam.native-preview
 
-            christian-kohler.npm-intellisense
+        #     christian-kohler.npm-intellisense
 
-            # testing
-            ms-playwright.playwright
-            vitest.explorer
+        #     # testing
+        #     ms-playwright.playwright
+        #     vitest.explorer
 
-          ]);
+        #   ]);
       };
     };
   };

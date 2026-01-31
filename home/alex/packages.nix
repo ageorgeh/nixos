@@ -1,6 +1,7 @@
 { pkgs, lib, ... }:
 let
   isLinux = pkgs.stdenv.isLinux;
+  isDarwin = pkgs.stdenv.isDarwin;
 in
 {
   home.packages =
@@ -38,10 +39,6 @@ in
       stylua # Formatting for .lua
       eslint_d # Eslint
       nixfmt # Nix formatter
-
-      # install via npm for project versioning
-      # oxlint
-      # oxfmt
 
       dart-sass # SASS globally installed
       imagemagick # Image manipulation
@@ -82,11 +79,8 @@ in
       webfontkitgenerator # Generating fonts
       # polypane # Browser dev tool - REMOVED from nix packages due to lack of support
 
-      # images
-      gimp
-      loupe
+      
 
-      vlc
 
       #
       # Nvim
@@ -149,6 +143,19 @@ in
         wlogout # logout/lock GUI
 
         tidal-hifi
+
+      # images
+      gimp
+      loupe
+
+
+      vlc
       ]
-    );
+    )
+    ++ lib.optionals isDarwin (
+  with pkgs;
+[
+vlc-bin
+]
+);
 }

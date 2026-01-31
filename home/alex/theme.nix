@@ -1,8 +1,8 @@
 { pkgs, lib, ... }:
 
-{
+lib.mkIf pkgs.stdenv.isLinux {
   services.xsettingsd.enable = true;
-  gtk = lib.mkIf pkgs.stdenv.isLinux {
+  gtk = {
     enable = true;
     theme = {
       # This should help with finding the theme name once instaled

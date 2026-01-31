@@ -1,1 +1,3 @@
 - Darwin host
+- Self hosted github runners
+    - https://github.com/juspay/github-nix-ci

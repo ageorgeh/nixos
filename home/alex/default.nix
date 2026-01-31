@@ -12,7 +12,7 @@ in
     inputs.agenix.homeManagerModules.default
 
     ./programs.nix # programs (with options)
-    ./packages.nix # list of packages
+    # ./packages.nix # list of packages
 
     ./ssh.nix # SSH config
     ./secrets.nix # age secrets config

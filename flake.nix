@@ -145,7 +145,8 @@
       darwinConfigurations = {
         laptop = darwin.lib.darwinSystem {
           system  = "aarch64-darwin";
-          specialArgs = inputs;
+          pkgs = mkPkgs "aarch64-darwin";
+          specialArgs = { inherit inputs; };
           modules = [
             home-manager.darwinModules.home-manager
             nix-homebrew.darwinModules.nix-homebrew
