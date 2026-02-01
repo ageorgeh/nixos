@@ -16,7 +16,7 @@ in
   ];
 
  nix = {
-    enable = false;
+    enable = true;
     package = pkgs.nix;
     settings = {
       trusted-users = [ "@admin" "${user}" ];
@@ -135,5 +135,5 @@ in
     };
   };
 
-  system.stateVersion = "24.11";
+system.stateVersion = 5;
 }

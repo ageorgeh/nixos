@@ -10,7 +10,7 @@ let
   mkSymlinkAttrs = inputs.self.lib.mkSymlinkAttrs {
     inherit pkgs;
     context = inputs.self;
-    runtimeRoot = if pkgs.stdenv.isDarwin then "/Users/alex" else "/home/alex" + "/nixos-config";
+    runtimeRoot = if pkgs.stdenv.isDarwin then "/Users/alex/code" else "/home/alex" + "/nixos-config";
     hm = config.lib; # same as: inputs.home-manager.lib.hm;
   };
   isDarwin = pkgs.stdenv.isDarwin;

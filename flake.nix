@@ -81,7 +81,6 @@
       nixpkgs,
       clipboard-sync,
       home-manager,
-      # darwin
       darwin,
       nix-homebrew,
       homebrew-core,

@@ -68,8 +68,8 @@ in
     package = pkgs.vscode;
     mutableExtensionsDir = false;
 
-    profiles = {
-      default = {
+    # profiles = {
+      #  default = {
         # enableUpdateCheck = false;
         # enableExtensionUpdateCheck = false;
 
@@ -117,8 +117,8 @@ in
         #     vitest.explorer
 
         #   ]);
-      };
-    };
+      # };
+    # };
   };
 
   # Vim
