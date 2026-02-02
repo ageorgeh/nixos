@@ -11,6 +11,7 @@
     ./hardware/input.nix
     ./dyn-libs.nix
     ./user.nix
+    ./github-runner.nix
 
     ../../modules/nixos/hardware/nvidia.nix
   ];

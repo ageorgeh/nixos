@@ -39,4 +39,9 @@ in
     workstation
     laptop
   ];
+
+  "github-nix-ci/ageorgeh.token.age".publicKeys = [
+    workstation
+    laptop
+  ];
 }

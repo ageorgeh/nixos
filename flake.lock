@@ -173,6 +173,21 @@
         "type": "github"
       }
     },
+    "github-nix-ci": {
+      "locked": {
+        "lastModified": 1754092430,
+        "narHash": "sha256-S4Oe9aZK/UnWuj6zUlVeSDmC/QjEPHJm2gaSk/VMir4=",
+        "owner": "juspay",
+        "repo": "github-nix-ci",
+        "rev": "edd0486a9208524eff40712a8ce835260c5b412a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "juspay",
+        "repo": "github-nix-ci",
+        "type": "github"
+      }
+    },
     "gitignore": {
       "inputs": {
         "nixpkgs": [
@@ -773,6 +788,7 @@
         "agenix": "agenix",
         "clipboard-sync": "clipboard-sync",
         "darwin": "darwin_2",
+        "github-nix-ci": "github-nix-ci",
         "home-manager": "home-manager_2",
         "homebrew-bundle": "homebrew-bundle",
         "homebrew-cask": "homebrew-cask",

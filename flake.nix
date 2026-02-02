@@ -9,7 +9,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-  
     darwin = {
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,7 +28,6 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-
 
     # https://github.com/nix-community/nix4vscode
     # This is an alternative and might be better but requires unstable (as does the below)
@@ -73,6 +71,9 @@
       url = "github:dnut/clipboard-sync";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    github-nix-ci = {
+      url = "github:juspay/github-nix-ci";
+    };
 
   };
 
@@ -107,6 +108,7 @@
           hostName,
           system ? "x86_64-linux",
           wayland ? false,
+          extraModules ? [ ],
         }:
         let
           pkgs = mkPkgs system;
@@ -123,7 +125,8 @@
             # shared integrations
             home-manager.nixosModules.home-manager
           ]
-          ++ nixpkgs.lib.optionals wayland [ clipboard-sync.nixosModules.default ];
+          ++ nixpkgs.lib.optionals wayland [ clipboard-sync.nixosModules.default ]
+          ++ extraModules;
         };
     in
     {
@@ -143,7 +146,7 @@
 
       darwinConfigurations = {
         laptop = darwin.lib.darwinSystem {
-          system  = "aarch64-darwin";
+          system = "aarch64-darwin";
           pkgs = mkPkgs "aarch64-darwin";
           specialArgs = { inherit inputs; };
           modules = [
@@ -166,17 +169,17 @@
           ];
         };
 
-      homeConfigurations = {
-        alex-darwin = home-manager.lib.homeManagerConfiguration {
-          pkgs = mkPkgs "aarch64-darwin";
-          extraSpecialArgs = {
-            inherit inputs;
-            hostName = "laptop";
+        homeConfigurations = {
+          alex-darwin = home-manager.lib.homeManagerConfiguration {
+            pkgs = mkPkgs "aarch64-darwin";
+            extraSpecialArgs = {
+              inherit inputs;
+              hostName = "laptop";
+            };
+            modules = [ ./home/alex/default.nix ];
           };
-          modules = [ ./home/alex/default.nix ];
         };
       };
-      } ;
-        
+
     };
 }
