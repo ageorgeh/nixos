@@ -50,6 +50,9 @@ As per the instructions [here](https://github.com/avdvplus/Builds/releases/tag/a
 - Official [Releases](https://github.com/coreelec/coreelec/releases)
   - Look for `CoreELEC-Amlogic-ng.arm-21.3-Omega-Generic.img.gz`
 - Latest avdvplus release [Builds](https://github.com/avdvplus/Builds/releases)
+- pannal [releases](https://github.com/pannal/CoreELEC/releases)
+  - Another fork, seems to focus on GUI speed more than playback stuff which avdvplus does. Promising though
+  - Look out for T2 which is coming out very soon
 
 ### Extras
 

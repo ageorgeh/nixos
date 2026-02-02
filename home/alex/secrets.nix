@@ -27,4 +27,9 @@ in
     file = secrets + "/npm-access-key.age";
     mode = "600";
   };
+
+  age.secrets."floccus.export.json" = {
+    file = secrets + "/floccus.export.json.age";
+    path = config.home.homeDirectory + "/floccus.export.json";
+  };
 }

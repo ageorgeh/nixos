@@ -34,4 +34,9 @@ in
     workstation
     media
   ];
+
+  "floccus.export.json.age".publicKeys = [
+    workstation
+    laptop
+  ];
 }

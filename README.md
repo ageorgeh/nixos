@@ -88,3 +88,11 @@ nixos-config/
 ```
 
 `./scripts/tree/make_readme_tree.sh -C ./scripts/tree/comments.txt -S ./scripts/tree/stop.txt -I ./scripts/tree/ignore.txt --markdown`
+
+## Manual steps
+
+### [Google Drive sync](./extras/googleDrive.md)
+
+### Floccus
+
+- Import the profile for bookmarks syncing. The file can be found at `~/floccus.export.json` as defined [here](home/alex/secrets.nix)
