@@ -1,6 +1,8 @@
 - Darwin host
 - pannal ugoos build out soon upgrade
+
   - https://github.com/pannal/CoreELEC/releases
+
 - nvim config
 
   - [Primeagen 99](https://github.com/ThePrimeagen/99)

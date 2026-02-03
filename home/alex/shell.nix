@@ -25,6 +25,8 @@ in
     nixos-build-logs = "sudo nixos-rebuild switch --flake ~/nixos-config#workstation -L --show-trace --verbose";
     nixos-update = "sudo nix flake update --flake ~/nixos-config";
 
+    nixos-sleep = "systemctl suspend";
+
     # hyprland
     logout = "hyprctl dispatch exit";
     hypr-restart = "hyprctl reload";
