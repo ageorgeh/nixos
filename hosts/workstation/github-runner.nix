@@ -18,7 +18,9 @@
   services.github-nix-ci = {
     age.secretsDir = ../../secrets;
     runnerSettings = {
-
+      extraPackages = with pkgs; [
+        zstd
+      ];
     };
     cacheServer = {
       enable = true;

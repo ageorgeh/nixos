@@ -13,6 +13,19 @@ let
   inherit (lib) types;
   inherit (config.networking) hostName;
 
+  # https://gha-cache-server.falcondev.io/getting-started#binary-patch
+  patchedRunner = pkgs.github-runner.overrideAttrs (old: {
+    postFixup = (old.postFixup or "") + ''
+       dll="$out/lib/github-runner/Runner.Worker.dll"
+       if [ ! -f "$dll" ]; then
+         echo "github-nix-ci.nix:patchedRunner: Runner.Worker.dll not found at $dll" >&2
+         exit 1
+       fi
+
+      sed -i 's/\x41\x00\x43\x00\x54\x00\x49\x00\x4F\x00\x4E\x00\x53\x00\x5F\x00\x52\x00\x45\x00\x53\x00\x55\x00\x4C\x00\x54\x00\x53\x00\x5F\x00\x55\x00\x52\x00\x4C\x00/\x41\x00\x43\x00\x54\x00\x49\x00\x4F\x00\x4E\x00\x53\x00\x5F\x00\x52\x00\x45\x00\x53\x00\x55\x00\x4C\x00\x54\x00\x53\x00\x5F\x00\x4F\x00\x52\x00\x4C\x00/g' $dll 
+    '';
+  });
+
   host = toString (lib.throwIfNot (hostName != null) "networking.hostName must be set" hostName);
 
   # The list of systems that this host can build for.
@@ -81,6 +94,7 @@ let
     replace = true;
     ephemeral = true;
     noDefaultLabels = true;
+    package = patchedRunner;
     extraPackages = extraPackages ++ config.services.github-nix-ci.runnerSettings.extraPackages;
   }
   // lib.optionalAttrs isLinux { inherit user group; };
