@@ -79,9 +79,6 @@ in
       webfontkitgenerator # Generating fonts
       # polypane # Browser dev tool - REMOVED from nix packages due to lack of support
 
-      
-
-
       #
       # Nvim
       #
@@ -144,18 +141,17 @@ in
 
         tidal-hifi
 
-      # images
-      gimp
-      loupe
+        # images
+        gimp
+        loupe
 
-
-      vlc
+        vlc
       ]
     )
     ++ lib.optionals isDarwin (
-  with pkgs;
-[
-vlc-bin
-]
-);
+      with pkgs;
+      [
+        vlc-bin
+      ]
+    );
 }

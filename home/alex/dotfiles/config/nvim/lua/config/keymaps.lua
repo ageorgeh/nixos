@@ -151,12 +151,6 @@ end)
 -- Formatting
 vim.keymap.set("n", "<leader>lf", function()
 	require("conform").format({ async = true, lsp_fallback = true })
-	-- if vim.bo.ft == "python" then
-	-- 	vim.lsp.buf.code_action {
-	-- 		context = { only = { "source.fixAll" } },
-	-- 		apply = true,
-	-- 	}
-	-- end
 end)
 
 

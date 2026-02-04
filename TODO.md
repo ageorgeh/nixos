@@ -1,7 +1,10 @@
-- Darwin host
-- pannal ugoos build out soon upgrade
+- ## Nixos host
+  - Move nixos-config to ~/code instead of ~. To match the rest of the code
+- ## Darwin host
+- ## Media host
 
-  - https://github.com/pannal/CoreELEC/releases
+  - pannal ugoos build out soon upgrade
+    - https://github.com/pannal/CoreELEC/releases
 
 - nvim config
 

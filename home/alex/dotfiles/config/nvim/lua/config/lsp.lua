@@ -75,7 +75,7 @@ vim.lsp.config("svelte", {
 vim.lsp.enable("tsgo")
 
 -- vim.lsp.config("ts_ls", require("lsp.ts_ls"))
--- vim.lsp.enable("ts_ls")
+vim.lsp.enable("ts_ls")
 
 -- vim.lsp.enable("typescript-tools")
 
@@ -217,6 +217,12 @@ vim.lsp.config("eslint", {
 -- 		on_dir(vim.fs.dirname(vim.fs.find(root_markers, { path = fname, upward = true })[1]))
 -- 	end,
 -- })
+
+
+-- github actions
+vim.lsp.enable('actionsls')
+
+
 
 
 -- vim.api.nvim_create_autocmd("LspAttach", {

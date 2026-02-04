@@ -26,6 +26,7 @@ return {
 			svx = { "svx_split_formatter" },
 			json = { "prettierd" },
 			jsonc = { "prettierd" },
+			["yaml.ghactions"] = { "prettierd" },
 		},
 		-- Set default options
 		default_format_opts = {
