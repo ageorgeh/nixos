@@ -264,84 +264,89 @@ in
       default = { };
     };
   };
-  config = {
-    # ---- github-runners ---- #
-    # Each org gets its own set of runners. There will be at max `num` parallels
-    # CI builds for this org / host combination.
-    services.github-runners =
-      let
-        runners =
-          forAttr config.services.github-nix-ci.personalRunners (_: cfg: cfg.output.runners)
-          ++ forAttr config.services.github-nix-ci.orgRunners (_: cfg: cfg.output.runners);
-      in
-      builtins.foldl' (
-        a: b:
-        lib.mkMerge [
-          a
-          b
-        ]
-      ) { } runners;
+  config = lib.mkMerge [
+    {
+      # ---- github-runners ---- #
+      # Each org gets its own set of runners. There will be at max `num` parallels
+      # CI builds for this org / host combination.
+      services.github-runners =
+        let
+          runners =
+            forAttr config.services.github-nix-ci.personalRunners (_: cfg: cfg.output.runners)
+            ++ forAttr config.services.github-nix-ci.orgRunners (_: cfg: cfg.output.runners);
+        in
+        builtins.foldl' (
+          a: b:
+          lib.mkMerge [
+            a
+            b
+          ]
+        ) { } runners;
 
-    # ---- age secrets ---- #
-    age.secrets =
-      let
-        inherit (config.services.github-nix-ci.age) secretsDir;
-        ageSecretConfigFor =
-          name:
-          let
-            fname = "github-nix-ci/${name}.token.age";
-          in
-          lib.nameValuePair fname {
-            inherit (config.services.github-nix-ci.output.runner) owner;
-            file = "${secretsDir}/${fname}";
-          };
-      in
-      lib.mkIf (secretsDir != null) (
-        lib.listToAttrs (
-          forAttr config.services.github-nix-ci.orgRunners (name: _: ageSecretConfigFor name)
-          ++ forAttr config.services.github-nix-ci.personalRunners (
-            name: cfg: ageSecretConfigFor cfg.output.user
+      # ---- age secrets ---- #
+      age.secrets =
+        let
+          inherit (config.services.github-nix-ci.age) secretsDir;
+          ageSecretConfigFor =
+            name:
+            let
+              fname = "github-nix-ci/${name}.token.age";
+            in
+            lib.nameValuePair fname {
+              inherit (config.services.github-nix-ci.output.runner) owner;
+              file = "${secretsDir}/${fname}";
+            };
+        in
+        lib.mkIf (secretsDir != null) (
+          lib.listToAttrs (
+            forAttr config.services.github-nix-ci.orgRunners (name: _: ageSecretConfigFor name)
+            ++ forAttr config.services.github-nix-ci.personalRunners (
+              name: cfg: ageSecretConfigFor cfg.output.user
+            )
           )
-        )
-      );
+        );
 
-    # ---- user (linux only) ---- #
-    users.users.${user} = lib.mkIf isLinux {
-      inherit group;
-      isSystemUser = true;
-    };
-    users.groups.${group} = lib.mkIf isLinux { };
-    nix.settings.trusted-users = [
-      (if isLinux then user else "_github-runner")
-    ];
-  }
-  # ---- cache server ---- #
-  // (lib.mkIf config.services.github-nix-ci.cacheServer.enable {
-    virtualisation.docker.enable = true;
-    virtualisation.oci-containers.backend = "docker";
-
-    virtualisation.oci-containers.containers.cache-server = {
-      image = "ghcr.io/falcondev-oss/github-actions-cache-server:latest";
-      ports = [ "${toString config.services.github-nix-ci.cacheServer.port}:3000" ];
-      environment = {
-        API_BASE_URL = "http://localhost:${toString config.services.github-nix-ci.cacheServer.port}";
-
-        STORAGE_DRIVER = "filesystem";
-        STORAGE_FILESYSTEM_PATH = "/data/cache";
-
-        DB_DRIVER = "sqlite";
-        DB_SQLITE_PATH = "/data/cache-server.db";
-
-        CACHE_CLEANUP_OLDER_THAN_DAYS = "30";
+      # ---- user (linux only) ---- #
+      users.users.${user} = lib.mkIf isLinux {
+        inherit group;
+        isSystemUser = true;
       };
-      volumes = [ "cache-data:/data" ];
-      autoStart = true;
-    };
+      users.groups.${group} = lib.mkIf isLinux { };
+      nix.settings.trusted-users = [
+        (if isLinux then user else "_github-runner")
+      ];
+    }
 
-    # systemd.tmpfiles.rules = [
-    #   "d ${toString config.services.github-nix-ci.cacheServer.dataDir} 0750 root root -"
-    # ];
+    # ---- cache server ---- #
+    (lib.mkIf config.services.github-nix-ci.cacheServer.enable {
+      virtualisation.docker.enable = true;
+      virtualisation.oci-containers.backend = "docker";
 
-    networking.firewall.allowedTCPPorts = [ config.services.github-nix-ci.cacheServer.port ];
-  });
+      virtualisation.oci-containers.containers.cache-server = {
+        image = "ghcr.io/falcondev-oss/github-actions-cache-server:latest";
+        ports = [ "${toString config.services.github-nix-ci.cacheServer.port}:3000" ];
+        environment = {
+          API_BASE_URL = "http://localhost:${toString config.services.github-nix-ci.cacheServer.port}";
+
+          STORAGE_DRIVER = "filesystem";
+          STORAGE_FILESYSTEM_PATH = "/data/cache";
+
+          DB_DRIVER = "sqlite";
+          DB_SQLITE_PATH = "/data/cache-server.db";
+
+          CACHE_CLEANUP_OLDER_THAN_DAYS = "30";
+        };
+        volumes = [ "cache-data:/data" ];
+        autoStart = true;
+      };
+
+      # systemd.tmpfiles.rules = [
+      #   "d ${toString config.services.github-nix-ci.cacheServer.dataDir} 0750 root root -"
+      # ];
+
+      networking.firewall.allowedTCPPorts = [ config.services.github-nix-ci.cacheServer.port ];
+    })
+
+  ];
+
 }
