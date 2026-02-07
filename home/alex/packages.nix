@@ -33,6 +33,7 @@ in
       playwright-test
       playwright-driver.browsers
       direnv
+      gh
 
       # Formatters
       prettierd # Prettier

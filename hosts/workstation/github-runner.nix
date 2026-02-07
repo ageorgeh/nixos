@@ -27,7 +27,23 @@
     };
     personalRunners = {
       "ageorgeh/cms" = {
-        num = 1;
+        num = 2;
+
+        runnerOverrides = {
+          extraPackages = with pkgs; [
+            pnpm
+            nodejs_24
+            dynamodb-local
+            ripgrep
+          ];
+          extraEnvironment = {
+            ACTIONS_RESULTS_URL = "http://localhost:3002";
+          };
+        };
+      };
+
+      "ageorgeh/ts-ag" = {
+        num = 2;
 
         runnerOverrides = {
           extraPackages = with pkgs; [
@@ -35,8 +51,23 @@
             nodejs_24
           ];
           extraEnvironment = {
-            # npm_config_store_dir = "/var/cache/pnpm-store";
             ACTIONS_RESULTS_URL = "http://localhost:3002";
+            NPM_CONFIG_PROVENANCE = "false";
+          };
+        };
+      };
+
+      "ageorgeh/svelte-ag" = {
+        num = 2;
+
+        runnerOverrides = {
+          extraPackages = with pkgs; [
+            pnpm
+            nodejs_24
+          ];
+          extraEnvironment = {
+            ACTIONS_RESULTS_URL = "http://localhost:3002";
+            NPM_CONFIG_PROVENANCE = "false";
           };
         };
       };
