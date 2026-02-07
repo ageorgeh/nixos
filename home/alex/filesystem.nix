@@ -22,8 +22,8 @@ in
     createDirectories = true;
     extraConfig = {
       # Create a custom directory for code
-      XDG_CODE_DIR = "${config.home.homeDirectory}/code";
-      XDG_AWS_DIR = "${config.home.homeDirectory}/.aws";
+      CODE = "${config.home.homeDirectory}/code";
+      AWS = "${config.home.homeDirectory}/.aws";
     };
   };
 

@@ -51,7 +51,7 @@ let
   extraPackages =
     let
       # https://github.com/actions/upload-pages-artifact/blob/56afc609e74202658d3ffba0e8f6dda462b719fa/action.yml#L40
-      gtar = pkgs.runCommandNoCC "gtar" { } ''
+      gtar = pkgs.runCommand "gtar" { } ''
         mkdir -p $out/bin
         ln -s ${lib.getExe pkgs.gnutar} $out/bin/gtar
       '';

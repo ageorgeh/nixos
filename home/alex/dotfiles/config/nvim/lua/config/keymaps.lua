@@ -238,3 +238,10 @@ vim.keymap.set(
 	{ desc = "Buffer symbols (Trouble)" }
 )
 vim.keymap.set("n", "grr", ":Trouble lsp_references toggle<CR>", { desc = "LSP references (Trouble)" })
+
+
+--
+-- github
+--
+vim.keymap.set("n", "<leader>ga", "<cmd>GithubActionsStatus<cr>",
+	{ desc = "GitHub Actions Status" })

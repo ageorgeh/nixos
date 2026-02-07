@@ -43,7 +43,7 @@ in
       };
 
       "media-client" = {
-        hostname = "192.168.20.39";
+        hostname = "192.168.20.40";
         user = "root";
       };
     };
