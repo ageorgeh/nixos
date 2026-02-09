@@ -39,7 +39,7 @@ func main() {
 		initialTitle: "Visual Studio Code",
 	}
 	cmsCode := AppOptions{
-		app:          "code --use-angle=vulkan ~/code/cmsWrapper/cms",
+		app:          "code --use-angle=vulkan ~/code/cms-codex",
 		title:        ".*cms.*",
 		initialTitle: "Visual Studio Code",
 	}

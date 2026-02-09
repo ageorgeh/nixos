@@ -75,7 +75,7 @@ vim.lsp.config("svelte", {
 vim.lsp.enable("tsgo")
 
 -- vim.lsp.config("ts_ls", require("lsp.ts_ls"))
-vim.lsp.enable("ts_ls")
+-- vim.lsp.enable("ts_ls")
 
 -- vim.lsp.enable("typescript-tools")
 
@@ -154,6 +154,9 @@ vim.lsp.config('nixd', {
 		},
 	},
 })
+
+-- toml
+vim.lsp.enable("taplo")
 
 -- json
 vim.lsp.enable("jsonls")
