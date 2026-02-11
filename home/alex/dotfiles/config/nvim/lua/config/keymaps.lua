@@ -245,3 +245,7 @@ vim.keymap.set("n", "grr", ":Trouble lsp_references toggle<CR>", { desc = "LSP r
 --
 vim.keymap.set("n", "<leader>ga", "<cmd>GithubActionsStatus<cr>",
 	{ desc = "GitHub Actions Status" })
+
+
+vim.keymap.set("n", "<leader>gp", "<CMD>Octo pr list<CR>",
+	{ desc = "GitHub Actions Status" })

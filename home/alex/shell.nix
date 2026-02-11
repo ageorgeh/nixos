@@ -42,7 +42,6 @@ in
   };
 
   # Delete unreachable store paths: sudo nix-collect-garbage -d
-  # run the above without sudo to do it only for the user?
   # Deduplicate the store: sudo nix store optimise
 
   programs.bash = {
