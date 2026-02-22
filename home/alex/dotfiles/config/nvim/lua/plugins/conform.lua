@@ -9,8 +9,8 @@ return {
 		formatters_by_ft = {
 			lua = { "stylua" },
 			python = { "isort", "black" },
-			javascript = { "prettierd" },
-			typescript = { "prettierd" },
+			javascript = { "oxfmt", "prettierd", stop_after_first = true },
+			typescript = { "oxfmt", "prettierd", stop_after_first = true },
 			svelte = function(bufnr)
 				local filename = vim.api.nvim_buf_get_name(bufnr)
 				local function ends_with(str, ending)
@@ -22,12 +22,12 @@ return {
 					return { "prettierd" }
 				end
 			end,
-			css = { "prettierd" },
+			css = { "oxfmt", "prettierd", stop_after_first = true },
 			svx = { "svx_split_formatter" },
-			json = { "prettierd" },
-			jsonc = { "prettierd" },
+			json = { "oxfmt", "prettierd", stop_after_first = true },
+			jsonc = { "oxfmt", "prettierd", stop_after_first = true },
 			markdown = { "prettierd" },
-			["yaml.ghactions"] = { "prettierd" },
+			["yaml.ghactions"] = { "oxfmt", "prettierd", stop_after_first = true },
 		},
 		-- Set default options
 		default_format_opts = {

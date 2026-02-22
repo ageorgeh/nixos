@@ -19,6 +19,7 @@ let
 
     PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
     PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
+    PLAYWRIGHT_HOST_PLATFORM_OVERRIDE = "ubuntu-24.04";
 
     VIMRUNTIME = "${pkgs.neovim-unwrapped}/share/nvim/runtime"; # helps vscode find types for lsp
   };

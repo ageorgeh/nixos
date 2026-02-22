@@ -11,6 +11,20 @@ return {
 					dotfiles = false,
 					git_ignored = false,
 				},
+				-- https://github.com/nvim-tree/nvim-tree.lua/blob/master/lua/nvim-tree.lua#L463
+				filesystem_watchers = {
+					enable = true,
+					debounce_delay = 50,
+					max_events = 1000,
+					ignore_dirs = {
+						"/.ccls-cache",
+						"/build",
+						"/node_modules",
+						"/target",
+						"/.vite",
+						"/.cms"
+					},
+				},
 			})
 		end,
 	},

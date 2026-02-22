@@ -189,37 +189,64 @@ vim.lsp.config("eslint", {
 })
 
 -- TODO when jsplugin api support for custom file formats is available https://oxc.rs/docs/guide/usage/linter/js-plugins.html#api-support
--- vim.lsp.enable("oxlint")
--- vim.lsp.config("oxlint", {
+-- OR until oxfmt will do the tailwind sorting instead (in both ts and svelte files)
+vim.lsp.enable("oxlint")
+local oxlint_base_on_attach = vim.lsp.config.oxlint.on_attach
+vim.lsp.config("oxlint", {
+	cmd = function(dispatchers, config)
+		local cmd = 'oxlint'
+		local local_cmd = (config or {}).root_dir and config.root_dir .. '/node_modules/.bin/oxlint'
+		if local_cmd and vim.fn.executable(local_cmd) == 1 then
+			cmd = local_cmd
+		end
+		return vim.lsp.rpc.start({ cmd, '--lsp' }, dispatchers)
+	end,
+	filetypes = {
+		'javascript',
+		'javascriptreact',
+		-- 'javascript.jsx',
+		'typescript',
+		'typescriptreact',
+		-- 'typescript.tsx',
+		-- "svelte"
+	},
+	settings = {
+		oxc = {
+			-- typeAware = true
+		}
+	},
+	root_dir = function(bufnr, on_dir)
+		-- local fname = vim.api.nvim_buf_get_name(bufnr)
+		-- return util.root_pattern(".oxlintrc.json")(fname)
+		local fname = vim.api.nvim_buf_get_name(bufnr)
+		local root_markers = util.insert_package_json({ '.oxlintrc.json' }, 'oxlint', fname)
+		on_dir(vim.fs.dirname(vim.fs.find(root_markers, { path = fname, upward = true })[1]))
+	end,
+	on_attach = function(client, bufnr)
+		if not oxlint_base_on_attach then return end
+
+		oxlint_base_on_attach(client, bufnr)
+		vim.api.nvim_create_autocmd("BufWritePre", {
+			buffer = bufnr,
+			command = "LspOxlintFixAll",
+		})
+	end,
+})
+
+
+-- vim.lsp.enable("oxfmt")
+-- vim.lsp.config("oxfmt", {
 -- 	cmd = function(dispatchers, config)
--- 		local cmd = 'oxlint'
--- 		local local_cmd = (config or {}).root_dir and config.root_dir .. '/node_modules/.bin/oxlint'
+-- 		local cmd = 'oxfmt'
+-- 		local local_cmd = (config or {}).root_dir and config.root_dir .. '/node_modules/.bin/oxfmt'
 -- 		if local_cmd and vim.fn.executable(local_cmd) == 1 then
 -- 			cmd = local_cmd
 -- 		end
 -- 		return vim.lsp.rpc.start({ cmd, '--lsp' }, dispatchers)
 -- 	end,
--- 	filetypes = {
--- 		'javascript',
--- 		'javascriptreact',
--- 		'javascript.jsx',
--- 		'typescript',
--- 		'typescriptreact',
--- 		'typescript.tsx',
--- 		"svelte"
--- 	},
--- 	settings = {
--- 		oxc = {
--- 			-- typeAware = true
--- 		}
--- 	},
--- 	workspace_required = true,
--- 	root_dir = function(bufnr, on_dir)
--- 		local fname = vim.api.nvim_buf_get_name(bufnr)
--- 		local root_markers = util.insert_package_json({ '.oxlintrc.json' }, 'oxlint', fname)
--- 		on_dir(vim.fs.dirname(vim.fs.find(root_markers, { path = fname, upward = true })[1]))
--- 	end,
 -- })
+
+
 
 
 -- github actions
