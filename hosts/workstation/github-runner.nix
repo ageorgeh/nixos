@@ -2,8 +2,6 @@
 
 # Configures the service for github action to be able to use this machine as the runner
 # Creates runners with the labels 'workstation' and 'x86_64-linux'. These labels should be specified to use these runners
-# TODO take this module https://github.com/juspay/github-nix-ci/blob/main/nix/module.nix
-# and make it so that i can specify extra packages for each runner
 {
   imports = [
     inputs.agenix.nixosModules.default

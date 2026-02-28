@@ -355,7 +355,7 @@ in
           DB_DRIVER = "sqlite";
           DB_SQLITE_PATH = "/data/cache-server.db";
 
-          CACHE_CLEANUP_OLDER_THAN_DAYS = "30";
+          CACHE_CLEANUP_OLDER_THAN_DAYS = "3";
         };
         volumes = [ "cache-data:/data" ];
         autoStart = true;

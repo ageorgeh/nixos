@@ -1,8 +1,8 @@
 -- User options
 -- https://neovim.io/doc/user/options.html
 
-vim.o.updatetime = 300 -- Faster hover time (4000ms default)
-vim.o.number = true -- Show absolute line number on the current line
+vim.o.updatetime = 300      -- Faster hover time (4000ms default)
+vim.o.number = true         -- Show absolute line number on the current line
 vim.o.relativenumber = true -- Show relative line numbers on all other lines
 
 -- 4 spaces for indents
@@ -52,7 +52,7 @@ vim.o.showtabline = 2
 
 -- Allow local configuration
 vim.o.exrc = true
-vim.o.secure = false
+vim.o.secure = true
 
 -- Folding
 vim.o.foldcolumn = "1"

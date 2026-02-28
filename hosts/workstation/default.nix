@@ -205,24 +205,25 @@
 
   # run ./setup/setup-smb.sh to create the credentials file
   # potentially just move it to agenix
-  fileSystems."/mnt/media" = {
-    device = "//192.168.20.75/media";
-    fsType = "cifs";
 
-    options = [
-      "credentials=/etc/nixos/secret/smb-credentials"
-      "iocharset=utf8"
-      "x-systemd.automount"
-      "noatime"
-      "_netdev"
-      "serverino"
+  # fileSystems."/mnt/media" = {
+  #   device = "//192.168.20.75/media";
+  #   fsType = "cifs";
 
-      "uid=1003" # alex
-      "gid=100"
-      "file_mode=0664"
-      "dir_mode=0775"
-    ];
-  };
+  #   options = [
+  #     "credentials=/etc/nixos/secret/smb-credentials"
+  #     "iocharset=utf8"
+  #     "x-systemd.automount"
+  #     "noatime"
+  #     "_netdev"
+  #     "serverino"
+
+  #     "uid=1003" # alex
+  #     "gid=100"
+  #     "file_mode=0664"
+  #     "dir_mode=0775"
+  #   ];
+  # };
 
   system.stateVersion = "24.11";
 }

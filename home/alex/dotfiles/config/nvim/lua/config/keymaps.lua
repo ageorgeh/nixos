@@ -249,3 +249,11 @@ vim.keymap.set("n", "<leader>ga", "<cmd>GithubActionsStatus<cr>",
 
 vim.keymap.set("n", "<leader>gp", "<CMD>Octo pr list<CR>",
 	{ desc = "GitHub Actions Status" })
+
+
+
+--
+-- code_runner
+--
+vim.keymap.set("n", "<leader>r", "<CMD>RunCode<CR>",
+	{ desc = "Run code" })

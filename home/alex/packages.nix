@@ -43,6 +43,7 @@ in
 
       dart-sass # SASS globally installed
       imagemagick # Image manipulation
+      luajitPackages.magick
       socat # Socket connection
       mkcert # Certificate generation
       awscli2 # AWS CLI
@@ -69,6 +70,7 @@ in
       ripgrep # faster grep - Used by nvim plugs
       tree
       util-linux
+      ncdu
 
       lynx # Used by nvim plugs
       lua51Packages.tiktoken_core # Used by copilot-chat nvim: https://github.com/CopilotC-Nvim/CopilotChat.nvim#optional-dependencies
@@ -92,8 +94,9 @@ in
 
       # lsp
       lua-language-server # Lua
-      svelte-language-server # Svelte
       typescript-language-server # TS
+      vtsls # TS
+      svelte-language-server # Svelte
       tailwindcss-language-server # Tailwind
       nixd # Nix
       yaml-language-server # yaml

@@ -74,10 +74,22 @@ vim.lsp.config("svelte", {
 
 vim.lsp.enable("tsgo")
 
--- vim.lsp.config("ts_ls", require("lsp.ts_ls"))
 -- vim.lsp.enable("ts_ls")
 
 -- vim.lsp.enable("typescript-tools")
+
+-- https://github.com/yioneko/vtsls
+-- vim.lsp.enable("vtsls")
+-- vim.lsp.config('vtsls', {
+-- 	settings = {
+-- 		typescript = {
+-- 			tsdk = 'node_modules/typescript/lib',
+-- 			tsserver = {
+-- 				maxTsServerMemory = 32000,
+-- 			}
+-- 		}
+-- 	},
+-- })
 
 
 
