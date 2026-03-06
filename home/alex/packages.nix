@@ -15,6 +15,7 @@ in
       timewarrior
 
       firefox-devedition
+      google-chrome
       thunderbird # Email client
 
       #
@@ -70,7 +71,7 @@ in
       ripgrep # faster grep - Used by nvim plugs
       tree
       util-linux
-      ncdu
+      ncdu # sudo ncdu --exclude /home/alex/Drive /
 
       lynx # Used by nvim plugs
       lua51Packages.tiktoken_core # Used by copilot-chat nvim: https://github.com/CopilotC-Nvim/CopilotChat.nvim#optional-dependencies

@@ -9,7 +9,7 @@ vim.keymap.set("n", "<leader>fg", function()
 	lga.live_grep_args({
 		auto_quoting = true,
 		default_text = "", -- optional starting text
-		postfix = " -U ",
+		postfix = " -U --hidden -g '!.git' ",
 	})
 end, { desc = "Live Grep" })
 

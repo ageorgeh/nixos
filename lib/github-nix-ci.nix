@@ -91,6 +91,10 @@ let
     else
       pkgs.github-runner;
 
+  user = "github-runner";
+  group = "github-runner";
+  artifactDir = "/var/lib/github-runner-artifacts";
+
   # Runner configuration
   common = {
     inherit extraLabels;
@@ -100,10 +104,11 @@ let
     noDefaultLabels = true;
     package = runnerPackage;
     extraPackages = extraPackages ++ config.services.github-nix-ci.runnerSettings.extraPackages;
+    extraEnvironment = {
+      ACTIONS_ARTIFACT_DIR = artifactDir;
+    };
   }
   // lib.optionalAttrs isLinux { inherit user group; };
-  user = "github-runner";
-  group = "github-runner";
 
 in
 {
@@ -328,11 +333,32 @@ in
       users.users.${user} = lib.mkIf isLinux {
         inherit group;
         isSystemUser = true;
+        extraGroups = [ "docker" ];
       };
       users.groups.${group} = lib.mkIf isLinux { };
       nix.settings.trusted-users = [
         (if isLinux then user else "_github-runner")
       ];
+
+      systemd.tmpfiles.rules = [
+        "d ${artifactDir} 2770 github-runner github-runner 14d"
+      ];
+
+      systemd.services.github-runner-artifact-clean = {
+        description = "Clean old local GitHub runner artifacts";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.systemd}/bin/systemd-tmpfiles --clean";
+        };
+      };
+
+      systemd.timers.github-runner-artifact-clean = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnCalendar = "daily";
+          Persistent = true;
+        };
+      };
     }
 
     # ---- cache server ---- #
@@ -355,7 +381,7 @@ in
           DB_DRIVER = "sqlite";
           DB_SQLITE_PATH = "/data/cache-server.db";
 
-          CACHE_CLEANUP_OLDER_THAN_DAYS = "3";
+          CACHE_CLEANUP_OLDER_THAN_DAYS = "1";
         };
         volumes = [ "cache-data:/data" ];
         autoStart = true;

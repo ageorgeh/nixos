@@ -16,9 +16,10 @@ return {
                 require("neotest-vitest")({
                     vitestCommand = "pnpm test"
                 }),
-                require('neotest-playwright').adapter({
-                    command = "pnpm test:e2e",
-                }),
+                -- require('neotest-playwright').adapter({
+                --     command = "pnpm test:e2e",
+                -- }),
+
             },
             -- https://github.com/nvim-neotest/neotest/blob/master/doc/neotest.txt#L133
             output_panel = {
