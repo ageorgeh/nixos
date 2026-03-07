@@ -99,6 +99,8 @@
     5174
     8000
   ];
+  networking.firewall.trustedInterfaces = [ "docker0" ];
+
   # nixos quirk with the ISP, higher or default mtu don't work
   networking.interfaces.enp3s0.mtu = 1480;
 

@@ -106,6 +106,7 @@ let
     extraPackages = extraPackages ++ config.services.github-nix-ci.runnerSettings.extraPackages;
     extraEnvironment = {
       ACTIONS_ARTIFACT_DIR = artifactDir;
+      ACTIONS_RESULTS_URL = "http://localhost:3040";
     };
   }
   // lib.optionalAttrs isLinux { inherit user group; };
@@ -131,7 +132,7 @@ in
             enable = lib.mkEnableOption "github actions cache server";
             port = lib.mkOption {
               type = lib.types.port;
-              default = 3002;
+              default = 3040;
             };
           };
 
@@ -369,7 +370,9 @@ in
       virtualisation.docker.enable = true;
       virtualisation.oci-containers.backend = "docker";
 
+      # sudo journalctl -u docker-cache-server.service -b -n 100 --no-pager
       virtualisation.oci-containers.containers.cache-server = {
+        pull = "always";
         image = "ghcr.io/falcondev-oss/github-actions-cache-server:latest";
         ports = [ "${toString config.services.github-nix-ci.cacheServer.port}:3000" ];
         environment = {
@@ -382,6 +385,7 @@ in
           DB_SQLITE_PATH = "/data/cache-server.db";
 
           CACHE_CLEANUP_OLDER_THAN_DAYS = "1";
+          DISABLE_CLEANUP_JOBS = "false";
         };
         volumes = [ "cache-data:/data" ];
         autoStart = true;

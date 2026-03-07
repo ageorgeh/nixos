@@ -54,7 +54,6 @@ in
             docker_28
           ];
           extraEnvironment = {
-            ACTIONS_RESULTS_URL = "http://localhost:3002";
             PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
             PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
             PLAYWRIGHT_NODEJS_PATH = "${pkgs.nodejs_24}/bin/node";
@@ -82,7 +81,6 @@ in
             nodejs_24
           ];
           extraEnvironment = {
-            ACTIONS_RESULTS_URL = "http://localhost:3002";
             NPM_CONFIG_PROVENANCE = "false";
           };
         };
@@ -97,7 +95,6 @@ in
             nodejs_24
           ];
           extraEnvironment = {
-            ACTIONS_RESULTS_URL = "http://localhost:3002";
             NPM_CONFIG_PROVENANCE = "false";
           };
         };
