@@ -8,9 +8,10 @@
 {
   systemd.user.services = lib.mkIf pkgs.stdenv.isLinux {
     # Google drive
+    # journalctl --user -u rclone-gdrive.service -b -n 100 --no-pager
     rclone-gdrive = {
       Unit = {
-        Description = "Mount Google Drive with rclone";
+        Description = "Mount Google Drive with rclone.";
         After = [
           "graphical-session.target"
           "default.target"

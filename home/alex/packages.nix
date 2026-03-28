@@ -114,6 +114,7 @@ in
         # Google drive
         rclone
         fuse
+        rsync
 
         # Resource monitoring
         btop # Better top

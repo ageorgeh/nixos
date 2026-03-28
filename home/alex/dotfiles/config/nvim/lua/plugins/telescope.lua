@@ -61,7 +61,7 @@ return {
 							require("trouble").open({ mode = "qflist" })
 						end,
 						["<c-t>"] = open_with_trouble,
-						["<C-k>"] = lga_actions.quote_prompt({ postfix = " -U " }),
+						["<C-k>"] = lga_actions.quote_prompt({ postfix = " -U --hidden" }),
 					},
 					n = {
 						-- https://github.com/nvim-telescope/telescope.nvim/issues/1048#issuecomment-993956937

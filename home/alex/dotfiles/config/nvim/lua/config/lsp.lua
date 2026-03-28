@@ -72,24 +72,26 @@ vim.lsp.config("svelte", {
 -- typescript
 --
 
-vim.lsp.enable("tsgo")
+-- vim.lsp.enable("tsgo")
 
 -- vim.lsp.enable("ts_ls")
 
 -- vim.lsp.enable("typescript-tools")
 
 -- https://github.com/yioneko/vtsls
--- vim.lsp.enable("vtsls")
--- vim.lsp.config('vtsls', {
--- 	settings = {
--- 		typescript = {
--- 			tsdk = 'node_modules/typescript/lib',
--- 			tsserver = {
--- 				maxTsServerMemory = 32000,
--- 			}
--- 		}
--- 	},
--- })
+vim.lsp.enable("vtsls")
+vim.lsp.config('vtsls', {
+	settings = {
+		typescript = {
+			tsdk = 'node_modules/typescript/lib',
+			tsserver = {
+				maxTsServerMemory = 32000,
+			}
+		}
+	},
+})
+-- TODO
+-- https://www.reddit.com/r/neovim/comments/1rdfajw/tsexpandhovernvim_progressively_expand_typescript/
 
 
 

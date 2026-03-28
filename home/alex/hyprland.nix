@@ -104,6 +104,7 @@
         "$mod, C, exec, kitty --class clipse -e 'clipse'"
         "$mod, V, exec, code --use-angle=vulkan"
         "$mod, RETURN, exec, kitty"
+        "$mod, T, exec, kitty"
         "$mod, F, exec, firefox"
         "$mod, A, exec, tofi-drun | xargs -r hyprctl dispatch exec --"
         "$mod, Q, killactive"

@@ -30,6 +30,9 @@ in
       enable = true;
     };
     personalRunners = {
+
+      # sudo systemctl restart github-runner-workstation-ageorgeh-cms-01.service
+      # sudo systemctl restart github-runner-workstation-ageorgeh-cms-02.service
       "ageorgeh/cms" = {
         num = 2;
 
@@ -50,15 +53,16 @@ in
             mkcert # Certificate generation
 
             lsof # List open files
+            rsync
             ripgrep
             docker_28
           ];
           extraEnvironment = {
-            PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
-            PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
+            # PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+            # PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
             PLAYWRIGHT_NODEJS_PATH = "${pkgs.nodejs_24}/bin/node";
-            PLAYWRIGHT_LAUNCH_OPTIONS_EXECUTABLE_PATH = "${pkgs.playwright-driver.browsers}/chromium-${chromium-rev}/chrome-linux/chrome";
-            PLAYWRIGHT_HOST_PLATFORM_OVERRIDE = "ubuntu-24.04";
+            # PLAYWRIGHT_LAUNCH_OPTIONS_EXECUTABLE_PATH = "${pkgs.playwright-driver.browsers}/chromium-${chromium-rev}/chrome-linux/chrome";
+            # PLAYWRIGHT_HOST_PLATFORM_OVERRIDE = "ubuntu-24.04";
           };
 
           serviceOverrides = {

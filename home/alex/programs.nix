@@ -130,7 +130,7 @@ in
     enable = true;
     # enableZshIntegration = true;
     # enableBashIntegration = true;
-    # shellWrapperName = "kitty";
+    shellWrapperName = "y";
 
     settings = {
       manager = {

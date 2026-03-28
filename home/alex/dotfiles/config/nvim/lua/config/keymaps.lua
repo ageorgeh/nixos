@@ -2,14 +2,14 @@
 -- telescope
 --
 local telescope_builtin = require("telescope.builtin")
+local lga_actions = require("telescope-live-grep-args.actions")
+local lga_shortcuts = require("telescope-live-grep-args.shortcuts")
 local lga = require("telescope").extensions.live_grep_args
 
 vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, { desc = "Find Files" })
 vim.keymap.set("n", "<leader>fg", function()
 	lga.live_grep_args({
 		auto_quoting = true,
-		default_text = "", -- optional starting text
-		postfix = " -U --hidden -g '!.git' ",
 	})
 end, { desc = "Live Grep" })
 
@@ -21,12 +21,7 @@ vim.keymap.set("n", "<leader>fc", function()
 	})
 end, { desc = "Find files in ~/code" })
 
-vim.keymap.set("n", "<leader>gc", function()
-	require("telescope.builtin").live_grep({
-		prompt_title = "Grep in ~/code",
-		cwd = "~/code",
-	})
-end, { desc = "Grep in ~/code" })
+vim.keymap.set("n", "<leader>gc", lga_shortcuts.grep_word_under_cursor)
 
 vim.keymap.set("n", "<C-p>", telescope_builtin.git_files, { desc = "Git files" })
 
@@ -78,9 +73,49 @@ vim.keymap.set("n", "<leader>lg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
 ---------------------- LSP ----------------------
 -- https://neovim.io/doc/user/lsp.html#vim.lsp.buf.hover()
 
-vim.keymap.set("n", "<leader>lr", function()
-	vim.cmd("LspRestart")
-end, { desc = "Restart LSP" })
+function RestartAllLsps()
+	local buffers = vim.api.nvim_list_bufs()
+	local real_buffers = {}
+
+	for _, bufnr in ipairs(buffers) do
+		if vim.api.nvim_buf_is_loaded(bufnr)
+			and vim.bo[bufnr].buflisted
+			and vim.bo[bufnr].buftype == ""
+			and vim.api.nvim_buf_get_name(bufnr) ~= ""
+		then
+			if vim.bo[bufnr].modified then
+				vim.api.nvim_buf_call(bufnr, function()
+					vim.cmd("silent update")
+				end)
+			end
+			table.insert(real_buffers, bufnr)
+		end
+	end
+
+	local clients = vim.lsp.get_clients()
+	if vim.tbl_isempty(clients) then
+		return
+	end
+
+	for _, client in ipairs(clients) do
+		vim.lsp.stop_client(client.id, true)
+	end
+
+	vim.defer_fn(function()
+		for _, bufnr in ipairs(real_buffers) do
+			if vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_buf_is_loaded(bufnr) then
+				vim.api.nvim_buf_call(bufnr, function()
+					vim.cmd("silent edit")
+				end)
+			end
+		end
+
+		vim.cmd("silent LspStart")
+	end, 500)
+end
+
+vim.keymap.set("n", "<leader>lr", RestartAllLsps, { desc = "Restart all LSPs" })
+
 
 -- C-K hover https://neovim.io/doc/user/lsp.html#vim.lsp.buf.hover()
 -- C-] Jump to definition. C-t to go back
