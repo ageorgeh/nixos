@@ -15,7 +15,7 @@ import { LayoutError } from "./utils/errors";
 import {
   STEP_DELAY_MS,
   LAUNCH_TIMEOUT_MS,
-  WAIT_INTERVAL_MS,
+  STATE_WAIT_INTERVAL_MS,
   FOCUS_MAX_STEPS,
   ORDER_MAX_PASSES,
   GROUP_SETTLE_MS,
@@ -95,7 +95,7 @@ async function waitForWindowOnMonitor(
       return;
     }
 
-    await sleep(WAIT_INTERVAL_MS);
+    await sleep(STATE_WAIT_INTERVAL_MS);
   }
 
   throw new LayoutError(
@@ -238,7 +238,6 @@ async function sortWindowsOnMonitors(
 
   for (const [monitorId, monitorApps] of appsByMonitor.entries()) {
     const desiredOrder = monitorApps.map((app) => app.id);
-    console.log(`Monitor ${monitorId}, desiredOrder: ${desiredOrder}`);
     if (desiredOrder.length <= 1) {
       continue;
     }
@@ -275,7 +274,6 @@ async function sortWindowsOnMonitors(
 
       logStep(`Ordering ${desiredAppId} on monitor ${monitorId}.`);
       await hypr.focusWindow(selectorForAddress(targetClient.address));
-      console.log("Should be focused");
       await settle();
 
       let placed = false;
@@ -442,33 +440,37 @@ export async function runManagedLayout(
   validateConfig(config);
 
   const hypr = new HyprlandClient();
-  const monitorIds = uniqueMonitorIds(config.apps);
+  try {
+    const monitorIds = uniqueMonitorIds(config.apps);
 
-  logStep("Launching apps.");
-  const resolvedApps = await launchMissingApps(hypr, config);
+    logStep("Launching apps.");
+    const resolvedApps = await launchMissingApps(hypr, config);
 
-  logStep("Untabbing everything.");
-  await untabEverything(hypr, monitorIds);
+    logStep("Untabbing everything.");
+    await untabEverything(hypr, monitorIds);
 
-  logStep("Untiling floating windows.");
-  await unfloatEverything(hypr, monitorIds);
+    logStep("Untiling floating windows.");
+    await unfloatEverything(hypr, monitorIds);
 
-  logStep("Moving windows to target monitors.");
-  await moveWindowsToAssignedMonitors(hypr, config.apps, resolvedApps);
+    logStep("Moving windows to target monitors.");
+    await moveWindowsToAssignedMonitors(hypr, config.apps, resolvedApps);
 
-  logStep("Sorting windows.");
-  await sortWindowsOnMonitors(hypr, config.apps, resolvedApps);
+    logStep("Sorting windows.");
+    await sortWindowsOnMonitors(hypr, config.apps, resolvedApps);
 
-  logStep("Creating groups.");
-  await createGroups(hypr, config.apps, resolvedApps);
+    logStep("Creating groups.");
+    await createGroups(hypr, config.apps, resolvedApps);
 
-  logStep("Applying resizes.");
-  await applyResizes(hypr, config.apps, resolvedApps);
+    logStep("Applying resizes.");
+    await applyResizes(hypr, config.apps, resolvedApps);
 
-  const primaryMonitor = monitorIds[0];
-  if (primaryMonitor !== undefined) {
-    await hypr.focusMonitor(primaryMonitor as MonitorSelector);
+    const primaryMonitor = monitorIds[0];
+    if (primaryMonitor !== undefined) {
+      await hypr.focusMonitor(primaryMonitor as MonitorSelector);
+    }
+
+    logStep("Layout complete.");
+  } finally {
+    hypr.close();
   }
-
-  logStep("Layout complete.");
 }

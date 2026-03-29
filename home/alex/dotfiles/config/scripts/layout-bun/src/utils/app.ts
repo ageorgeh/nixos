@@ -5,7 +5,7 @@ import { setTimeout as sleep } from "node:timers/promises";
 import { logStep, patternMatches } from "./utils";
 import { readFile } from "node:fs/promises";
 import { LayoutError } from "./errors";
-import { LAUNCH_TIMEOUT_MS, WAIT_INTERVAL_MS } from "./constants";
+import { LAUNCH_TIMEOUT_MS, LAUNCH_WAIT_INTERVAL_MS } from "./constants";
 
 interface MatcherContext {
   commandNameByPid: Map<number, Promise<string | null>>;
@@ -89,7 +89,7 @@ export async function waitForApps(
       return resolved;
     }
 
-    await sleep(WAIT_INTERVAL_MS);
+    await sleep(LAUNCH_WAIT_INTERVAL_MS);
   }
 
   throw new LayoutError(

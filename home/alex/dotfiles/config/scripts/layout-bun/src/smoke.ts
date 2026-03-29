@@ -44,52 +44,56 @@ async function waitForCustomEvents(
 
 async function main(): Promise<void> {
   const hypr = new HyprlandClient();
-  const monitors = await hypr.monitors();
-  const clients = await hypr.clients();
-  const activeWindow = await hypr.activeWindow();
-  const workspaces = await hypr.workspaces();
+  try {
+    const monitors = await hypr.monitors();
+    const clients = await hypr.clients();
+    const activeWindow = await hypr.activeWindow();
+    const workspaces = await hypr.workspaces();
 
-  const singleEventRoundTrip = await waitForCustomEvents(hypr, ["codex-smoke"], async () => {
-    await hypr.dispatchRaw("event", "codex-smoke");
-  });
+    const singleEventRoundTrip = await waitForCustomEvents(hypr, ["codex-smoke"], async () => {
+      await hypr.dispatchRaw("event", "codex-smoke");
+    });
 
-  let batchResponses: string[] = [];
-  const batchEventRoundTrip = await waitForCustomEvents(
-    hypr,
-    ["codex-batch-1", "codex-batch-2"],
-    async () => {
-      batchResponses = await hypr.batch([
-        "dispatch event codex-batch-1",
-        "dispatch event codex-batch-2",
-      ]);
-    },
-  );
-
-  console.log(
-    JSON.stringify(
-      {
-        requestSocketPath: hypr.requestSocketPath,
-        eventSocketPath: hypr.eventSocketPath,
-        monitorCount: monitors.length,
-        monitorNames: monitors.map((monitor) => monitor.name),
-        clientCount: clients.length,
-        activeWindow: activeWindow
-          ? {
-              address: activeWindow.address,
-              class: activeWindow.class,
-              title: activeWindow.title,
-              monitor: activeWindow.monitor,
-            }
-          : null,
-        workspaceCount: workspaces.length,
-        eventRoundTrip: singleEventRoundTrip,
-        batchResponses,
-        batchEventRoundTrip,
+    let batchResponses: string[] = [];
+    const batchEventRoundTrip = await waitForCustomEvents(
+      hypr,
+      ["codex-batch-1", "codex-batch-2"],
+      async () => {
+        batchResponses = await hypr.batch([
+          "dispatch event codex-batch-1",
+          "dispatch event codex-batch-2",
+        ]);
       },
-      null,
-      2,
-    ),
-  );
+    );
+
+    console.log(
+      JSON.stringify(
+        {
+          requestSocketPath: hypr.requestSocketPath,
+          eventSocketPath: hypr.eventSocketPath,
+          monitorCount: monitors.length,
+          monitorNames: monitors.map((monitor) => monitor.name),
+          clientCount: clients.length,
+          activeWindow: activeWindow
+            ? {
+                address: activeWindow.address,
+                class: activeWindow.class,
+                title: activeWindow.title,
+                monitor: activeWindow.monitor,
+              }
+            : null,
+          workspaceCount: workspaces.length,
+          eventRoundTrip: singleEventRoundTrip,
+          batchResponses,
+          batchEventRoundTrip,
+        },
+        null,
+        2,
+      ),
+    );
+  } finally {
+    hypr.close();
+  }
 }
 
 main().catch((error: unknown) => {

@@ -30,6 +30,13 @@ interface RequestFlags {
   config?: boolean;
 }
 
+interface RequestBridgeResponse {
+  id: number;
+  ok: boolean;
+  response?: string;
+  error?: string;
+}
+
 const NODE_BINARY = "node";
 const NODE_HELPER_PATH = fileURLToPath(
   new URL("./node-ipc-helper.mjs", import.meta.url),
@@ -116,10 +123,7 @@ function formatResizeSpec(resize: ResizeSpec): string {
   return "";
 }
 
-function formatDispatcherArgs(
-  dispatcher: keyof HyprDispatchers,
-  args: readonly unknown[],
-): string {
+function formatDispatcherArgs(dispatcher: keyof HyprDispatchers, args: readonly unknown[]): string {
   switch (dispatcher) {
     case "exec":
     case "execr":
@@ -156,48 +160,142 @@ function formatDispatcherArgs(
   }
 }
 
-async function runNodeHelper(
-  mode: "request" | "events",
-  socketPath: string,
-  payload?: string,
-  signal?: AbortSignal,
-): Promise<{
-  child: ReturnType<typeof spawn>;
-  stdout: string;
-  stderr: string;
-  exitCode: number;
-}> {
-  const args = [NODE_HELPER_PATH, mode, socketPath];
-  if (payload !== undefined) {
-    args.push(payload);
+class NodeRequestBridge {
+  private readonly socketPath: string;
+  private child: ReturnType<typeof spawn> | null = null;
+  private responseReader: ReturnType<typeof createInterface> | null = null;
+  private stderr = "";
+  private nextId = 1;
+  private readonly pending = new Map<
+    number,
+    {
+      resolve: (value: string) => void;
+      reject: (error: unknown) => void;
+    }
+  >();
+
+  constructor(socketPath: string) {
+    this.socketPath = socketPath;
   }
 
-  const child = spawn(NODE_BINARY, args, {
-    stdio: ["ignore", "pipe", "pipe"],
-    signal,
-  });
+  private ensureStarted(): void {
+    if (this.child && this.child.exitCode === null) {
+      return;
+    }
 
-  let stdout = "";
-  let stderr = "";
+    const child = spawn(
+      NODE_BINARY,
+      [NODE_HELPER_PATH, "request-loop", this.socketPath],
+      {
+        stdio: ["pipe", "pipe", "pipe"],
+      },
+    );
 
-  child.stdout?.setEncoding("utf8");
-  child.stdout?.on("data", (chunk: string) => {
-    stdout += chunk;
-  });
+    if (!child.stdin || !child.stdout || !child.stderr) {
+      throw new Error("Node request bridge did not expose stdio.");
+    }
 
-  child.stderr?.setEncoding("utf8");
-  child.stderr?.on("data", (chunk: string) => {
-    stderr += chunk;
-  });
+    child.stdout.setEncoding("utf8");
+    child.stderr.setEncoding("utf8");
 
-  const exitCode = await new Promise<number>((resolve, reject) => {
-    child.on("error", reject);
-    child.on("close", (code) => {
-      resolve(code ?? 0);
+    this.stderr = "";
+    child.stderr.on("data", (chunk: string) => {
+      this.stderr += chunk;
     });
-  });
 
-  return { child, stdout, stderr, exitCode };
+    const responseReader = createInterface({
+      input: child.stdout,
+      crlfDelay: Infinity,
+    });
+
+    void (async () => {
+      try {
+        for await (const line of responseReader) {
+          if (line === "") {
+            continue;
+          }
+
+          const message = JSON.parse(line) as RequestBridgeResponse;
+          const pending = this.pending.get(message.id);
+          if (!pending) {
+            continue;
+          }
+
+          this.pending.delete(message.id);
+          if (message.ok) {
+            pending.resolve(message.response ?? "");
+          } else {
+            pending.reject(new Error(message.error ?? "Unknown bridge request error."));
+          }
+        }
+      } catch (error) {
+        this.rejectAll(error);
+      }
+    })();
+
+    child.on("error", (error) => {
+      this.rejectAll(error);
+    });
+
+    child.on("close", () => {
+      const error = new Error(
+        this.stderr === ""
+          ? "Node request bridge exited unexpectedly."
+          : this.stderr.trim(),
+      );
+      this.rejectAll(error);
+      responseReader.close();
+      this.responseReader = null;
+      this.child = null;
+    });
+
+    this.child = child;
+    this.responseReader = responseReader;
+  }
+
+  private rejectAll(error: unknown): void {
+    for (const pending of this.pending.values()) {
+      pending.reject(error);
+    }
+    this.pending.clear();
+  }
+
+  async request(payload: string): Promise<string> {
+    this.ensureStarted();
+
+    const child = this.child;
+    if (!child?.stdin) {
+      throw new Error("Node request bridge is not writable.");
+    }
+
+    const id = this.nextId;
+    this.nextId += 1;
+
+    const stdin = child.stdin;
+    return await new Promise<string>((resolve, reject) => {
+      this.pending.set(id, { resolve, reject });
+      const message = `${JSON.stringify({ id, payload })}\n`;
+      stdin.write(message, "utf8", (error) => {
+        if (error) {
+          this.pending.delete(id);
+          reject(error);
+        }
+      });
+    });
+  }
+
+  close(): void {
+    this.responseReader?.close();
+    this.responseReader = null;
+
+    if (this.child?.stdin && !this.child.stdin.destroyed) {
+      this.child.stdin.end();
+    }
+    if (this.child && this.child.exitCode === null) {
+      this.child.kill();
+    }
+    this.child = null;
+  }
 }
 
 export class HyprlandClient {
@@ -205,6 +303,7 @@ export class HyprlandClient {
   readonly runtimeDir: string;
   readonly requestSocketPath: string;
   readonly eventSocketPath: string;
+  private readonly requestBridge: NodeRequestBridge;
 
   constructor(options?: { instanceSignature?: string; runtimeDir?: string }) {
     this.instanceSignature =
@@ -223,25 +322,21 @@ export class HyprlandClient {
 
     this.requestSocketPath = `${this.runtimeDir}/hypr/${this.instanceSignature}/.socket.sock`;
     this.eventSocketPath = `${this.runtimeDir}/hypr/${this.instanceSignature}/.socket2.sock`;
+    this.requestBridge = new NodeRequestBridge(this.requestSocketPath);
   }
 
   async requestRaw(command: string, flags?: RequestFlags): Promise<string> {
     const request = buildRequest(command, flags);
-    const result = await runNodeHelper(
-      "request",
-      this.requestSocketPath,
-      request,
-    );
-
-    if (result.exitCode !== 0) {
+    try {
+      return await this.requestBridge.request(request);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
       throw new HyprlandError(
         `Node IPC helper failed for ${request}`,
         request,
-        result.stderr,
+        message,
       );
     }
-
-    return result.stdout;
   }
 
   async requestJson<T>(
@@ -391,6 +486,10 @@ export class HyprlandClient {
 
   async exec(command: string): Promise<void> {
     await this.dispatch("exec", command);
+  }
+
+  close(): void {
+    this.requestBridge.close();
   }
 
   async *events(signal?: AbortSignal): AsyncGenerator<HyprlandEvent> {
