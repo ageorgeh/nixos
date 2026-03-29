@@ -86,6 +86,7 @@ func processWindowsInSucession(args WindowsInSuccessionOptions) {
 				}
 			} else if len(args.Apps) == 0 || matchesAnyApp(client, args.Apps) {
 				println("Dispatching: ", args.Command, "on monitor", monitorID, "for window", client.Title)
+				// time.Sleep(1000 * time.Millisecond)
 				// Note: The command here is applied to the *currently focused* window,
 				// which we are iterating through on the target monitor.
 				c.Dispatch(args.Command)
@@ -145,6 +146,7 @@ func processWindowsInOrder(args OrderedWindowsOptions) {
 			cmd := fmt.Sprintf("%s address:%s", args.Command, client.Address)
 			println("Dispatching: ", fmt.Sprintf("%s title:%s", args.Command, client.Title))
 			time.Sleep(sleepTime)
+			// time.Sleep(500 * time.Millisecond)
 			c.Dispatch(cmd)
 		}
 	}
@@ -190,14 +192,15 @@ func makeGroup(monitor int, first AppOptions, rest ...AppOptions) {
 	time.Sleep(sleepTime)
 	c.Dispatch("hy3:makegroup tab, toggle")
 	time.Sleep(sleepTime)
+	time.Sleep(1000 * time.Millisecond)
 
 	// Moves all the windows after thunar into the tab group
-	processWindowsInSucession(WindowsInSuccessionOptions{
-		After:    &first,
-		Command:  "hy3:movewindow l",
-		Monitors: []int{monitor},
-		Apps:     rest,
-	})
+	// processWindowsInSucession(WindowsInSuccessionOptions{
+	// 	After:    &first,
+	// 	Command:  "hy3:movewindow l",
+	// 	Monitors: []int{monitor},
+	// 	Apps:     rest,
+	// })
 }
 
 func focusFirstWindow(monitor int) {

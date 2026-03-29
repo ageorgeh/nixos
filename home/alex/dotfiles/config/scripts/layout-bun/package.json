@@ -1,0 +1,13 @@
+{
+  "name": "layout-bun",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "bun run ./layout.ts",
+    "typecheck": "tsc --noEmit",
+    "smoke": "bun run ./src/smoke.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}

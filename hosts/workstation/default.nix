@@ -155,6 +155,7 @@
     clipse # Clipboard manager - not working right now
     wl-clipboard # Used by clipse
     wsdd
+    efibootmgr
 
     # Compilers - remove??
     cmake

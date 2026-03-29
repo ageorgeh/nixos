@@ -56,6 +56,7 @@ func main() {
 	obsidian := AppOptions{
 		app:   "obsidian",
 		class: "obsidian",
+		title: ".*Obsidian.*",
 	}
 	noSqlWorkbench := AppOptions{
 		app:          "nosql-workbench",
@@ -118,14 +119,19 @@ func main() {
 		Command:  "settiled",
 		Monitors: []int{0, 1},
 		AppOrder: []AppOptions{
-			firefoxDev, obsidian, noSqlWorkbench,
+			nixosCode, cmsCode, kitty,
+
+			tidalHifi, keepassxc, thunar,
 			firefox,
+			noSqlWorkbench, obsidian, firefoxDev,
 
-			thunar,
-			keepassxc,
-			tidalHifi,
+			// nixosCode, cmsCode, kitty,
 
-			nixosCode, cmsCode, kitty},
+			// firefoxDev, obsidian, noSqlWorkbench,
+			// firefox,
+
+			// thunar, keepassxc, tidalHifi,
+		},
 	})
 
 	makeGroup(1, firefoxDev, obsidian, noSqlWorkbench)
