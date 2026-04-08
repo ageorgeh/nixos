@@ -7,10 +7,13 @@ in
   home.packages =
     with pkgs;
     [
-
       playwright-driver.browsers
-      # Waybar
+
+      # Fonts
       nerd-fonts.jetbrains-mono
+      atkinson-hyperlegible-mono # Provides "Atkinson Hyperlegible Mono"
+      ibm-plex
+
       file
 
       timewarrior
@@ -57,7 +60,6 @@ in
       go # Go programming language
 
       discord # Discord - maybe in the future change to a better client
-      # jetbrains.datagrip # Database client
       insomnia # API client
       yaak # API client
       drawio # Drawio desktop
@@ -107,6 +109,7 @@ in
       bash-language-server # Bash
       glsl_analyzer # Shaders
       gopls # Go language server
+      tinymist # Typst
 
     ]
     ++ lib.optionals isLinux (

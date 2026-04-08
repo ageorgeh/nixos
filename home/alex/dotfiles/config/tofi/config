@@ -1,13 +1,18 @@
 #
+
 ### tofi config
+
 ### https://github.com/philj56/tofi/blob/master/doc/config
-#
-
 
 #
+
+#
+
 ### Fonts
+
 #
-    font=~/.local/share/fonts/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFont-Regular.ttf
+
+    font=JetBrainsMono Nerd Font
     hint-font=false
 
 height=100%
@@ -19,14 +24,16 @@ border-width=0
 padding-left=35%
 padding-top=35%
 
-
 matching-algorithm=fuzzy
 result-spacing=25
 terminal=kitty
 
 #
+
 ### Rose Pine (dark) — tofi theming
+
 #
+
     background-color=#02061866
 
     # Base text
@@ -71,14 +78,13 @@ terminal=kitty
     # Match highlight within selection
     selection-match-color = #9CCFD8
 
-
-
-
-
 #
+
 ### Behaviour
+
 #
+
     # Assume input is plain ASCII, and disable some Unicode handling
     # functions. This is faster, but means e.g. a search for "e" will not
     # match "é".
-    ascii-input = true 
+    ascii-input = true

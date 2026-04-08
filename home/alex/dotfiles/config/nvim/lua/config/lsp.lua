@@ -269,6 +269,9 @@ vim.lsp.config("oxlint", {
 -- github actions
 vim.lsp.enable('actionsls')
 
+-- typst
+vim.lsp.enable("tinymist")
+
 
 
 

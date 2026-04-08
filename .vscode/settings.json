@@ -1,5 +1,4 @@
 {
-  // "editor.fontFamily": "'JetBrainsMono Nerd Font', 'monospace'",
   "editor.fontLigatures": true,
   "typescript.tsserver.nodePath": "/home/alex/.nix-profile/bin/node",
 

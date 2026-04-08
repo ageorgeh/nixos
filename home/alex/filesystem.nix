@@ -50,9 +50,13 @@ in
 
   }
   // lib.optionalAttrs (!isDarwin) {
+    # To find the paths: nix eval nixpkgs#atkinson-hyperlegible-next.outPath
     # Linux-style font path
-    ".local/share/fonts/NerdFonts/JetBrainsMono".source =
-      "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono";
+    # ".local/share/fonts/NerdFonts/JetBrainsMono".source =
+    #   "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono";
+
+    # ".local/share/fonts/AtkinsonHyperLegibleNext".source =
+    #   "${pkgs.atkinson-hyperlegible-next}/share/fonts";
   }
   // lib.optionalAttrs isDarwin {
     # macOS standard font path
