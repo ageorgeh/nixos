@@ -82,7 +82,7 @@
         "mako"
         "hyprpolkitagent"
         "clipse --listen"
-        "sleep 1 && ~/.config/scripts/layout/layout"
+        "sleep 2 && ~/.config/scripts/layout-bun/layout.ts > ~/layout.log 2>&1 && echo 'DONE (success)' >> ~/layout.log || echo 'DONE (failed)' >> ~/layout.log"
       ];
       animations = {
         enabled = true;
@@ -110,7 +110,7 @@
         "$mod, Q, killactive"
         "$mod, PRINT, exec, hyprshot -m section --clipboard-only"
         "$mod, S, exec, ~/.config/scripts/quicksettings.sh"
-        "$mod, U, exec, ~/.config/scripts/layout/layout"
+        "$mod, U, exec, ~/.config/scripts/layout-bun/layout.ts"
         "$mod, G, hy3:makegroup, tab, toggle"
         "$mod, bracketleft, hy3:focustab, r, wrap"
         "$mod, bracketright, hy3:focustab, l, wrap"

@@ -54,18 +54,21 @@ vim.lsp.enable("lua_ls")
 
 -- svelte
 vim.lsp.enable("svelte")
+
+local runtime_args = vs.get(vs.load(), "svelte.language-server.runtime-args") or {}
+
+if type(runtime_args) ~= "table" then
+	runtime_args = { runtime_args }
+end
+
 vim.lsp.config("svelte", {
 	filetypes = { "svelte", "svx" },
-	on_attach = function(client, bufnr)
-		if client.name == "svelte" then
-			vim.api.nvim_create_autocmd("BufWritePost", {
-				pattern = { "*.js", "*.ts" },
-				callback = function(ctx)
-					client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
-				end,
-			})
-		end
-	end,
+	cmd = {
+		"env",
+		"NODE_OPTIONS=" .. table.concat(runtime_args, " ") .. ' --max-old-space-size=8192',
+		"svelteserver",
+		"--stdio",
+	},
 })
 
 --

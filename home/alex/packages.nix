@@ -8,6 +8,7 @@ in
     with pkgs;
     [
 
+      playwright-driver.browsers
       # Waybar
       nerd-fonts.jetbrains-mono
       file

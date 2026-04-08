@@ -84,7 +84,7 @@ async function waitForWindowOnMonitor(
   hypr: HyprlandClient,
   address: HyprAddress,
   monitorId: number,
-  timeoutMs = 5_000,
+  timeoutMs = 10_000,
 ): Promise<void> {
   const deadline = Date.now() + timeoutMs;
 
@@ -99,7 +99,7 @@ async function waitForWindowOnMonitor(
   }
 
   throw new LayoutError(
-    `Timed out waiting for ${address} to reach monitor ${monitorId}.`,
+    `Timed out (${timeoutMs}) waiting for ${address} to reach monitor ${monitorId}.`,
   );
 }
 
@@ -443,25 +443,25 @@ export async function runManagedLayout(
   try {
     const monitorIds = uniqueMonitorIds(config.apps);
 
-    logStep("Launching apps.");
+    logStep("> Launching apps.");
     const resolvedApps = await launchMissingApps(hypr, config);
 
-    logStep("Untabbing everything.");
+    logStep("> Untabbing everything.");
     await untabEverything(hypr, monitorIds);
 
-    logStep("Untiling floating windows.");
+    logStep("> Untiling floating windows.");
     await unfloatEverything(hypr, monitorIds);
 
-    logStep("Moving windows to target monitors.");
+    logStep("> Moving windows to target monitors.");
     await moveWindowsToAssignedMonitors(hypr, config.apps, resolvedApps);
 
-    logStep("Sorting windows.");
+    logStep("> Sorting windows.");
     await sortWindowsOnMonitors(hypr, config.apps, resolvedApps);
 
-    logStep("Creating groups.");
+    logStep("> Creating groups.");
     await createGroups(hypr, config.apps, resolvedApps);
 
-    logStep("Applying resizes.");
+    logStep("> Applying resizes.");
     await applyResizes(hypr, config.apps, resolvedApps);
 
     const primaryMonitor = monitorIds[0];
@@ -469,7 +469,7 @@ export async function runManagedLayout(
       await hypr.focusMonitor(primaryMonitor as MonitorSelector);
     }
 
-    logStep("Layout complete.");
+    logStep("> Layout complete.");
   } finally {
     hypr.close();
   }

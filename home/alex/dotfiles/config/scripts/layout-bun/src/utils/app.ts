@@ -86,6 +86,8 @@ export async function waitForApps(
     const clients = await hypr.clients({ all: true });
     const resolved = await resolveApps(apps, clients);
     if (resolved.size === apps.length) {
+      // Sleep to let apps do their initial stuff
+      await sleep(1000);
       return resolved;
     }
 
