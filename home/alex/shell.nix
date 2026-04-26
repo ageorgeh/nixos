@@ -43,6 +43,9 @@ in
 
   # Delete unreachable store paths: sudo nix-collect-garbage -d
   # Deduplicate the store: sudo nix store optimise
+  # List generations sudo nix-env -p /nix/var/nix/profiles/system --list-generations
+  # Rebuild boot sudo nixos-rebuild boot --flake ~/nixos-config#workstation
+  # sudo nixos-install --root / --flake ~/nixos-config#workstation
 
   programs.bash = {
     enable = true;

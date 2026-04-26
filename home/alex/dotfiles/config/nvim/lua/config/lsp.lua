@@ -103,15 +103,6 @@ vim.lsp.config("tailwindcss", {
 	settings = {
 		tailwindCSS = {
 			validate = true,
-			lint = {
-				cssConflict = "warning",
-				invalidApply = "error",
-				invalidScreen = "error",
-				invalidVariant = "error",
-				invalidConfigPath = "error",
-				invalidTailwindDirective = "error",
-				recommendedVariantOrder = "warning",
-			},
 			classAttributes = {
 				"class",
 				"className",
@@ -120,35 +111,16 @@ vim.lsp.config("tailwindcss", {
 				"ngClass",
 				"imgClass",
 			},
-			includeLanguages = {
-				eelixir = "html-eex",
-				eruby = "erb",
-				templ = "html",
-				htmlangular = "html",
-			},
 			experimental = {
 				configFile = vs.get(vs.load(), "tailwindCSS.experimental.configFile"),
 			},
 		},
 	},
+	-- The default for this doesnt work
 	root_dir = function(bufnr, on_dir)
 		local root_files = {
+			"package-lock.json",
 			"pnpm-lock.yaml",
-			-- Generic
-			"tailwind.config.js",
-			"tailwind.config.cjs",
-			"tailwind.config.mjs",
-			"tailwind.config.ts",
-			"postcss.config.js",
-			"postcss.config.cjs",
-			"postcss.config.mjs",
-			"postcss.config.ts",
-			-- Django
-			"theme/static_src/tailwind.config.js",
-			"theme/static_src/tailwind.config.cjs",
-			"theme/static_src/tailwind.config.mjs",
-			"theme/static_src/tailwind.config.ts",
-			"theme/static_src/postcss.config.js",
 		}
 		local fname = vim.api.nvim_buf_get_name(bufnr)
 		-- root_files = util.insert_package_json(root_files, "tailwindcss", fname)
@@ -193,14 +165,72 @@ vim.lsp.enable("gopls")
 
 vim.lsp.enable("eslint")
 local base_on_attach = vim.lsp.config.eslint.on_attach
+-- vim.lsp.config("eslint", {
+-- 	on_attach = function(client, bufnr)
+-- 		if not base_on_attach then return end
+
+-- 		base_on_attach(client, bufnr)
+-- 		vim.api.nvim_create_autocmd("BufWritePre", {
+-- 			buffer = bufnr,
+-- 			command = "LspEslintFixAll",
+-- 		})
+-- 	end,
+-- })
+
+
 vim.lsp.config("eslint", {
 	on_attach = function(client, bufnr)
-		if not base_on_attach then return end
+		if base_on_attach then
+			base_on_attach(client, bufnr)
+		end
 
-		base_on_attach(client, bufnr)
-		vim.api.nvim_create_autocmd("BufWritePre", {
+		local running = false
+
+		vim.api.nvim_create_autocmd("BufWritePost", {
 			buffer = bufnr,
-			command = "LspEslintFixAll",
+			callback = function()
+				if running then
+					return
+				end
+
+				running = true
+
+				local params = vim.lsp.util.make_range_params(0, client.offset_encoding)
+				params.context = {
+					only = { "source.fixAll.eslint" },
+					diagnostics = vim.diagnostic.get(bufnr),
+				}
+
+				vim.lsp.buf_request_all(bufnr, "textDocument/codeAction", params, function(results)
+					running = false
+
+					if not vim.api.nvim_buf_is_valid(bufnr) then
+						return
+					end
+
+					for client_id, res in pairs(results or {}) do
+						for _, action in ipairs(res.result or {}) do
+							local c = vim.lsp.get_client_by_id(client_id)
+
+							if action.edit then
+								vim.lsp.util.apply_workspace_edit(action.edit, c and c.offset_encoding or "utf-16")
+							end
+
+							if action.command then
+								if c then
+									c:exec_cmd(action.command, { bufnr = bufnr }, function() end)
+								else
+									vim.lsp.buf.execute_command(action.command)
+								end
+							end
+						end
+					end
+
+					if vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].modified then
+						vim.cmd("silent noautocmd update")
+					end
+				end)
+			end,
 		})
 	end,
 })
@@ -355,30 +385,30 @@ end
 -- })
 
 -- Highlight references
-vim.api.nvim_create_autocmd("LspAttach", {
-	callback = function(args)
-		local client = vim.lsp.get_client_by_id(args.data.client_id)
+-- vim.api.nvim_create_autocmd("LspAttach", {
+-- 	callback = function(args)
+-- 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-		if client and client:supports_method("textDocument/documentHighlight") then
-			local autocmd = vim.api.nvim_create_autocmd
-			local augroup = vim.api.nvim_create_augroup("lsp_highlight", { clear = false })
+-- 		if client and client:supports_method("textDocument/documentHighlight") then
+-- 			local autocmd = vim.api.nvim_create_autocmd
+-- 			local augroup = vim.api.nvim_create_augroup("lsp_highlight", { clear = false })
 
-			vim.api.nvim_clear_autocmds({ buffer = bufnr, group = augroup })
+-- 			vim.api.nvim_clear_autocmds({ buffer = bufnr, group = augroup })
 
-			autocmd({ "CursorHold" }, {
-				group = augroup,
-				buffer = args.buf,
-				callback = vim.lsp.buf.document_highlight,
-			})
+-- 			autocmd({ "CursorHold" }, {
+-- 				group = augroup,
+-- 				buffer = args.buf,
+-- 				callback = vim.lsp.buf.document_highlight,
+-- 			})
 
-			autocmd({ "CursorMoved" }, {
-				group = augroup,
-				buffer = args.buf,
-				callback = vim.lsp.buf.clear_references,
-			})
-		end
-	end,
-})
+-- 			autocmd({ "CursorMoved" }, {
+-- 				group = augroup,
+-- 				buffer = args.buf,
+-- 				callback = vim.lsp.buf.clear_references,
+-- 			})
+-- 		end
+-- 	end,
+-- })
 
 -- -- Show diagnostics (errors etc) on hold for a line
 vim.api.nvim_create_autocmd("CursorHold", {

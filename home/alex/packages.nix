@@ -29,8 +29,8 @@ in
       bun
       pnpm
       nodejs_24
-      nodejs_24.pkgs.aws-cdk # AWS CDK globally installed
-      nodejs_24.pkgs.prettier
+      # nodejs_24.pkgs.aws-cdk # AWS CDK globally installed
+      # nodejs_24.pkgs.prettier
       typescript
       tailwindcss_4
       cargo # For building rust

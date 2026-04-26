@@ -54,11 +54,13 @@ vim.o.showtabline = 2
 vim.o.exrc = true
 vim.o.secure = true
 
--- Folding
+-- Folding (collapsing code sections)
 vim.o.foldcolumn = "1"
 vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
+vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.wo.foldmethod = "expr"
 
 vim.opt.conceallevel = 2
 

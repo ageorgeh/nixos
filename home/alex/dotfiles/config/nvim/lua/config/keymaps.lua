@@ -114,7 +114,7 @@ function RestartAllLsps()
 	end, 500)
 end
 
-vim.keymap.set("n", "<leader>lr", RestartAllLsps, { desc = "Restart all LSPs" })
+vim.keymap.set("n", "<leader>lr", "<cmd>lsp restart<CR>", { desc = "Restart all LSPs" })
 
 
 -- C-K hover https://neovim.io/doc/user/lsp.html#vim.lsp.buf.hover()
@@ -231,6 +231,10 @@ vim.keymap.set("n", "<leader>teo", function()
 end)
 -- vim.keymap.set("n", "<leader>ts", neotest.summary.toggle, { desc = "Toggle test summary" })
 
+-- Run last test
+vim.keymap.set("n", "<leader>tel", function()
+	neotest.run.run_last()
+end, { desc = "Run last test" })
 
 --
 -- Overseer
