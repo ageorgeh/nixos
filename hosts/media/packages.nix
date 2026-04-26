@@ -11,6 +11,9 @@
     iperf
     sysstat
 
+    ffmpeg
+    speedtest-cli
+
     #
     # ssh tools
     #
