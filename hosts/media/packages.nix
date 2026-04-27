@@ -13,6 +13,7 @@
 
     ffmpeg
     speedtest-cli
+    sqlite
 
     #
     # ssh tools

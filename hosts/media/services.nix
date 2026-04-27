@@ -17,6 +17,34 @@ let
       };
     }
   );
+
+  qbPatchPassword = pkgs.writeShellScript "qbittorrent-patch-password" ''
+    set -euo pipefail
+
+    qbConf="/var/lib/qBittorrent/qBittorrent/config/qBittorrent.conf"
+    pw="$(tr -d '\n' < ${config.age.secrets."qbittorrent-password".path})"
+
+    if grep -q '^WebUI\\Password_PBKDF2=' "$qbConf"; then
+      ${pkgs.gnused}/bin/sed -i \
+        "s|^WebUI\\\\Password_PBKDF2=.*$|WebUI\\\\Password_PBKDF2=$pw|" \
+        "$qbConf"
+    elif grep -q '^\[Preferences\]' "$qbConf"; then
+      ${pkgs.gnused}/bin/sed -i \
+        "/^\[Preferences\]/a WebUI\\\\Password_PBKDF2=$pw" \
+        "$qbConf"
+    else
+      {
+        echo
+        echo "[Preferences]"
+        echo "WebUI\\Password_PBKDF2=$pw"
+      } >> "$qbConf"
+    fi
+
+    chown qbittorrent:qbittorrent "$qbConf"
+    chmod 0600 "$qbConf"
+
+    grep -q '^WebUI\\Password_PBKDF2=' "$qbConf"
+  '';
 in
 {
   services.openssh = {
@@ -133,43 +161,8 @@ in
       };
     };
   };
-  systemd.services.qbittorrent.preStart = ''
-    set -euo pipefail
-    echo "Prestart"
 
-    # Find actual conf if the module writes it elsewhere:
-    if [ ! -f ${qbConf} ]; then
-      conf="$(find /var/lib -name qBittorrent.conf -print -quit || true)"
-      if [ -n "$conf" ]; then
-        qbConf="$conf"
-      else
-        qbConf="${qbConf}"
-      fi
-    else
-      qbConf="${qbConf}"
-    fi
-
-    pw="$(cat ${config.age.secrets."qbittorrent-password".path} | tr -d '\n')"
-
-    # Ensure the key exists under [Preferences] as WebUI\Password_PBKDF2=
-    # If it exists, replace; if not, append under [Preferences].
-    if grep -q '^WebUI\\Password_PBKDF2=' "$qbConf"; then
-      echo "Replacing password"
-      ${pkgs.gnused}/bin/sed -i "s|^WebUI\\\\Password_PBKDF2=.*$|WebUI\\\\Password_PBKDF2=\"$pw\"|" "$qbConf"
-    else
-      # insert after [Preferences] header if present, else append
-      if grep -q '^\[Preferences\]' "$qbConf"; then
-        echo "Appending password to preferences section"
-        ${pkgs.gnused}/bin/sed -i "/^\[Preferences\]/a WebUI\\\\Password_PBKDF2=\"$pw\"" "$qbConf"
-      else
-        echo "Appending preferences section with password"
-        printf '\n[Preferences]\nWebUI\\Password_PBKDF2=\"%s\"\n' "$pw" >> "$qbConf"
-      fi
-    fi
-
-    # chown qbittorrent:qbittorrent "$qbConf"
-    # chmod 0600 "$qbConf"
-  '';
+  systemd.services.qbittorrent.serviceConfig.ExecStartPre = lib.mkAfter [ "${qbPatchPassword}" ];
 
   systemd.tmpfiles.settings.qbittorrent."/var/lib/qBittorrent/qBittorrent/config/categories.json"."C+" =
     {
