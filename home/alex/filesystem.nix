@@ -20,6 +20,7 @@ in
   xdg.userDirs = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
     createDirectories = true;
+    setSessionVariables = true;
     extraConfig = {
       # Create a custom directory for code
       CODE = "${config.home.homeDirectory}/code";
@@ -68,12 +69,6 @@ in
 
   }
   // (mkSymlinkAttrs {
-    ".config" = {
-      source = ./dotfiles/config;
-      outOfStoreSymlink = true;
-      recursive = true;
-    };
-
     ".tmux.conf" = {
       source = ./dotfiles/.tmux.conf;
       outOfStoreSymlink = true;
@@ -85,6 +80,12 @@ in
 
     "scripts" = {
       source = ./dotfiles/scripts;
+      outOfStoreSymlink = true;
+      recursive = true;
+    };
+
+    ".config" = {
+      source = ./dotfiles/config;
       outOfStoreSymlink = true;
       recursive = true;
     };

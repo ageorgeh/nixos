@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   ...
 }:
 let
@@ -46,6 +47,7 @@ in
   # Git
   programs.git = {
     enable = true;
+    signing.format = null;
     settings = {
       user = {
         email = "aghornung@gmail.com";
@@ -156,6 +158,8 @@ in
     vimAlias = true;
     withNodeJs = true; # for LSPs like tsserver
     withPython3 = true;
+    withRuby = false;
+    sideloadInitLua = true;
     # extraLuaPackages = ps: [ ps.magick ];
     # extraPackages = [ pkgs.imagemagick ];
   };
@@ -163,6 +167,7 @@ in
   # firefox
   programs.firefox = {
     enable = true;
+    # configPath = "${config.xdg.configHome}/mozilla/firefox";
     profiles = {
       default = {
         id = 0;

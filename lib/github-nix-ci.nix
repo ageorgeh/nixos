@@ -342,7 +342,8 @@ in
       ];
 
       systemd.tmpfiles.rules = [
-        "d ${artifactDir} 2770 github-runner github-runner 14d"
+        # https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html?__goaway_challenge=meta-refresh&__goaway_id=1527dd677be5bd5a757821ac3eeff0e0&__goaway_referer=https%3A%2F%2Fwww.google.com%2F#Configuration%20File%20Format
+        "d ${artifactDir} 2770 github-runner github-runner 7d"
       ];
 
       systemd.services.github-runner-artifact-clean = {

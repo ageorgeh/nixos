@@ -21,6 +21,8 @@ in
   }
   // lib.optionalAttrs isLinux {
     # nixos
+
+    # sudo nix-env -p /nix/var/nix/profiles/system --list-generations
     nixos-build = "sudo nixos-rebuild switch --flake ~/nixos-config#workstation";
     nixos-build-logs = "sudo nixos-rebuild switch --flake ~/nixos-config#workstation -L --show-trace --verbose";
     nixos-update = "sudo nix flake update --flake ~/nixos-config";

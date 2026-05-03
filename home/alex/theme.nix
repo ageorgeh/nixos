@@ -18,6 +18,10 @@ lib.mkIf pkgs.stdenv.isLinux {
       name = "Gruvbox-Dark";
 
     };
+    gtk4.theme = {
+      package = pkgs.gruvbox-gtk-theme;
+      name = "Gruvbox-Dark";
+    };
     iconTheme = {
       package = pkgs.papirus-icon-theme;
       name = "Papirus-Dark";

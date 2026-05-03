@@ -18,8 +18,8 @@ export interface LayoutConfig {
 function app(config: ManagedApp): ManagedApp {
   return config;
 }
-
-const nixosCode = app({
+// ---- monitor 0 ---- //
+const code_nixos = app({
   id: "nixos-code",
   command: "code --use-angle=vulkan ~/nixos-config",
   match: {
@@ -30,6 +30,20 @@ const nixosCode = app({
   // },
   targetMonitor: 0,
   order: 0,
+  group: "dev",
+});
+
+const code_cmsCodex = app({
+  id: "code_cmsCodex",
+  command: "code --use-angle=vulkan ~/code/cms-codex",
+  match: {
+    title: /.*cms-codex.*/,
+  },
+  // launchMatch: {
+  //   initialTitle: "Visual Studio Code",
+  // },
+  targetMonitor: 0,
+  order: 1,
   group: "dev",
 });
 
@@ -44,20 +58,21 @@ const kitty = app({
   group: "dev",
 });
 
-const cmsCode = app({
-  id: "cms-code",
-  command: "code --use-angle=vulkan ~/code/cms-codex",
+const code_cms = app({
+  id: "code_cms",
+  command: "code --use-angle=vulkan ~/code/cmsWrapper/cms",
   match: {
-    title: /.*cms.*/,
+    title: /^(?!.*codex).*cms.*/,
   },
   // launchMatch: {
   //   initialTitle: "Visual Studio Code",
   // },
   targetMonitor: 0,
-  order: 1,
+  order: 3,
   group: "dev",
 });
 
+// ---- monitor 0 ---- //
 const firefoxDev = app({
   id: "firefox-dev",
   command: "firefox-devedition -P dev",
@@ -149,9 +164,10 @@ const tidalHifi = app({
 
 export const layoutConfig: LayoutConfig = {
   apps: [
-    nixosCode,
+    code_nixos,
     kitty,
-    cmsCode,
+    code_cmsCodex,
+    code_cms,
     firefoxDev,
     obsidian,
     noSqlWorkbench,

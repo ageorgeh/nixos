@@ -85,6 +85,8 @@ in
       tmux # Terminal multiplexer
       webfontkitgenerator # Generating fonts
       # polypane # Browser dev tool - REMOVED from nix packages due to lack of support
+      davinci-resolve
+      ffmpeg
 
       #
       # Nvim
