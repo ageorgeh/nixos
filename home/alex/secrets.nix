@@ -28,6 +28,11 @@ in
     mode = "600";
   };
 
+  age.secrets."context7-key" = {
+    file = secrets + "/context7-key.age";
+    mode = "600";
+  };
+
   age.secrets."floccus.export.json" = {
     file = secrets + "/floccus.export.json.age";
     path = config.home.homeDirectory + "/floccus.export.json";
