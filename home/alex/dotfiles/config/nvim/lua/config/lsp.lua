@@ -431,3 +431,12 @@ vim.api.nvim_create_autocmd("CursorHold", {
 		vim.b.diagnostics_pos = cursor_pos
 	end,
 })
+
+
+-- disable document color (highlighing hex codes etc) cause it causes issues with
+-- lsp restart
+vim.api.nvim_create_autocmd('LspAttach', {
+	callback = function(ev)
+		pcall(vim.lsp.document_color.enable, false, { bufnr = ev.buf })
+	end,
+})

@@ -147,6 +147,8 @@
     enable = true;
     package = pkgs.docker_28;
   };
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.binfmt.preferStaticEmulators = true;
 
   environment.systemPackages = with pkgs; [
     git

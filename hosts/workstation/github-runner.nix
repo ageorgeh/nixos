@@ -54,6 +54,7 @@ in
 
             lsof # List open files
             rsync
+            libarchive # unzipping etc
             ripgrep
             docker_28
           ];

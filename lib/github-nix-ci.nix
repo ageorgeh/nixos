@@ -391,6 +391,13 @@ in
         volumes = [ "cache-data:/data" ];
         autoStart = true;
       };
+      /**
+        Clean up cache server volume:
+        sudo systemctl stop docker-cache-server.service; \
+        sudo docker rm -f cache-server; \
+        sudo docker volume rm cache-data; \
+        sudo systemctl start docker-cache-server.service
+      */
 
       # systemd.tmpfiles.rules = [
       #   "d ${toString config.services.github-nix-ci.cacheServer.dataDir} 0750 root root -"

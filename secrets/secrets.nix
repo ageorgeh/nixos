@@ -44,4 +44,9 @@ in
     workstation
     laptop
   ];
+
+  "context7-key.age".publicKeys = [
+    workstation
+    laptop
+  ];
 }
