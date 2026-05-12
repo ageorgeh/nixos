@@ -87,6 +87,7 @@ in
       # polypane # Browser dev tool - REMOVED from nix packages due to lack of support
       davinci-resolve
       ffmpeg
+      codex
 
       #
       # Nvim

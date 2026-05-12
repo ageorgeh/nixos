@@ -54,9 +54,7 @@ vim.lsp.enable("lua_ls")
 
 -- svelte
 vim.lsp.enable("svelte")
-
 local runtime_args = vs.get(vs.load(), "svelte.language-server.runtime-args") or {}
-
 if type(runtime_args) ~= "table" then
 	runtime_args = { runtime_args }
 end
@@ -65,7 +63,7 @@ vim.lsp.config("svelte", {
 	filetypes = { "svelte", "svx" },
 	cmd = {
 		"env",
-		"NODE_OPTIONS=" .. table.concat(runtime_args, " ") .. ' --max-old-space-size=8192',
+		"NODE_OPTIONS=" .. table.concat(runtime_args, " "), -- .. ' --max-old-space-size=8192',
 		"svelteserver",
 		"--stdio",
 	},
@@ -75,24 +73,25 @@ vim.lsp.config("svelte", {
 -- typescript
 --
 
--- vim.lsp.enable("tsgo")
+-- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/tsgo.lua
+vim.lsp.enable("tsgo")
 
 -- vim.lsp.enable("ts_ls")
 
 -- vim.lsp.enable("typescript-tools")
 
 -- https://github.com/yioneko/vtsls
-vim.lsp.enable("vtsls")
-vim.lsp.config('vtsls', {
-	settings = {
-		typescript = {
-			tsdk = 'node_modules/typescript/lib',
-			tsserver = {
-				maxTsServerMemory = 32000,
-			}
-		}
-	},
-})
+-- vim.lsp.enable("vtsls")
+-- vim.lsp.config('vtsls', {
+-- 	settings = {
+-- 		typescript = {
+-- 			tsdk = 'node_modules/typescript/lib',
+-- 			-- tsserver = {
+-- 			-- 	maxTsServerMemory = 32000,
+-- 			-- }
+-- 		}
+-- 	},
+-- })
 -- TODO
 -- https://www.reddit.com/r/neovim/comments/1rdfajw/tsexpandhovernvim_progressively_expand_typescript/
 
