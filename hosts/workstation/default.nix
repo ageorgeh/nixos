@@ -81,6 +81,13 @@
   security.pam.services.hyprland.enableGnomeKeyring = true;
   security.pam.services.sddm.enableGnomeKeyring = true;
 
+  # local llms
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-cuda;
+    loadModels = [ "qwen3.5:4b" ];
+  };
+
   # networking
   networking.hostName = "workstation";
   networking.nameservers = [

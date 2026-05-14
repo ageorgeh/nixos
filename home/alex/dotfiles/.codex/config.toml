@@ -1,0 +1,38 @@
+model = "gpt-5.3-codex"
+model_reasoning_effort = "medium"
+personality = "pragmatic"
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[plugins."figma@openai-curated"]
+enabled = true
+
+[projects."/home/alex/code/cmsWrapper/cms"]
+trust_level = "trusted"
+
+[projects."/home/alex/code/cms-codex"]
+trust_level = "trusted"
+
+[projects."/home/alex/code/vite-plugin-entry-shaking-repro"]
+trust_level = "trusted"
+
+[projects."/home/alex/code/ts-ag"]
+trust_level = "trusted"
+
+[projects."/home/alex/code/svelte-ag"]
+trust_level = "trusted"
+
+[projects."/home/alex/code/svelte-check-refs"]
+trust_level = "trusted"
+
+[projects."/home/alex/code/distill"]
+trust_level = "trusted"
+
+[mcp_servers.context7]
+# https://context7.com/dashboard
+url = "https://mcp.context7.com/mcp"
+env_http_headers = { "CONTEXT7_API_KEY" = "CONTEXT7_API_KEY" }
+enabled = true
+startup_timeout_sec = 40
+tool_timeout_sec = 60

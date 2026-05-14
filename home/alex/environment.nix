@@ -15,7 +15,9 @@ let
 
     NIXPKGS_ALLOW_UNFREE = "1";
     # POMO = homeDir + "/.config/pomo";
-    # PNPM_HOME = homeDir + "/.local/share/pnpm";
+
+    # To allow global pnpm installs
+    PNPM_HOME = homeDir + "/.local/share/pnpm";
 
     PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
     PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
@@ -69,6 +71,6 @@ in
 
   home.sessionPath = [
     "${homeDir}/.config/pomo"
-    # "${homeDir}/.local/share/pnpm"
+    "${homeDir}/.local/share/pnpm"
   ];
 }

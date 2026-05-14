@@ -78,6 +78,12 @@ in
       outOfStoreSymlink = true;
     };
 
+    ".codex" = {
+      source = ./dotfiles/.codex;
+      outOfStoreSymlink = true;
+      recursive = true;
+    };
+
     "scripts" = {
       source = ./dotfiles/scripts;
       outOfStoreSymlink = true;

@@ -68,6 +68,9 @@ in
       dynamodb-local
       nosql-workbench
 
+      # llms
+      rtk # Reduce token usage by wrapping cli commands
+
       # cli tools
       libarchive # Unzipping etc bsdtar -xf Sue_Ellen_Francisco.zip
       zip # Easier zipping
