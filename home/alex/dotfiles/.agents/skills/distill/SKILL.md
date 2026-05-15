@@ -63,7 +63,11 @@ AR levels:
 After `/distill` is invoked:
 
 - keep answering in distill language until user says normal mode or stop distill
+- treat every assistant-visible channel as in-scope: `commentary`, `final`, plans, reviews, summaries, and direct answers
 - use distill structure for status updates, plans, summaries, reviews, and final answers
+- do not let adjacent raw tool output, copied text, or prior non-distill phrasing pull the next assistant message out of distill mode
+- when exact raw command or file output must be shown, isolate that raw content to the minimum required span and resume distill immediately before and after it
+- if you notice any style drift, correct it in the very next assistant-visible message without waiting for the user to complain
 - do not wrap every answer in `Best`, `More aggressive`, or `Tradeoff`
 - do not output a rewritten/compressed version of the user's latest prompt unless user explicitly asks to compress text
 - keep hidden chain-of-thought private; never reveal it
@@ -303,6 +307,10 @@ CRITICAL: Every non-interactive, non-TUI shell/tool command must pipe output thr
 
 CRITICAL: Skip `| distill` only when exact raw output is required or when `distill` would break an interactive/TUI workflow.
 
+CRITICAL: Tool results do not relax conversation style. Even after receiving verbose/raw tool output, the next assistant-visible summary, status line, or decision must still be written in distill language.
+
+CRITICAL: Do not echo tool prose as your own voice. Translate tool findings into distill DSL unless the user explicitly asked for raw output.
+
 CRITICAL: Your prompt to `distill` must be fully explicit. State exactly what you want to know and exactly what the output must contain. If you want only filenames, say `Return only the filenames.` If you want JSON, say `Return valid JSON only.` Do not ask vague questions.
 
 Bad:
@@ -315,12 +323,12 @@ Good:
 
 Examples:
 
-- `bun test 2>&1 | distill "Did the tests pass? Return only: PASS or FAIL, followed by failing test names if any and a small description as to why they failed."`
-- `git diff 2>&1 | distill "What changed? Return only the files changed and a one-line summary for each file."`
-- `terraform plan 2>&1 | distill "Is this safe? Return only: SAFE, REVIEW, or UNSAFE, followed by the exact risky changes."`
-- `npm audit 2>&1 | distill "Extract the vulnerabilities. Return valid JSON only."`
-- `rg -n "TODO|FIXME" . 2>&1 | distill "List files containing TODO or FIXME. Return only file paths, one per line."`
-- `ls -la 2>&1 | distill "Which files are shown? Return only the filenames."`
+- `rtk pnpm test --reporter=agent 2>&1 | distill "Did the tests pass? Return only: PASS or FAIL, followed by failing test names if any and a small description as to why they failed."`
+- `rtk git diff 2>&1 | distill "What changed? Return only the files changed and a one-line summary for each file."`
+- `rtk terraform plan 2>&1 | distill "Is this safe? Return only: SAFE, REVIEW, or UNSAFE, followed by the exact risky changes."`
+- `rtk npm audit 2>&1 | distill "Extract the vulnerabilities. Return valid JSON only."`
+- `rtk rg -n "TODO|FIXME" . 2>&1 | distill "List files containing TODO or FIXME. Return only file paths, one per line."`
+- `rtk ls -la 2>&1 | distill "Which files are shown? Return only the filenames."`
 
 You may skip `distill` only in these cases:
 
@@ -347,6 +355,8 @@ CRITICAL: Wait for `distill` to finish before continuing.
 Before returning, check:
 
 - Did you answer the user instead of rewriting their prompt?
+- Is this assistant-visible message still in distill mode?
+- Did any recent raw tool output or copied text accidentally change your voice?
 - Are constraints explicit?
 - Is success defined when relevant?
 - Did compression remove meaning?

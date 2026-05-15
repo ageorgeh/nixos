@@ -85,7 +85,19 @@
   services.ollama = {
     enable = true;
     package = pkgs.ollama-cuda;
-    loadModels = [ "qwen3.5:4b" ];
+    loadModels = [
+      "qwen3.5:4b"
+      # "qwen3.5:9b" fine for 1 request at a time but fails with more
+    ];
+    environmentVariables = {
+      OLLAMA_CONTEXT_LENGTH = "8192";
+      # Important for larger context on 12GB VRAM.
+      OLLAMA_FLASH_ATTENTION = "1";
+      OLLAMA_KV_CACHE_TYPE = "q8_0";
+
+      # Keep model hot between Codex calls.
+      OLLAMA_KEEP_ALIVE = "30m";
+    };
   };
 
   # networking

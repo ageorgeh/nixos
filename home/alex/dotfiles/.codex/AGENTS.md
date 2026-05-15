@@ -1,32 +1,75 @@
-@/home/alex/.codex/RTK.md
+# RTK - Rust Token Killer (Codex CLI)
 
-<!-- distill skill: begin -->
+**Usage**: Token-optimized CLI proxy for shell commands.
 
-CRITICAL: Always communicate with the user in `/distill` compressed language in English: Military English + AR-0/AR-1, short command lines, explicit constraints, explicit pass criteria, and no filler. Use `/distill` every time, in every conversation, in every response and in every thread.
-Do not return a rewritten/compressed copy of the user's prompt. Adopt `/distill` as the conversation language and keep using it throughout the thread.
-Use the same `/distill` compressed structure for visible planning, status, analysis summaries, and any exposed reasoning. Keep hidden chain-of-thought private; never reveal it.
-Use fixed prefixes: S=state/status, C=cause/context, D=action/decision, R=risk/blocker, O=outcome/output, N=constraint/no-go, P=pass/proof.
-Every thread must use DSL/Dict when it helps compression. Start with `Dict:` when meanings are not already shared.
-Define short variables inline for repeated nouns using the dynamic pattern `<term>=#<letter><digit>`; choose terms from the current thread, then reuse the `#` key.
-There is no fixed variable list. The model must pick terms that repeat or are likely to repeat.
-Inline variables are thread-local by default. Persist only variables used more than 5 times in a `distill dsl learn-thread --stdin` transcript; remove them if absent in the next thread.
-Variable keys are `#` plus letter+digit. Never define variables for secrets, people, IDs, paths, URLs, or one-off terms.
-Prefer semantic atoms over natural phrases: `D sync repo/pkg/bin skill`, not `D patch repo skill + packaged skill + installed skill if needed`.
-Prefer arrows and causal operators: `D verbose status -> AR-1 cmds`, `C PATH pkg bin => repo patch ignored`, `R missing token => merge blocked`.
-Prefer shared DSL over repeated phrases when meaning is stable: Dict first, fixed prefixes S/C/D/R/O/N/P, task aliases A/B/F/E/V/X/U/DB/CFG/DOC/PERM, numeric macros 1-9/0, and defaults N1-N6.
-Start status blocks with `Dict: S=state C=context D=action R=risk O=outcome N=no-go P=proof` when not already shared.
-When creating Dict or Dict+ entries, use the shortest unambiguous key possible: one letter or one number first, then one letter plus one number when needed.
-Create Dict/Dict+ only for terms that repeat or are likely to repeat. Do not grow DSL for rare, ambiguous, sensitive, or temporary terms.
-Learned DSL terms should earn usage: use candidate terms twice before treating them as active; inline `#` variables are active immediately after explicit assignment.
-At every thread end or handoff, run `distill dsl learn-thread --stdin < transcript.txt>` when transcript export is available.
-When the user asks for normal prose, expand only as much as needed, then return to `/distill` compressed style.
-For every non-interactive, non-TUI shell/tool command, pipe output through `distill` with an explicit prompt. Do not run plain shell commands when summarized output is enough.
-Skip `| distill` only when exact raw output is required or when `distill` would break an interactive/TUI workflow.
-Prompts passed to `distill` must be explicit: say exactly what to extract and exactly what format to return.
+## Rule
+
+Always prefix shell commands with `rtk`.
+
 Examples:
-bun test 2>&1 | distill "Did tests pass? Return PASS or FAIL, followed by failing test names if any."
-git diff | distill "What changed? Return only files changed and one-line summary for each."
-terraform plan 2>&1 | distill "Is this safe? Return SAFE, REVIEW, or UNSAFE, followed by risky changes."
-Wait for `distill` to finish before continuing.
 
-<!-- distill skill: end -->
+```bash
+rtk git status
+rtk cargo test
+rtk npm run build
+rtk pytest -q
+```
+
+## Meta Commands
+
+```bash
+rtk gain            # Token savings analytics
+rtk gain --history  # Recent command savings history
+rtk proxy <cmd>     # Run raw command without filtering
+```
+
+## Verification
+
+```bash
+rtk --version
+rtk gain
+which rtk
+```
+
+## Distill command-output policy
+
+For non-interactive shell commands, compress command output through `distill` before reading it.
+
+Required form:
+
+```bash
+<command> 2>&1 | distill "<specific extraction prompt>"
+```
+
+Do not run the same command raw first.
+
+Use `distill` for:
+
+- test output
+- build output
+- logs
+- grep/search output
+- git diff summaries
+- audit/plan output
+- long directory listings
+- any noisy command where a summary is enough
+
+Skip `distill` only when:
+
+- reading agent skill files or AGENTS.md files
+- exact raw output is required
+- command output is machine-consumed by another command
+- command is interactive/TUI/watch mode
+- command creates or modifies files and output is not needed
+- distill is unavailable or fails
+
+Prompts must be explicit. Say exactly what to return.
+
+Good examples:
+
+`rtk pnpm test --reporter=agent 2>&1 | distill "Did tests pass? Return only PASS or FAIL, failing test names, and the first actionable error."`
+`rtk git diff 2>&1 | distill "Summarize changed files. Return only file path, one-line change summary, and risk."`
+`rtk rg -n "TODO|FIXME" . 2>&1 | distill "Return only matching file paths and line numbers."`
+`rtk npm audit 2>&1 | distill "Extract vulnerabilities. Return valid JSON only with package, severity, fixAvailable."`
+`rtk terraform plan 2>&1 | distill "Return SAFE, REVIEW, or UNSAFE, then exact risky changes only."`
+`rtk ls -la 2>&1 | distill "Return only filenames."`
