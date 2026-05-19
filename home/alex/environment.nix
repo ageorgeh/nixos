@@ -72,5 +72,6 @@ in
   home.sessionPath = [
     "${homeDir}/.config/pomo"
     "${homeDir}/.local/share/pnpm"
+    "${homeDir}/.local/share/pnpm/bin"
   ];
 }

@@ -62,6 +62,7 @@ Skip `distill` only when:
 - command is interactive/TUI/watch mode
 - command creates or modifies files and output is not needed
 - distill is unavailable or fails
+- commands expected to produce under 200 lines
 
 Prompts must be explicit. Say exactly what to return.
 

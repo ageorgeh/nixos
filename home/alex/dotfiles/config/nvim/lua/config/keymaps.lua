@@ -242,12 +242,23 @@ end, { desc = "Run last test" })
 local open_tasks_in_task_bar = require("utils.overseer.tasksTab")
 vim.keymap.set("n", "<leader>or", function()
 	local overseer = require("overseer")
-	overseer.run_task({}, function(task)
-		if task then
-			open_tasks_in_task_bar()
+
+	overseer.run_task({}, function(task, err)
+		if err then
+			vim.notify("Overseer: " .. err, vim.log.levels.ERROR)
+			return
 		end
+
+		if not task then
+			vim.notify("Overseer: no task selected/created", vim.log.levels.WARN)
+			return
+		end
+
+		vim.schedule(function()
+			open_tasks_in_task_bar()
+		end)
 	end)
-end, { desc = "Overseer toggle" })
+end, { desc = "Overseer run task in Tasks tab" })
 
 vim.keymap.set("n", "<leader>ot", ":OverseerToggle<CR>", { desc = "Overseer toggle" })
 

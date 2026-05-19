@@ -43,21 +43,21 @@
     };
 
     # Install global pnpm packages
-    pnpm-global = {
-      Unit = {
-        Description = "Install pnpm global packages";
-      };
-      Service = {
-        Type = "oneshot";
-        Environment = [
-          # Should match the variable in ./environment.nix
-          "PNPM_HOME = ${config.home.homeDirectory}/.local/share/pnpm"
-        ];
-        ExecStart = "${pkgs.pnpm}/bin/pnpm add -g @samuelfaj/distill";
-        RemainAfterExit = true;
-      };
-      Install.WantedBy = [ "default.target" ];
-    };
+    # pnpm-global = {
+    #   Unit = {
+    #     Description = "Install pnpm global packages";
+    #   };
+    #   Service = {
+    #     Type = "oneshot";
+    #     Environment = [
+    #       # Should match the variable in ./environment.nix
+    #       "PNPM_HOME = ${config.home.homeDirectory}/.local/share/pnpm"
+    #     ];
+    #     ExecStart = "${pkgs.pnpm}/bin/pnpm add -g @samuelfaj/distill";
+    #     RemainAfterExit = true;
+    #   };
+    #   Install.WantedBy = [ "default.target" ];
+    # };
 
     nosql-workbench-credentials = {
       Unit = {

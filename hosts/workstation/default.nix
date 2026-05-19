@@ -87,6 +87,7 @@
     package = pkgs.ollama-cuda;
     loadModels = [
       "qwen3.5:4b"
+      "hf.co/samuelfaj/distill-1.7B-4bit-GGUF"
       # "qwen3.5:9b" fine for 1 request at a time but fails with more
     ];
     environmentVariables = {
@@ -177,10 +178,14 @@
     wl-clipboard # Used by clipse
     wsdd
     efibootmgr
+    # llama-cpp
+    (llama-cpp.override {
+      cudaSupport = true;
+    })
 
     # Compilers - remove??
     cmake
-    extra-cmake-modules
+    kdePackages.extra-cmake-modules
     pkg-config
     openblas
     gcc

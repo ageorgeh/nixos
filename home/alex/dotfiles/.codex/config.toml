@@ -1,12 +1,34 @@
 model = "gpt-5.4"
 model_reasoning_effort = "medium"
 personality = "pragmatic"
+tool_output_token_limit = 2000
+
+developer_instructions = """
+Override the base intermediary-update policy.
+
+Long reasoning, tool polling, distill processing, builds, and tests may run silently.
+Do not send progress updates on a timer.
+Do not send an update just because 20 or 30 seconds passed.
+Do not interrupt reasoning just because thinking is long.
+Do not send multiple updates while thinking unless there is a material new finding.
+
+Do not send preambles before routine read-only commands such as rg, sed, nl, ls, git diff, or file inspection.
+Do not send user-visible polling updates while a command is still running unless it has been running for more than 5 minutes.
+
+Send an intermediary update only when:
+- a command failed AND changes the approach
+- blocked or needing user input
+- a material partial finding changes the task direction
+
+Keep intermediary updates to one short sentence.
+"""
 
 [plugins."github@openai-curated"]
-enabled = true
+enabled = false
 
 [plugins."figma@openai-curated"]
-enabled = true
+enabled = false
+
 
 [projects."/home/alex/code/cmsWrapper/cms"]
 trust_level = "trusted"
@@ -29,10 +51,29 @@ trust_level = "trusted"
 [projects."/home/alex/code/distill"]
 trust_level = "trusted"
 
+[projects."/home/alex/nixos-config"]
+trust_level = "trusted"
+
 [mcp_servers.context7]
-# https://context7.com/dashboard
-url = "https://mcp.context7.com/mcp"
-env_http_headers = { "CONTEXT7_API_KEY" = "CONTEXT7_API_KEY" }
+bearer_token_env_var = "CONTEXT7_API_KEY"
 enabled = true
 startup_timeout_sec = 40
 tool_timeout_sec = 60
+# https://context7.com/dashboard
+url = "https://mcp.context7.com/mcp"
+
+[mcp_servers.context7.env_http_headers ]
+CONTEXT7_API_KEY = "CONTEXT7_API_KEY"
+
+
+[apps.connector_76869538009648d5b282a4bb21c3d157]
+enabled = false
+
+[apps.connector_68df038e0ba48191908c8434991bbac2]
+enabled = false
+
+[features]
+apps = false
+
+[tui.model_availability_nux]
+"gpt-5.5" = 1

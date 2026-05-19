@@ -84,11 +84,11 @@ in
       recursive = true;
     };
 
-    ".agents" = {
-      source = ./dotfiles/.agents;
-      outOfStoreSymlink = true;
-      recursive = true;
-    };
+    # ".agents" = {
+    #   source = ./dotfiles/.agents;
+    #   outOfStoreSymlink = true;
+    #   recursive = true;
+    # };
 
     "scripts" = {
       source = ./dotfiles/scripts;

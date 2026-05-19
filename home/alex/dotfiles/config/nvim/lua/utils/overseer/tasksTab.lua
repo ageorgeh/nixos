@@ -20,17 +20,18 @@ local function open_task_in_tasks_tab()
 		vim.cmd("tabnew")
 		tasks_tab = vim.api.nvim_get_current_tabpage()
 
-		-- Proper tabpage-scoped variable (no numeric indexing)
+		local scratch_win = vim.api.nvim_get_current_win()
+
 		vim.api.nvim_tabpage_set_var(tasks_tab, "tabname", "Tasks")
 		pcall(vim.cmd, "Tabby rename_tab Tasks")
 
 		overseer.open({ enter = false, direction = "bottom" })
 
-		-- Close the initial window created by :tabnew
-		vim.cmd("q")
+		if vim.api.nvim_win_is_valid(scratch_win) then
+			vim.api.nvim_win_close(scratch_win, true)
+		end
 	end
 
-	-- Return to where you were originally (instead of tabprevious ...)
 	if vim.api.nvim_tabpage_is_valid(cur_tab) then
 		vim.api.nvim_set_current_tabpage(cur_tab)
 	end
