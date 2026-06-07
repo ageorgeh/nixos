@@ -1,5 +1,3 @@
-model = "gpt-5.4"
-model_reasoning_effort = "medium"
 personality = "pragmatic"
 tool_output_token_limit = 2000
 
@@ -22,6 +20,19 @@ Send an intermediary update only when:
 
 Keep intermediary updates to one short sentence.
 """
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+
+[features]
+memories = false
+apps = false
+
+[memories]
+generate_memories = false
+use_memories = false
+
+[history]
+persistence = "none"
 
 [plugins."github@openai-curated"]
 enabled = false
@@ -62,7 +73,7 @@ tool_timeout_sec = 60
 # https://context7.com/dashboard
 url = "https://mcp.context7.com/mcp"
 
-[mcp_servers.context7.env_http_headers ]
+[mcp_servers.context7.env_http_headers]
 CONTEXT7_API_KEY = "CONTEXT7_API_KEY"
 
 
@@ -71,9 +82,6 @@ enabled = false
 
 [apps.connector_68df038e0ba48191908c8434991bbac2]
 enabled = false
-
-[features]
-apps = false
 
 [tui.model_availability_nux]
 "gpt-5.5" = 1

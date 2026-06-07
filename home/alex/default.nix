@@ -22,7 +22,6 @@ in
 
     ./filesystem.nix # home files
 
-    ./hyprland.nix # Hyprland config
     ./theme.nix # gtk theme config
 
     ./desktop.nix # xdg desktop entries

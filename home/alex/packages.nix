@@ -15,6 +15,7 @@ in
       ibm-plex
 
       file
+      killall
 
       timewarrior
 

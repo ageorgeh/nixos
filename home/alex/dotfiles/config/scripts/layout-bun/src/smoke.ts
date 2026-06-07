@@ -51,7 +51,7 @@ async function main(): Promise<void> {
     const workspaces = await hypr.workspaces();
 
     const singleEventRoundTrip = await waitForCustomEvents(hypr, ["codex-smoke"], async () => {
-      await hypr.dispatchRaw("event", "codex-smoke");
+      await hypr.command("event", "codex-smoke");
     });
 
     let batchResponses: string[] = [];
@@ -60,8 +60,8 @@ async function main(): Promise<void> {
       ["codex-batch-1", "codex-batch-2"],
       async () => {
         batchResponses = await hypr.batch([
-          "dispatch event codex-batch-1",
-          "dispatch event codex-batch-2",
+          hypr.buildCommand("event", "codex-batch-1"),
+          hypr.buildCommand("event", "codex-batch-2"),
         ]);
       },
     );

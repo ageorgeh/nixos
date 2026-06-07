@@ -151,16 +151,16 @@ const keepassxc = app({
   group: "utilities",
 });
 
-const tidalHifi = app({
-  id: "tidal-hifi",
-  command: "tidal-hifi",
-  match: {
-    class: /^tidal-hifi$/,
-  },
-  targetMonitor: 1,
-  order: 6,
-  group: "utilities",
-});
+// const tidalHifi = app({
+//   id: "tidal-hifi",
+//   command: "tidal-hifi",
+//   match: {
+//     class: /^tidal-hifi$/,
+//   },
+//   targetMonitor: 1,
+//   order: 6,
+//   group: "utilities",
+// });
 
 export const layoutConfig: LayoutConfig = {
   apps: [
@@ -174,6 +174,6 @@ export const layoutConfig: LayoutConfig = {
     firefox,
     thunar,
     keepassxc,
-    tidalHifi,
+    // tidalHifi,
   ],
 };

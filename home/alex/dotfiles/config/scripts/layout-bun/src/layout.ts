@@ -6,8 +6,10 @@ import { HyprlandClient } from "./hyprland/client";
 import type {
   HyprAddress,
   HyprClient,
+  HyprMonitor,
   MatchPattern,
   MonitorSelector,
+  PixelOrPercent,
   WindowMatcher,
 } from "./hyprland/types";
 import { launchMissingApps, resolveApps, waitForApps } from "./utils/app";
@@ -58,9 +60,11 @@ async function untabEverything(
   for (const monitorId of monitorIds) {
     const onMonitor = clients.filter((client) => client.monitor === monitorId);
     for (const client of onMonitor) {
-      await hypr.focusWindow(selectorForAddress(client.address));
+      await hypr.command("focus", {
+        window: selectorForAddress(client.address),
+      });
       await settle();
-      await hypr.dispatchRaw("hy3:changegroup", "untab");
+      await hypr.command("hy3", "change_group", "untab");
       await settle();
     }
   }
@@ -73,7 +77,12 @@ async function unfloatEverything(
   const clients = await hypr.clients();
   const commands = clients
     .filter((client) => monitorIds.includes(client.monitor))
-    .map((client) => `dispatch settiled address:${client.address}`);
+    .map((client) =>
+      hypr.buildCommand("window", "float", {
+        action: "disable",
+        window: selectorForAddress(client.address),
+      }),
+    );
 
   if (commands.length > 0) {
     await hypr.batch(commands);
@@ -119,71 +128,58 @@ async function moveWindowsToAssignedMonitors(
     }
 
     logStep(`Moving ${app.id} to monitor ${app.targetMonitor}.`);
-    await hypr.focusWindow(selectorForAddress(client.address));
+    await hypr.command("focus", { window: selectorForAddress(client.address) });
     await settle();
-    await hypr.moveActiveWindowToMonitor(app.targetMonitor, { silent: true });
+    await hypr.command("window", "move", {
+      monitor: app.targetMonitor,
+      follow: false,
+    });
     await settle();
     await waitForWindowOnMonitor(hypr, client.address, app.targetMonitor);
   }
+}
+
+function compareClientsByPosition(left: HyprClient, right: HyprClient): number {
+  return (
+    left.at[0] - right.at[0] ||
+    left.at[1] - right.at[1] ||
+    left.size[0] - right.size[0] ||
+    left.size[1] - right.size[1] ||
+    left.address.localeCompare(right.address)
+  );
 }
 
 async function focusFirstWindowOnMonitor(
   hypr: HyprlandClient,
   monitorId: number,
 ): Promise<HyprClient | null> {
-  await hypr.focusMonitor(monitorId);
-  await settle();
+  const first = (await hypr.clients())
+    .filter(
+      (client) =>
+        client.monitor === monitorId &&
+        client.mapped &&
+        !client.hidden &&
+        !client.floating,
+    )
+    .sort(compareClientsByPosition)[0];
 
-  let active = await hypr.activeWindow();
-  if (!active || active.monitor !== monitorId) {
-    const clients = await hypr.clients();
-    const fallback = clients
-      .filter((client) => client.monitor === monitorId)
-      .sort(
-        (left, right) => left.at[0] - right.at[0] || left.at[1] - right.at[1],
-      )[0];
-
-    if (!fallback) {
-      return null;
-    }
-
-    await hypr.focusWindow(selectorForAddress(fallback.address));
-    // await settle();
-    active = await hypr.activeWindow();
-  }
-
-  if (!active || active.monitor !== monitorId) {
+  if (!first) {
     return null;
   }
 
-  let previousAddress: string | null = null;
-  for (let step = 0; step < FOCUS_MAX_STEPS; step += 1) {
-    if (!active || active.monitor !== monitorId) {
-      break;
-    }
+  await hypr.command("focus", {
+    window: selectorForAddress(first.address),
+  });
+  await settle();
 
-    if (active.address === previousAddress) {
-      break;
-    }
-
-    previousAddress = active.address;
-    await hypr.dispatchRaw("hy3:movefocus", "l, visible");
-    // await settle();
-    const next = await hypr.activeWindow();
-    if (!next) {
-      break;
-    }
-
-    if (next.monitor !== monitorId) {
-      await hypr.dispatchRaw("hy3:movefocus", "r, visible");
-      // await settle();
-      break;
-    }
-
-    active = next;
+  const active = await hypr.activeWindow();
+  if (!active || active.address !== first.address) {
+    throw new LayoutError(
+      `Failed to focus first window ${first.address} on monitor ${monitorId}.`,
+    );
   }
 
-  return await hypr.activeWindow();
+  return active;
 }
 
 async function readMonitorWindowOrder(
@@ -191,6 +187,8 @@ async function readMonitorWindowOrder(
   monitorId: number,
 ): Promise<HyprClient[]> {
   const first = await focusFirstWindowOnMonitor(hypr, monitorId);
+
+  console.log("First", first?.title);
   if (!first || first.monitor !== monitorId) {
     return [];
   }
@@ -211,12 +209,82 @@ async function readMonitorWindowOrder(
     ordered.push(current);
     seen.add(current.address);
 
-    await hypr.dispatchRaw("hy3:movefocus", "r, visible");
+    await hypr.command("focus", { direction: "r" });
     // await settle();
     current = await hypr.activeWindow();
   }
 
   return ordered;
+}
+
+function ordersMatch(
+  desiredOrder: readonly string[],
+  actualOrder: readonly string[],
+): boolean {
+  return desiredOrder.every((appId, index) => actualOrder[index] === appId);
+}
+
+function planMonitorWindowMoves(
+  monitorId: number,
+  currentOrder: readonly string[],
+  desiredOrder: readonly string[],
+): Array<{ appId: string; direction: "l" | "r"; steps: number }> {
+  if (currentOrder.length !== desiredOrder.length) {
+    console.error("Current vs desired", currentOrder, desiredOrder);
+    throw new LayoutError(
+      `Cannot sort monitor ${monitorId}: desired count ${desiredOrder.length} does not match actual count ${currentOrder.length}.`,
+    );
+  }
+
+  const desiredSet = new Set(desiredOrder);
+  const currentSet = new Set(currentOrder);
+  const missing = desiredOrder.filter((appId) => !currentSet.has(appId));
+  const extras = currentOrder.filter((appId) => !desiredSet.has(appId));
+  if (missing.length > 0 || extras.length > 0) {
+    throw new LayoutError(
+      `Cannot sort monitor ${monitorId}: missing [${missing.join(", ")}], extra [${extras.join(", ")}].`,
+    );
+  }
+
+  const workingOrder = [...currentOrder];
+  const moves: Array<{ appId: string; direction: "l" | "r"; steps: number }> =
+    [];
+
+  for (
+    let targetIndex = 0;
+    targetIndex < desiredOrder.length;
+    targetIndex += 1
+  ) {
+    const desiredAppId = desiredOrder[targetIndex];
+    if (!desiredAppId) {
+      throw new LayoutError(
+        `Missing desired app id for monitor ${monitorId} at index ${targetIndex}.`,
+      );
+    }
+
+    const currentIndex = workingOrder.indexOf(desiredAppId);
+    if (currentIndex === -1) {
+      throw new LayoutError(
+        `Current order missing ${desiredAppId} on monitor ${monitorId}.`,
+      );
+    }
+
+    if (currentIndex === targetIndex) {
+      continue;
+    }
+
+    const direction = currentIndex > targetIndex ? "l" : "r";
+    moves.push({
+      appId: desiredAppId,
+      direction,
+      steps: Math.abs(currentIndex - targetIndex),
+    });
+
+    workingOrder.splice(currentIndex, 1);
+    workingOrder.splice(targetIndex, 0, desiredAppId);
+  }
+
+  return moves;
 }
 
 async function sortWindowsOnMonitors(
@@ -248,61 +316,34 @@ async function sortWindowsOnMonitors(
         .map((client) => addressToAppId.get(client.address))
         .filter((appId): appId is string => appId !== undefined);
 
-      if (desiredOrder.every((appId, index) => actualOrder[index] === appId)) {
+      if (ordersMatch(desiredOrder, actualOrder)) {
         break;
       }
 
-      const firstMismatch = desiredOrder.findIndex(
-        (appId, index) => actualOrder[index] !== appId,
-      );
-      if (firstMismatch === -1) {
-        break;
-      }
-
-      const desiredAppId = desiredOrder[firstMismatch];
-      if (!desiredAppId) {
-        throw new LayoutError(
-          `Missing desired app id for monitor ${monitorId}.`,
-        );
-      }
-      const targetClient = resolvedApps.get(desiredAppId);
-      if (!targetClient) {
-        throw new LayoutError(
-          `Resolved app missing during ordering: ${desiredAppId}`,
-        );
-      }
-
-      logStep(`Ordering ${desiredAppId} on monitor ${monitorId}.`);
-      await hypr.focusWindow(selectorForAddress(targetClient.address));
-      await settle();
-
-      let placed = false;
-      for (
-        let moveCount = 0;
-        moveCount < currentOrder.length + 4;
-        moveCount += 1
-      ) {
-        const latestOrder = await readMonitorWindowOrder(hypr, monitorId);
-        const latestPlannedOrder = latestOrder
-          .map((client) => addressToAppId.get(client.address))
-          .filter((appId): appId is string => appId !== undefined);
-
-        if (latestPlannedOrder[firstMismatch] === desiredAppId) {
-          placed = true;
-          break;
+      for (const move of planMonitorWindowMoves(
+        monitorId,
+        actualOrder,
+        desiredOrder,
+      )) {
+        const targetClient = resolvedApps.get(move.appId);
+        if (!targetClient) {
+          throw new LayoutError(
+            `Resolved app missing during ordering: ${move.appId}`,
+          );
         }
 
-        await hypr.focusWindow(selectorForAddress(targetClient.address));
-        // await settle();
-
-        await hypr.dispatchRaw("hy3:movewindow", "l");
-        // await settle(5);
-      }
-
-      if (!placed) {
-        throw new LayoutError(
-          `Failed to position ${desiredAppId} on monitor ${monitorId}.`,
+        logStep(
+          `Ordering ${move.appId} on monitor ${monitorId} (${move.steps} ${move.direction}).`,
         );
+        await hypr.command("focus", {
+          window: selectorForAddress(targetClient.address),
+        });
+        await settle();
+
+        for (let step = 0; step < move.steps; step += 1) {
+          await hypr.command("hy3", "move_window", move.direction);
+          await settle();
+        }
       }
     }
 
@@ -310,7 +351,10 @@ async function sortWindowsOnMonitors(
       .map((client) => addressToAppId.get(client.address))
       .filter((appId): appId is string => appId !== undefined);
 
-    if (!desiredOrder.every((appId, index) => finalOrder[index] === appId)) {
+    if (!ordersMatch(desiredOrder, finalOrder)) {
+      console.error(
+        `Could not fully sort monitor ${monitorId}. Desired: ${desiredOrder.join(", ")}. Actual: ${finalOrder.join(", ")}`,
+      );
       throw new LayoutError(
         `Could not fully sort monitor ${monitorId}. Desired: ${desiredOrder.join(", ")}. Actual: ${finalOrder.join(", ")}`,
       );
@@ -370,9 +414,11 @@ async function createGroups(
     logStep(
       `Creating group ${leader.group} on monitor ${leader.targetMonitor}.`,
     );
-    await hypr.focusWindow(selectorForAddress(leaderClient.address));
+    await hypr.command("focus", {
+      window: selectorForAddress(leaderClient.address),
+    });
     await settle();
-    await hypr.dispatchRaw("hy3:makegroup", "tab, toggle");
+    await hypr.command("hy3", "make_group", "tab", { toggle: true });
     // await settle();
 
     for (const member of members) {
@@ -381,12 +427,35 @@ async function createGroups(
         throw new LayoutError(`Group member missing for ${member.id}.`);
       }
 
-      await hypr.focusWindow(selectorForAddress(memberClient.address));
+      await hypr.command("focus", {
+        window: selectorForAddress(memberClient.address),
+      });
       // await settle();
-      await hypr.dispatchRaw("hy3:movewindow", "l");
+      await hypr.command("hy3", "move_window", "l");
       await settle();
     }
   }
+}
+
+function monitorInnerWidth(monitor: HyprMonitor): number {
+  return monitor.width - monitor.reserved[2] - monitor.reserved[3];
+}
+
+function monitorInnerHeight(monitor: HyprMonitor): number {
+  return monitor.height - monitor.reserved[0] - monitor.reserved[1];
+}
+
+function resolvePixelOrPercent(value: PixelOrPercent, total: number): number {
+  if (typeof value === "number") {
+    return Math.round(value);
+  }
+
+  const ratio = Number.parseFloat(value.slice(0, -1));
+  if (Number.isNaN(ratio)) {
+    throw new LayoutError(`Invalid percentage resize value: ${value}`);
+  }
+
+  return Math.round((total * ratio) / 100);
 }
 
 async function applyResizes(
@@ -394,6 +463,10 @@ async function applyResizes(
   apps: readonly ManagedApp[],
   resolvedApps: ReadonlyMap<string, HyprClient>,
 ): Promise<void> {
+  const monitors = await hypr.monitors({ all: true });
+  const monitorsById = new Map(
+    monitors.map((monitor) => [monitor.id, monitor]),
+  );
   const commands: string[] = [];
 
   for (const app of apps) {
@@ -406,8 +479,26 @@ async function applyResizes(
       throw new LayoutError(`Resize target missing: ${app.id}`);
     }
 
+    const monitor = monitorsById.get(app.targetMonitor);
+    if (!monitor) {
+      throw new LayoutError(`Resize monitor missing: ${app.targetMonitor}`);
+    }
+
+    const x = resolvePixelOrPercent(
+      app.resize.width,
+      monitorInnerWidth(monitor),
+    );
+    const y = resolvePixelOrPercent(
+      app.resize.height,
+      monitorInnerHeight(monitor),
+    );
+
     commands.push(
-      `dispatch resizewindowpixel exact ${app.resize.width} ${app.resize.height}, address:${client.address}`,
+      hypr.buildCommand("window", "resize", {
+        x,
+        y,
+        window: selectorForAddress(client.address),
+      }),
     );
   }
 
@@ -449,7 +540,7 @@ export async function runManagedLayout(
     logStep("> Untabbing everything.");
     await untabEverything(hypr, monitorIds);
 
-    logStep("> Untiling floating windows.");
+    logStep("> Unfloat all windows.");
     await unfloatEverything(hypr, monitorIds);
 
     logStep("> Moving windows to target monitors.");
@@ -462,11 +553,13 @@ export async function runManagedLayout(
     await createGroups(hypr, config.apps, resolvedApps);
 
     logStep("> Applying resizes.");
-    await applyResizes(hypr, config.apps, resolvedApps);
+    // await applyResizes(hypr, config.apps, resolvedApps);
 
     const primaryMonitor = monitorIds[0];
     if (primaryMonitor !== undefined) {
-      await hypr.focusMonitor(primaryMonitor as MonitorSelector);
+      await hypr.command("focus", {
+        monitor: primaryMonitor as MonitorSelector,
+      });
     }
 
     logStep("> Layout complete.");

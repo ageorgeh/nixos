@@ -115,10 +115,13 @@ export type WindowSelector =
   | { type: "floating" }
   | { type: "tiled" };
 
-export type ActiveWindowSelector = WindowSelector | "active";
 export type Direction = "l" | "r" | "u" | "d";
+export type Hy3Direction = Direction;
 export type MonitorSelector = number | string;
+export type WorkspaceSelector = number | string;
 export type PixelOrPercent = number | `${number}%`;
+export type ToggleAction = "toggle" | "enable" | "disable";
+export type Hy3Boolish = boolean | "true" | "false";
 
 export interface ExactResize {
   mode: "exact";
@@ -128,18 +131,169 @@ export interface ExactResize {
 
 export type ResizeSpec = ExactResize;
 
-export interface HyprDispatchers {
-  exec: [command: string];
-  execr: [command: string];
-  focuswindow: [selector: WindowSelector];
-  focusmonitor: [monitor: MonitorSelector];
-  movewindow: [target: Direction | { monitor: MonitorSelector; silent?: boolean }];
-  setfloating: [] | [selector: ActiveWindowSelector];
-  settiled: [] | [selector: ActiveWindowSelector];
-  resizewindowpixel: [resize: ResizeSpec, selector: WindowSelector];
-  togglegroup: [];
-  changegroupactive: ["b" | "f" | number];
-  lockgroups: ["lock" | "unlock" | "toggle"];
-  moveintogroup: [direction: Direction];
-  moveoutofgroup: [] | [selector: ActiveWindowSelector];
+export type FocusArgs =
+  | { direction: Direction }
+  | { monitor: MonitorSelector }
+  | { workspace: WorkspaceSelector; onCurrentMonitor?: boolean }
+  | { window: WindowSelector }
+  | { urgentOrLast: true }
+  | { last: true };
+
+export interface WindowFloatArgs {
+  action?: ToggleAction;
+  window?: WindowSelector;
+}
+
+export type WindowMoveArgs =
+  | { direction: Direction; groupAware?: boolean; window?: WindowSelector }
+  | { x: number; y: number; relative?: boolean; window?: WindowSelector }
+  | { workspace: WorkspaceSelector; follow?: boolean; window?: WindowSelector }
+  | { monitor: MonitorSelector; follow?: boolean; window?: WindowSelector }
+  | { intoGroup: Direction; window?: WindowSelector }
+  | { intoOrCreateGroup: Direction; window?: WindowSelector }
+  | { outOfGroup: true | Direction; window?: WindowSelector };
+
+export interface WindowResizeArgs {
+  x: number;
+  y: number;
+  relative?: boolean;
+  window?: WindowSelector;
+}
+
+export interface GroupActiveArgs {
+  index: number;
+  window?: WindowSelector;
+}
+
+export interface GroupLockActiveArgs {
+  action?: ToggleAction;
+}
+
+export type Hy3GroupLayout = "h" | "v" | "tab" | "opposite";
+export type Hy3GroupChange =
+  | "h"
+  | "v"
+  | "tab"
+  | "untab"
+  | "toggletab"
+  | "opposite";
+export type Hy3FocusChange =
+  | "top"
+  | "bottom"
+  | "raise"
+  | "lower"
+  | "tab"
+  | "tabnode";
+export type Hy3FocusTabMouseMode =
+  | "ignore"
+  | "prioritize_hovered"
+  | "require_hovered";
+export type Hy3ExpandMode =
+  | "expand"
+  | "shrink"
+  | "base"
+  | "maximize"
+  | "fullscreen";
+export type Hy3ExpandFullscreenMode =
+  | ""
+  | "intermediate_maximize"
+  | "fullscreen_maximize"
+  | "maximize_only";
+export type Hy3LockTabMode = "" | "toggle" | "lock" | "unlock";
+export type Hy3EqualizeScope = "" | "group" | "workspace";
+
+export interface Hy3MakeGroupOptions {
+  toggle?: boolean;
+  ephemeral?: boolean | "force";
+}
+
+export interface Hy3MoveFocusOptions {
+  visible?: boolean;
+  warp?: boolean;
+}
+
+export interface Hy3ToggleFocusLayerOptions {
+  warp?: boolean;
+}
+
+export interface Hy3MoveWindowOptions {
+  once?: boolean;
+  visible?: boolean;
+}
+
+export interface Hy3MoveToWorkspaceOptions {
+  follow?: boolean;
+  warp?: boolean;
+}
+
+export type Hy3FocusTabArgs =
+  | {
+      direction: "l" | "r" | "left" | "right";
+      mouse?: Hy3FocusTabMouseMode;
+      wrap?: boolean;
+    }
+  | {
+      index: number;
+      mouse?: Hy3FocusTabMouseMode;
+      wrap?: boolean;
+    };
+
+export interface Hy3ExpandOptions {
+  fullscreen?: Hy3ExpandFullscreenMode;
+}
+
+export interface Hy3EqualizeOptions {
+  scope?: Hy3EqualizeScope;
+  workspace?: boolean;
+  recursive?: boolean;
+}
+
+export interface HyprRootCommands {
+  exec_cmd: [command: string];
+  exec_raw: [command: string];
+  event: [name: string];
+  focus: [args: FocusArgs];
+}
+
+export interface HyprDomainCommands {
+  window: {
+    float: [] | [args: WindowFloatArgs];
+    move: [args: WindowMoveArgs];
+    resize: [] | [args: WindowResizeArgs];
+  };
+  group: {
+    toggle: [];
+    next: [];
+    prev: [];
+    active: [args: GroupActiveArgs];
+    lock_active: [] | [args: GroupLockActiveArgs];
+  };
+  hy3: {
+    make_group:
+      | [layout: Hy3GroupLayout]
+      | [layout: Hy3GroupLayout, options: Hy3MakeGroupOptions];
+    change_group: [layout: Hy3GroupChange];
+    set_ephemeral: [value: Hy3Boolish];
+    move_focus:
+      | [direction: Hy3Direction]
+      | [direction: Hy3Direction, options: Hy3MoveFocusOptions];
+    toggle_focus_layer: [] | [options: Hy3ToggleFocusLayerOptions];
+    warp_cursor: [];
+    move_window:
+      | [direction: Hy3Direction]
+      | [direction: Hy3Direction, options: Hy3MoveWindowOptions];
+    move_to_workspace:
+      | [workspace: WorkspaceSelector]
+      | [workspace: WorkspaceSelector, options: Hy3MoveToWorkspaceOptions];
+    change_focus: [target: Hy3FocusChange];
+    focus_tab: [args: Hy3FocusTabArgs];
+    set_swallow: [value: Hy3Boolish | "toggle"];
+    kill_active: [];
+    expand:
+      | [mode: Hy3ExpandMode]
+      | [mode: Hy3ExpandMode, options: Hy3ExpandOptions];
+    lock_tab: [] | [mode: Hy3LockTabMode];
+    equalize: [] | [options: Hy3EqualizeOptions];
+    debug_nodes: [];
+  };
 }

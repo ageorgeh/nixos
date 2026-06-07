@@ -87,7 +87,6 @@
     package = pkgs.ollama-cuda;
     loadModels = [
       "qwen3.5:4b"
-      "hf.co/samuelfaj/distill-1.7B-4bit-GGUF"
       # "qwen3.5:9b" fine for 1 request at a time but fails with more
     ];
     environmentVariables = {
@@ -165,7 +164,7 @@
   # https://nixos.wiki/wiki/Docker
   virtualisation.docker = {
     enable = true;
-    package = pkgs.docker_28;
+    package = pkgs.docker_29;
   };
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   boot.binfmt.preferStaticEmulators = true;
@@ -217,6 +216,8 @@
   };
 
   environment.etc."pkgconfig/openblas.pc".source = "${pkgs.openblas.dev}/lib/pkgconfig/openblas64.pc";
+  environment.etc."hypr/plugins/libhy3.so".source =
+    "${inputs.hy3.packages.${pkgs.stdenv.hostPlatform.system}.hy3}/lib/libhy3.so";
 
   environment.variables = { };
 

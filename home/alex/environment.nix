@@ -30,44 +30,9 @@ let
     NIXOS_OZONE_WL = "1";
   };
 
-  hyprEnv = {
-    # only things that should apply when Hyprland runs
-    MOZ_ENABLE_WAYLAND = "1";
-
-    XDG_CURRENT_DESKTOP = "Hyprland";
-    XDG_SESSION_DESKTOP = "Hyprland";
-    XDG_SESSION_TYPE = "wayland";
-
-    CLUTTER_BACKEND = "wayland";
-    GDK_BACKEND = "wayland, x11";
-    GDK_SCALE = "1";
-
-    QT_QPA_PLATFORM = "wayland;xcb";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-    QT_SCALE_FACTOR = "1";
-
-    LIBVA_DRIVER_NAME = "nvidia";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-
-    SDL_VIDEODRIVER = "wayland";
-
-    AQ_DRM_DEVICES = "/dev/dri/card1";
-
-    ELECTRON_OZONE_PLATFORM_HINT = "1";
-
-    NVD_BACKEND = "direct";
-
-    HYPRCURSOR_SIZE = "24";
-    HYPRCURSOR_THEME = "rose-pine-hyprcursor";
-  };
-
 in
 {
   home.sessionVariables = env // lib.optionalAttrs isLinux envLinux;
-
-  wayland.windowManager.hyprland.settings.env = lib.mkIf isLinux (
-    lib.mapAttrsToList (k: v: "${k},${v}") hyprEnv
-  );
 
   home.sessionPath = [
     "${homeDir}/.config/pomo"

@@ -36,7 +36,7 @@ export async function launchMissingApps(
 
   await Promise.all(
     missingApps.map(async (app) => {
-      await hypr.exec(app.command);
+      await hypr.command("exec_cmd", app.command);
     }),
   );
 

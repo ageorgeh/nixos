@@ -8,6 +8,7 @@
   "Lua.workspace.library": [
     "${env:VIMRUNTIME}/lua",
     "${env:VIMRUNTIME}/lua/vim",
-    "${3rd}/luv/library"
+    "${3rd}/luv/library",
+    "/usr/share/hypr/stubs"
   ]
 }

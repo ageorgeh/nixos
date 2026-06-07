@@ -5,7 +5,7 @@ home/alex/default.nix:entrypoint
 home/alex/desktop.nix:xdg desktop entries
 home/alex/environment.nix:environment variables
 home/alex/filesystem.nix:home filesystem symlinks
-home/alex/hyprland.nix:hyprland config
+home/alex/dotfiles/config/hypr/hyprland.lua:hyprland config
 home/alex/packages.nix:list of packages
 home/alex/programs.nix:programs with options 
 home/alex/secrets.nix:age secret management

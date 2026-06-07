@@ -33,8 +33,10 @@ in
     logout = "hyprctl dispatch exit";
     hypr-restart = "hyprctl reload";
 
-    tofi = "tofi-drun | xargs -r hyprctl dispatch exec --"; # Plain tofi bricks the computer lmao
-    tofi-clean = "rm -f ~/.cache/tofi-drun";
+    # tofi = "tofi-drun | xargs -r hyprctl dispatch exec --"; # Plain tofi bricks the computer lmao
+    # tofi-clean = "rm -f ~/.cache/tofi-drun";
+    tofi = "tofi-drun --drun-launch=true";
+    tofi-clean = "rm -f ~/.cache/tofi-drun ~/.cache/tofi-compgen";
 
     # wayland
     code = "code --use-angle=vulkan";
