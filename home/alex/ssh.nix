@@ -14,37 +14,37 @@ in
     enable = true;
     enableDefaultConfig = false; # TODO remove this when it becomes deprecated
 
-    matchBlocks = {
+    settings = {
       "*" = {
-        forwardAgent = false;
-        addKeysToAgent = "yes";
-        identitiesOnly = true;
-        compression = false;
-        serverAliveInterval = 0;
-        serverAliveCountMax = 3;
-        hashKnownHosts = false;
-        userKnownHostsFile = "~/.ssh/known_hosts";
-        controlMaster = "no";
-        controlPath = "~/.ssh/master-%r@%n:%p";
-        controlPersist = "no";
+        ForwardAgent = false;
+        AddKeysToAgent = "yes";
+        IdentitiesOnly = true;
+        Compression = false;
+        ServerAliveInterval = 0;
+        ServerAliveCountMax = 3;
+        HashKnownHosts = false;
+        UserKnownHostsFile = "~/.ssh/known_hosts";
+        ControlMaster = "no";
+        ControlPath = "~/.ssh/master-%r@%n:%p";
+        ControlPersist = "no";
       };
 
       "github.com" = {
-        hostname = "github.com";
-        user = "git";
-        identityFile = p.keys.github;
-        identitiesOnly = true;
+        HostName = "github.com";
+        User = "git";
+        IdentityFile = p.keys.github;
+        IdentitiesOnly = true;
       };
 
       "media-server" = {
-        hostname = "192.168.20.75"; # TODO parameterise this
-        user = "alex"; # TODO this too
-        identityFile = p.keys.media;
+        HostName = "192.168.20.75"; # TODO parameterise this
+        User = "alex"; # TODO this too
+        IdentityFile = p.keys.media;
       };
 
       "media-client" = {
-        hostname = "192.168.20.40";
-        user = "root";
+        HostName = "192.168.20.40";
+        User = "root";
       };
     };
   };

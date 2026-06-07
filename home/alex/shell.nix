@@ -30,11 +30,11 @@ in
     nixos-sleep = "systemctl suspend";
 
     # hyprland
-    logout = "hyprctl dispatch exit";
+    logout = "hyprshutdown";
+    shutdown = "hyprshutdown -t 'Shutting down...' --post-cmd 'systemctl poweroff'";
+    reboot = "hyprshutdown -t 'Rebooting...' --post-cmd 'systemctl reboot'";
     hypr-restart = "hyprctl reload";
 
-    # tofi = "tofi-drun | xargs -r hyprctl dispatch exec --"; # Plain tofi bricks the computer lmao
-    # tofi-clean = "rm -f ~/.cache/tofi-drun";
     tofi = "tofi-drun --drun-launch=true";
     tofi-clean = "rm -f ~/.cache/tofi-drun ~/.cache/tofi-compgen";
 

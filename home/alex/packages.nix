@@ -137,6 +137,8 @@ in
         hyprpaper
         hyprpicker # Color picker
         hyprshot # Screenshot tool
+        hyprshutdown # Graceful logout
+        hyprpolkitagent # Auth agent
 
         # File system tools
         thunar # File manager
@@ -146,8 +148,6 @@ in
         mako # Notification daemon
         libnotify
         inotify-tools
-
-        hyprpolkitagent # Auth agent
 
         tofi # App selector
 

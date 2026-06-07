@@ -63,7 +63,6 @@ async function untabEverything(
       await hypr.command("focus", {
         window: selectorForAddress(client.address),
       });
-      await settle();
       await hypr.command("hy3", "change_group", "untab");
       await settle();
     }
@@ -129,7 +128,6 @@ async function moveWindowsToAssignedMonitors(
 
     logStep(`Moving ${app.id} to monitor ${app.targetMonitor}.`);
     await hypr.command("focus", { window: selectorForAddress(client.address) });
-    await settle();
     await hypr.command("window", "move", {
       monitor: app.targetMonitor,
       follow: false,
@@ -170,7 +168,6 @@ async function focusFirstWindowOnMonitor(
   await hypr.command("focus", {
     window: selectorForAddress(first.address),
   });
-  await settle();
 
   const active = await hypr.activeWindow();
   if (!active || active.address !== first.address) {
@@ -210,7 +207,6 @@ async function readMonitorWindowOrder(
     seen.add(current.address);
 
     await hypr.command("focus", { direction: "r" });
-    // await settle();
     current = await hypr.activeWindow();
   }
 
@@ -338,7 +334,6 @@ async function sortWindowsOnMonitors(
         await hypr.command("focus", {
           window: selectorForAddress(targetClient.address),
         });
-        await settle();
 
         for (let step = 0; step < move.steps; step += 1) {
           await hypr.command("hy3", "move_window", move.direction);
@@ -417,9 +412,9 @@ async function createGroups(
     await hypr.command("focus", {
       window: selectorForAddress(leaderClient.address),
     });
-    await settle();
+
     await hypr.command("hy3", "make_group", "tab", { toggle: true });
-    // await settle();
+    await settle();
 
     for (const member of members) {
       const memberClient = resolvedApps.get(member.id);
@@ -430,7 +425,6 @@ async function createGroups(
       await hypr.command("focus", {
         window: selectorForAddress(memberClient.address),
       });
-      // await settle();
       await hypr.command("hy3", "move_window", "l");
       await settle();
     }
@@ -552,7 +546,7 @@ export async function runManagedLayout(
     logStep("> Creating groups.");
     await createGroups(hypr, config.apps, resolvedApps);
 
-    logStep("> Applying resizes.");
+    // logStep("> Applying resizes.");
     // await applyResizes(hypr, config.apps, resolvedApps);
 
     const primaryMonitor = monitorIds[0];

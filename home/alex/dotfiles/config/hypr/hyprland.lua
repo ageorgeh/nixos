@@ -92,19 +92,17 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("mako")
     hl.exec_cmd("hyprpolkitagent")
     hl.exec_cmd("clipse --listen")
-    hl.exec_cmd("sh -lc " .. string.format("%q", [[
-sleep 1
-hyprctl keyword plugin:hy3:no_gaps_when_only 1
-hyprctl keyword plugin:hy3:node_collapse_policy 2
-hyprctl keyword plugin:hy3:group_inset 10
-hyprctl keyword plugin:hy3:autotile:enable 0
-hyprctl keyword plugin:hy3:autotile:trigger_width 800
-hyprctl keyword plugin:hy3:autotile:trigger_height 600
-]]))
-    hl.exec_cmd("sh -lc " .. string.format("%q", [[
-sleep 2
-~/.config/scripts/layout-bun/layout.ts > ~/layout.log 2>&1 && echo 'DONE (success)' >> ~/layout.log || echo 'DONE (failed)' >> ~/layout.log
-]]))
+    --     hl.exec_cmd("sh -lc " .. string.format("%q", [[
+    -- sleep 1
+    -- hyprctl keyword plugin:hy3:no_gaps_when_only 1
+    -- hyprctl keyword plugin:hy3:node_collapse_policy 2
+    -- hyprctl keyword plugin:hy3:group_inset 10
+    -- hyprctl keyword plugin:hy3:autotile:enable 0
+    -- hyprctl keyword plugin:hy3:autotile:trigger_width 800
+    -- hyprctl keyword plugin:hy3:autotile:trigger_height 600
+    -- ]]))
+    hl.exec_cmd(
+        [[sh -lc 'sleep 2; bun "$HOME/.config/scripts/layout-bun/layout.ts" > "$HOME/layout.log" 2>&1 && echo "DONE (success)" >> "$HOME/layout.log" || echo "DONE (failed)" >> "$HOME/layout.log"']])
 end)
 
 hl.bind(mainMod .. " + C", shell("kitty --class clipse -e 'clipse'"))
@@ -112,7 +110,7 @@ hl.bind(mainMod .. " + V", shell("code --use-angle=vulkan"))
 hl.bind(mainMod .. " + RETURN", shell("kitty"))
 hl.bind(mainMod .. " + T", shell("kitty"))
 hl.bind(mainMod .. " + F", shell("firefox"))
-hl.bind(mainMod .. " + A", shell("tofi-drun | xargs -r hyprctl dispatch exec --"))
+hl.bind(mainMod .. " + A", shell("tofi-drun --drun-launch=true"))
 -- hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + Q", hl.dsp.window.kill())
 hl.bind(mainMod .. " + Print", shell("hyprshot -m section --clipboard-only"))

@@ -62,6 +62,7 @@ export async function resolveApps(
     }
 
     if (matches.length > 1) {
+      console.error(`Matches: ${matches.map((m) => m.title)}`);
       throw new LayoutError(
         `App "${app.id}" matched ${matches.length} windows. Tighten the matcher.`,
       );
