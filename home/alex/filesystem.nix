@@ -58,6 +58,9 @@ in
 
     # ".local/share/fonts/AtkinsonHyperLegibleNext".source =
     #   "${pkgs.atkinson-hyperlegible-next}/share/fonts";
+
+    ".local/share/color-schemes/Gruvbox.colors".source =
+      "${pkgs.kde-gruvbox}/share/color-schemes/Gruvbox.colors";
   }
   // lib.optionalAttrs isDarwin {
     # macOS standard font path

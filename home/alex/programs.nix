@@ -3,46 +3,7 @@
   config,
   ...
 }:
-let
-  extensions = pkgs.nix-vscode-extensions.vscode-marketplace;
-  commonVsExtensions = with extensions; [
-    ms-vscode-remote.remote-ssh
-    ms-vscode-remote.remote-ssh-edit
-    ms-vscode.remote-explorer
 
-    # theme
-    # mvllow.rose-pine
-    # catppuccin.catppuccin-vsc
-    # catppuccin.catppuccin-vsc-icons
-    jdinhlife.gruvbox
-
-    openai.chatgpt
-
-    # ms-vscode-remote.remote-wsl # windows?
-
-    # ms-azuretools.vscode-containers
-    # ms-vscode-remote.remote-containers
-    # docker.docker
-
-    grapecity.gc-excelviewer # csv
-    mechatroner.rainbow-csv
-    zainchen.json # json
-    jock.svg
-    jnoortheen.nix-ide
-
-    esbenp.prettier-vscode
-
-    jakob101.relativepath
-    gruntfuggly.todo-tree
-
-    spmeesseman.vscode-taskexplorer
-    actboy168.tasks
-    iulian-radu-at.vscode-tasks-sidebar
-
-    vscodevim.vim
-    formulahendry.code-runner
-  ];
-in
 {
   # Git
   programs.git = {
@@ -69,62 +30,10 @@ in
     enable = true;
     package = pkgs.vscode;
     mutableExtensionsDir = false;
-
-    # profiles = {
-    #  default = {
-    # enableUpdateCheck = false;
-    # enableExtensionUpdateCheck = false;
-
-    # extensions =
-    #   commonVsExtensions
-    #   ++ (with extensions; [
-
-    #     # ---- config ---- #
-    #     sumneko.lua
-    #     ms-vscode.makefile-tools
-    #     golang.go
-
-    #     # ---- python ---- #
-    #     ms-python.black-formatter
-    #     ms-python.isort
-    #     ms-python.vscode-pylance
-    #     ms-python.python
-    #     ms-python.debugpy
-    #     ms-python.vscode-python-envs
-
-    #     ms-toolsai.jupyter
-    #     ms-toolsai.vscode-jupyter-cell-tags
-    #     ms-toolsai.jupyter-keymap
-    #     ms-toolsai.jupyter-renderers
-    #     ms-toolsai.vscode-jupyter-slideshow
-
-    #     # ---- web ---- #
-    #     nicoespeon.abracadabra
-    #     dbaeumer.vscode-eslint
-
-    #     # glsl
-    #     nolanderc.glsl-analyzer
-    #     circledev.glsl-canvas
-
-    #     george-alisson.html-preview-vscode
-    #     svelte.svelte-vscode
-    #     sebsojeda.vscode-svx
-    #     bradlc.vscode-tailwindcss
-    #     typescriptteam.native-preview
-
-    #     christian-kohler.npm-intellisense
-
-    #     # testing
-    #     ms-playwright.playwright
-    #     vitest.explorer
-
-    #   ]);
-    # };
-    # };
   };
 
   # Vim
-  programs.vim.enable = true;
+  # programs.vim.enable = true;
 
   # Yazi file manager
   # ./dotfiles/config/yazi - for theme configuration
@@ -167,7 +76,8 @@ in
   # firefox
   programs.firefox = {
     enable = true;
-    # configPath = "${config.xdg.configHome}/mozilla/firefox";
+    # configPath = "${config.xdg.configHome}/mozilla/firefox"; # new behavior
+    configPath = ".mozilla/firefox"; # legacy behavior
     profiles = {
       default = {
         id = 0;

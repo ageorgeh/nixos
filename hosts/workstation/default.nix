@@ -71,10 +71,12 @@
   # network discovery
   services.gvfs.enable = true;
   services.dbus.enable = true;
-  services.samba.enable = true;
+  # services.samba.enable = true;
+  services.udisks2.enable = true;
   services.avahi = {
     enable = true;
     nssmdns4 = true;
+    openFirewall = true;
   };
 
   # security
@@ -216,8 +218,9 @@
   };
 
   environment.etc."pkgconfig/openblas.pc".source = "${pkgs.openblas.dev}/lib/pkgconfig/openblas64.pc";
-  environment.etc."hypr/plugins/libhy3.so".source =
-    "${inputs.hy3.packages.${pkgs.stdenv.hostPlatform.system}.hy3}/lib/libhy3.so";
+  environment.etc."hypr/plugins/libhy3.so".source = "${
+    inputs.hy3.packages.${pkgs.stdenv.hostPlatform.system}.hy3
+  }/lib/libhy3.so";
 
   environment.variables = { };
 

@@ -10,5 +10,6 @@
     "${env:VIMRUNTIME}/lua/vim",
     "${3rd}/luv/library",
     "/usr/share/hypr/stubs"
-  ]
+  ],
+  "Lua.completion.autoRequire": false
 }

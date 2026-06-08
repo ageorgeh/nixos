@@ -145,6 +145,33 @@ in
         tumbler # Thumbnailing service
         thunar-volman # disk volume management
 
+        # Dolphin + KDE file-manager features
+        kdePackages.dolphin
+        kdePackages.dolphin-plugins
+        kdePackages.kio-extras
+        kdePackages.kio-fuse
+        kdePackages.kio-admin
+        kdePackages.ark
+
+        # thumbnails / previews
+        kdePackages.ffmpegthumbs
+        kdePackages.kdegraphics-thumbnailers
+
+        # Qt/KDE look
+        kdePackages.breeze
+        kdePackages.breeze-icons
+        kdePackages.qtwayland
+        papirus-icon-theme
+        kde-gruvbox
+
+        # SMB / network shares
+        samba
+        cifs-utils
+
+        # local network discovery
+        avahi
+        nssmdns
+
         mako # Notification daemon
         libnotify
         inotify-tools

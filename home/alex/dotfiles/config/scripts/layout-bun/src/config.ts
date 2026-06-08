@@ -15,10 +15,50 @@ export interface LayoutConfig {
   apps: readonly ManagedApp[];
 }
 
-function app(config: ManagedApp): ManagedApp {
+type ManagedAppDefinition = Omit<
+  ManagedApp,
+  "targetMonitor" | "order" | "group"
+>;
+
+type MonitorLayout = Record<
+  number,
+  readonly (readonly ManagedAppDefinition[])[]
+>;
+
+function app(config: ManagedAppDefinition): ManagedAppDefinition {
   return config;
 }
-// ---- monitor 0 ---- //
+
+function defineLayout(monitors: MonitorLayout): LayoutConfig {
+  const apps: ManagedApp[] = [];
+
+  for (const [monitorKey, groups] of Object.entries(monitors).sort(
+    ([left], [right]) => Number(left) - Number(right),
+  )) {
+    const targetMonitor = Number(monitorKey);
+    let order = 0;
+
+    for (const [groupIndex, groupApps] of groups.entries()) {
+      const groupId =
+        groupApps.length > 1
+          ? `monitor-${targetMonitor}-group-${groupIndex}`
+          : undefined;
+
+      for (const groupApp of groupApps) {
+        apps.push({
+          ...groupApp,
+          targetMonitor,
+          order,
+          ...(groupId ? { group: groupId } : {}),
+        });
+        order += 1;
+      }
+    }
+  }
+
+  return { apps };
+}
+
 const code_nixos = app({
   id: "nixos-code",
   command: "code --use-angle=vulkan ~/nixos-config",
@@ -28,9 +68,6 @@ const code_nixos = app({
   // launchMatch: {
   //   initialTitle: "Visual Studio Code",
   // },
-  targetMonitor: 0,
-  order: 0,
-  group: "dev",
 });
 
 const code_cmsCodex = app({
@@ -42,9 +79,6 @@ const code_cmsCodex = app({
   // launchMatch: {
   //   initialTitle: "Visual Studio Code",
   // },
-  targetMonitor: 0,
-  order: 1,
-  group: "dev",
 });
 
 const kitty = app({
@@ -53,9 +87,6 @@ const kitty = app({
   match: {
     class: /^kitty$/,
   },
-  targetMonitor: 0,
-  order: 2,
-  group: "dev",
 });
 
 const code_cms = app({
@@ -67,21 +98,14 @@ const code_cms = app({
   // launchMatch: {
   //   initialTitle: "Visual Studio Code",
   // },
-  targetMonitor: 0,
-  order: 3,
-  group: "dev",
 });
 
-// ---- monitor 0 ---- //
 const firefoxDev = app({
   id: "firefox-dev",
   command: "firefox-devedition -P dev",
   match: {
     class: /^firefox-devedition$/,
   },
-  targetMonitor: 1,
-  order: 0,
-  group: "research",
   resize: {
     mode: "exact",
     width: "80%",
@@ -95,9 +119,6 @@ const obsidian = app({
   match: {
     title: /.*Obsidian.*/,
   },
-  targetMonitor: 1,
-  order: 1,
-  group: "research",
 });
 
 const noSqlWorkbench = app({
@@ -109,9 +130,6 @@ const noSqlWorkbench = app({
   launchMatch: {
     initialTitle: "NoSQL Workbench",
   },
-  targetMonitor: 1,
-  order: 2,
-  group: "research",
 });
 
 const firefox = app({
@@ -120,8 +138,6 @@ const firefox = app({
   match: {
     class: /^firefox$/,
   },
-  targetMonitor: 1,
-  order: 3,
   resize: {
     mode: "exact",
     width: "60%",
@@ -135,9 +151,6 @@ const thunar = app({
   match: {
     class: /^thunar$/,
   },
-  targetMonitor: 1,
-  order: 4,
-  group: "utilities",
 });
 
 const keepassxc = app({
@@ -146,34 +159,32 @@ const keepassxc = app({
   match: {
     class: /^org\.keepassxc\.KeePassXC$/,
   },
-  targetMonitor: 1,
-  order: 5,
-  group: "utilities",
 });
 
-// const tidalHifi = app({
-//   id: "tidal-hifi",
-//   command: "tidal-hifi",
-//   match: {
-//     class: /^tidal-hifi$/,
-//   },
-//   targetMonitor: 1,
-//   order: 6,
-//   group: "utilities",
-// });
+const tidalHifi = app({
+  id: "tidal-hifi",
+  command: "tidal-hifi",
+  match: {
+    class: /^tidal-hifi$/,
+  },
+});
 
-export const layoutConfig: LayoutConfig = {
-  apps: [
-    code_nixos,
-    kitty,
-    code_cmsCodex,
-    code_cms,
-    firefoxDev,
-    obsidian,
-    noSqlWorkbench,
-    firefox,
-    thunar,
-    keepassxc,
-    // tidalHifi,
+export const layoutConfig = defineLayout({
+  0: [
+    [
+      thunar,
+      keepassxc,
+      // tidalHifi
+    ],
+    [firefoxDev, obsidian, noSqlWorkbench],
+    // [firefox],
   ],
-};
+  1: [
+    [
+      code_nixos,
+      // code_cmsCodex,
+      kitty,
+      code_cms,
+    ],
+  ],
+});

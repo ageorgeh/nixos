@@ -14,6 +14,8 @@ in
     ./programs.nix # programs (with options)
     ./packages.nix # list of packages
 
+    ./services.nix
+
     ./ssh.nix # SSH config
     ./secrets.nix # age secrets config
 

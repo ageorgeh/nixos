@@ -29,26 +29,19 @@
       flake = false;
     };
 
-    # https://github.com/nix-community/nix4vscode
-    # This is an alternative and might be better but requires unstable (as does the below)
-    # i think when nix4vscode works with a stable channel we should switch to that
-    nix-vscode-extensions = {
-      url = "github:nix-community/nix-vscode-extensions";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # hyprland
+    # ---- hyprland ---- #
     hyprland.url = "github:hyprwm/Hyprland/v0.55.2";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
     };
-    # https://github.com/outfoxxed/hy3/issues/280
     hy3 = {
       url = "github:outfoxxed/hy3/hl0.55.0";
       inputs.hyprland.follows = "hyprland";
     };
-
+    hyprqt6engine = {
+      url = "github:hyprwm/hyprqt6engine";
+    };
     # https://sakshatshinde.github.io/hyprcursor-themes/
     rose-pine-hyprcursor = {
       url = "github:ndom91/rose-pine-hyprcursor";
