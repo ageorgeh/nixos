@@ -9,18 +9,18 @@
   systemd.user.services = lib.mkIf pkgs.stdenv.isLinux {
     # Google drive
     # journalctl --user -u rclone-gdrive.service -b -n 100 --no-pager
+
+    # TODO this might be failing on startup cause of this new systemd stage one thing
     rclone-gdrive = {
       Unit = {
         Description = "Mount Google Drive with rclone.";
-        After = [
-          "graphical-session.target"
-          "default.target"
-        ];
-        Wants = [ "graphical-session.target" ];
+        After = [ "network-online.target" ];
+        Wants = [ "network-online.target" ];
       };
 
       Service = {
         Type = "simple";
+        ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${config.home.homeDirectory}/Drive";
         ExecStart = ''
           ${pkgs.rclone}/bin/rclone mount \
             --vfs-cache-mode full \
@@ -38,7 +38,7 @@
       };
 
       Install = {
-        WantedBy = [ "graphical-session.target" ];
+        WantedBy = [ "default.target" ];
       };
     };
 

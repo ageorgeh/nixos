@@ -280,6 +280,33 @@ vim.lsp.config("oxlint", {
 })
 
 
+
+vim.lsp.enable('oxfmt')
+vim.lsp.config('oxfmt', {
+	filetypes = {
+		'javascript',
+		'javascriptreact',
+		'typescript',
+		'typescriptreact',
+		'toml',
+		'json',
+		'jsonc',
+		'json5',
+		'yaml',
+		'html',
+		'vue',
+		'handlebars',
+		'css',
+		'scss',
+		'less',
+		'graphql',
+		'markdown',
+		'svelte'
+	}
+})
+
+
+
 -- vim.lsp.enable("oxfmt")
 -- vim.lsp.config("oxfmt", {
 -- 	cmd = function(dispatchers, config)

@@ -74,11 +74,13 @@ in
 
       # cli tools
       libarchive # Unzipping etc bsdtar -xf Sue_Ellen_Francisco.zip
+      unzip
       zip # Easier zipping
       ripgrep # faster grep - Used by nvim plugs
       tree
       util-linux
       ncdu # sudo ncdu --exclude /home/alex/Drive /
+      cloc # Count lines of code
 
       lynx # Used by nvim plugs
       lua51Packages.tiktoken_core # Used by copilot-chat nvim: https://github.com/CopilotC-Nvim/CopilotChat.nvim#optional-dependencies
@@ -177,6 +179,7 @@ in
         inotify-tools
 
         tofi # App selector
+        inkscape
 
         # Settings
         wdisplays # display settings

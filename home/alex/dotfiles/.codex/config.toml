@@ -1,5 +1,6 @@
 personality = "pragmatic"
 tool_output_token_limit = 2000
+background_terminal_max_timeout = 300000
 
 developer_instructions = """
 Override the base intermediary-update policy.
@@ -20,7 +21,7 @@ Send an intermediary update only when:
 
 Keep intermediary updates to one short sentence.
 """
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "medium"
 
 [features]
@@ -65,16 +66,21 @@ trust_level = "trusted"
 [projects."/home/alex/nixos-config"]
 trust_level = "trusted"
 
+[projects."/home/alex/code/sam-repro"]
+trust_level = "trusted"
+
 [mcp_servers.context7]
-bearer_token_env_var = "CONTEXT7_API_KEY"
-enabled = true
-startup_timeout_sec = 40
-tool_timeout_sec = 60
-# https://context7.com/dashboard
 url = "https://mcp.context7.com/mcp"
+bearer_token_env_var = "CONTEXT7_API_KEY"
+startup_timeout_sec = 40.0
+tool_timeout_sec = 60.0
 
 [mcp_servers.context7.env_http_headers]
 CONTEXT7_API_KEY = "CONTEXT7_API_KEY"
+
+[mcp_servers.backlog]
+command = "backlog"
+args = ["mcp", "start"]
 
 
 [apps.connector_76869538009648d5b282a4bb21c3d157]

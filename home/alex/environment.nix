@@ -11,7 +11,7 @@ let
   env = {
     EDITOR = "nvim";
     TERMINAL = "kitty";
-    BROWSER = "firefox";
+    BROWSER = "${pkgs.firefox-devedition}/bin/firefox-devedition";
 
     NIXPKGS_ALLOW_UNFREE = "1";
     # POMO = homeDir + "/.config/pomo";

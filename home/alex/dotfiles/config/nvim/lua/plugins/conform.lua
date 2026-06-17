@@ -7,34 +7,37 @@ return {
 	opts = {
 		-- Define your formatters
 		formatters_by_ft = {
-			lua = { "stylua" },
-			python = { "isort", "black" },
-			javascript = { "oxfmt", "prettierd", stop_after_first = true },
-			typescript = { "oxfmt", "prettierd", stop_after_first = true },
-			svelte = function(bufnr)
-				local filename = vim.api.nvim_buf_get_name(bufnr)
-				local function ends_with(str, ending)
-					return ending == "" or str:sub(- #ending) == ending
-				end
-				if ends_with(filename, ".md.svelte") then
-					return { "svx_split_formatter" }
-				else
-					return { "prettierd" }
-				end
-			end,
-			css = { "oxfmt", "prettierd", stop_after_first = true },
-			svx = { "svx_split_formatter" },
-			json = { "oxfmt", "prettierd", stop_after_first = true },
-			jsonc = { "oxfmt", "prettierd", stop_after_first = true },
-			markdown = { "prettierd" },
-			["yaml.ghactions"] = { "oxfmt", "prettierd", stop_after_first = true },
+			lua                = { "stylua" },
+			python             = { "isort", "black" },
+			javascript         = { lsp_format = 'prefer', name = 'oxfmt' },
+			typescript         = { lsp_format = 'prefer', name = 'oxfmt' },
+			svelte             = { lsp_format = 'prefer', name = 'oxfmt' },
+			css                = { lsp_format = 'prefer', name = 'oxfmt' },
+			json               = { lsp_format = 'prefer', name = 'oxfmt' },
+			jsonc              = { lsp_format = 'prefer', name = 'oxfmt' },
+			markdown           = { lsp_format = 'prefer', name = 'oxfmt' },
+			yaml               = { lsp_format = 'prefer', name = 'oxfmt' },
+			['yaml.ghactions'] = { lsp_format = 'prefer', name = 'oxfmt' },
+
+			-- svelte = function(bufnr)
+			-- 	local filename = vim.api.nvim_buf_get_name(bufnr)
+			-- 	local function ends_with(str, ending)
+			-- 		return ending == "" or str:sub(- #ending) == ending
+			-- 	end
+			-- 	if ends_with(filename, ".md.svelte") then
+			-- 		return { "svx_split_formatter" }
+			-- 	else
+			-- 		return { lsp_format = "prefer" }
+			-- 	end
+			-- end,
+			svx                = { "svx_split_formatter" },
 		},
 		-- Set default options
 		default_format_opts = {
-			lsp_format = "fallback",
+			lsp_format = "prefer",
 		},
 		-- Set up format-on-save
-		format_on_save = { timeout_ms = 500 },
+		format_on_save = { timeout_ms = 500, lsp_format = "prefer", },
 		-- Customize formatters
 		formatters = {
 			shfmt = {

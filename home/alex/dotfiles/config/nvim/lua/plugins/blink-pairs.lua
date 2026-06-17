@@ -1,13 +1,10 @@
 return {
 	"saghen/blink.pairs",
-	version = "*", -- (recommended) only required with prebuilt binaries
+	dependencies = "saghen/blink.lib",
+	version = "*",
+	-- build = function() require('blink.pairs').download():pwait(60000) end,
+	build = function() require("blink.pairs").build():pwait(60000) end,
 
-	-- download prebuilt binaries from github releases
-	dependencies = "saghen/blink.download",
-	-- OR build from source
-	-- build = "cargo build --release",
-	-- OR build from source with nix
-	-- build = "nix build .#build-plugin",
 
 	--- @module 'blink.pairs'
 	--- @type blink.pairs.Config

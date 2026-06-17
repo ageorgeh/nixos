@@ -1,4 +1,4 @@
-# RTK - Rust Token Killer (Codex CLI)
+# RTK 
 
 **Usage**: Token-optimized CLI proxy for shell commands.
 
@@ -14,23 +14,6 @@ rtk cargo test
 rtk npm run build
 rtk pytest -q
 ```
-
-## Meta Commands
-
-```bash
-rtk gain            # Token savings analytics
-rtk gain --history  # Recent command savings history
-rtk proxy <cmd>     # Run raw command without filtering
-```
-
-## Verification
-
-```bash
-rtk --version
-rtk gain
-which rtk
-```
-
 ## Distill command-output policy
 
 For non-interactive shell commands, compress command output through `distill` before reading it.
@@ -68,9 +51,26 @@ Prompts must be explicit. Say exactly what to return.
 
 Good examples:
 
-`rtk pnpm test --reporter=agent 2>&1 | distill "Did tests pass? Return only PASS or FAIL, failing test names, and the first actionable error."`
+`rtk pnpm test --reporter=agent 2>&1 | distill "Did tests pass? Return only PASS or FAIL, failing test names, and all actionable errors"`
 `rtk git diff 2>&1 | distill "Summarize changed files. Return only file path, one-line change summary, and risk."`
 `rtk rg -n "TODO|FIXME" . 2>&1 | distill "Return only matching file paths and line numbers."`
 `rtk npm audit 2>&1 | distill "Extract vulnerabilities. Return valid JSON only with package, severity, fixAvailable."`
 `rtk terraform plan 2>&1 | distill "Return SAFE, REVIEW, or UNSAFE, then exact risky changes only."`
 `rtk ls -la 2>&1 | distill "Return only filenames."`
+
+## Long-running terminal commands
+
+For builds, tests, type checks, formatting, distill, and other commands expected to take longer than 30 seconds:
+
+- Start `exec_command` with `yield_time_ms: 30000`.
+- If the command remains active, immediately call `write_stdin` with:
+  - empty input
+  - `yield_time_ms: 300000`
+- Continue using 300000ms waits until the process exits.
+- Never poll a running process with waits shorter than 30000ms.
+- Never use 1000ms polling.
+- Do not cancel, restart, or modify a command merely because it produced no output during a wait.
+- Do not send progress commentary between terminal polls.
+
+- Do not send progress updates for routine reads, edits, tests, builds, or polling.
+- Report only a material finding, blocker, changed plan, or final result.

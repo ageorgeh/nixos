@@ -93,7 +93,7 @@ const code_cms = app({
   id: "code_cms",
   command: "code --use-angle=vulkan ~/code/cmsWrapper/cms",
   match: {
-    title: /^(?!.*codex).*cms.*/,
+    title: /^(?!.*codex).*cms.*Visual Studio Code.*/,
   },
   // launchMatch: {
   //   initialTitle: "Visual Studio Code",
@@ -171,12 +171,12 @@ const tidalHifi = app({
 
 export const layoutConfig = defineLayout({
   0: [
+    [thunar, keepassxc, tidalHifi],
     [
-      thunar,
-      keepassxc,
-      // tidalHifi
+      firefoxDev,
+      // obsidian,
+      noSqlWorkbench,
     ],
-    [firefoxDev, obsidian, noSqlWorkbench],
     // [firefox],
   ],
   1: [
