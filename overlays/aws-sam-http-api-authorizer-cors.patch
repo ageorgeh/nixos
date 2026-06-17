@@ -1,0 +1,86 @@
+--- a/samcli/local/apigw/local_apigw_service.py
++++ b/samcli/local/apigw/local_apigw_service.py
+@@ -678,7 +678,9 @@
+ 
+         # check for LambdaAuthorizer since that is the only authorizer we currently support
+         if isinstance(lambda_authorizer, LambdaAuthorizer) and not self._valid_identity_sources(request, route):
+-            return ServiceErrorResponses.missing_lambda_auth_identity_sources()
++            auth_failure_response = ServiceErrorResponses.missing_lambda_auth_identity_sources()
++            auth_failure_response.headers.update(cors_headers)
++            return auth_failure_response
+ 
+         try:
+             route_lambda_event = self._generate_lambda_event(request, route, method, endpoint)
+@@ -732,6 +734,7 @@
+                 #
+                 # Note that returning within a finally block will have the effect of swallowing
+                 # any reraised exceptions.
++                auth_service_error.headers.update(cors_headers)
+                 return auth_service_error
+ 
+         endpoint_service_error = None
+--- a/tests/unit/local/apigw/test_local_apigw_service.py
++++ b/tests/unit/local/apigw/test_local_apigw_service.py
+@@ -994,6 +994,62 @@
+ 
+         self.assertEqual(result, unauth_mock)
+ 
++    @patch.object(LocalApigwService, "get_request_methods_endpoints")
++    @patch.object(LocalApigwService, "_create_method_arn")
++    @patch.object(LocalApigwService, "_generate_lambda_authorizer_event")
++    @patch.object(LocalApigwService, "_valid_identity_sources")
++    @patch.object(LocalApigwService, "_invoke_lambda_function")
++    @patch("samcli.local.apigw.local_apigw_service.request")
++    @patch("samcli.local.apigw.local_apigw_service.ServiceErrorResponses")
++    @patch("samcli.local.apigw.local_apigw_service.construct_v1_event")
++    @patch("samcli.local.apigw.local_apigw_service.construct_v2_event_http")
++    def test_http_lambda_auth_unauthorized_response_includes_cors_headers(
++        self,
++        v2_event_mock,
++        v1_event_mock,
++        service_err_mock,
++        request_object_mock,
++        invoke_mock,
++        validate_id_mock,
++        gen_auth_event_mock,
++        method_arn_mock,
++        request_mock,
++    ):
++        validate_id_mock.return_value = True
++
++        auth = LambdaAuthorizer(Mock(), Mock(), "auth_lambda", [], Mock(), Mock(), Mock())
++        auth.is_valid_response = Mock(return_value=False)
++        self.http_v2_payload_route.authorizer_object = auth
++
++        self.http_service._get_current_route = MagicMock()
++        self.http_service._get_current_route.return_value = self.http_v2_payload_route
++        self.http_service._get_current_route.methods = []
++        self.http_service._get_current_route.return_value.payload_format_version = "2.0"
++        self.http_service.api.cors = Cors(
++            allow_origin="https://frontend.example.com",
++            allow_methods="GET,OPTIONS",
++            allow_headers="authorization,content-type",
++        )
++
++        v2_event_mock.return_value = {}
++        request_mock.return_value = ("GET", "/v2")
++        method_arn_mock.return_value = "arn"
++        request_object_mock.headers = {"Origin": "https://frontend.example.com"}
++
++        mock_context = {"key": "value"}
++        invoke_mock.side_effect = [{"context": mock_context}, Mock()]
++
++        unauth_response = Mock()
++        unauth_response.headers = Headers()
++        service_err_mock.lambda_authorizer_unauthorized.return_value = unauth_response
++
++        result = self.http_service._request_handler()
++
++        self.assertEqual(result, unauth_response)
++        self.assertEqual(result.headers["Access-Control-Allow-Origin"], "https://frontend.example.com")
++        self.assertEqual(result.headers["Access-Control-Allow-Methods"], "GET,OPTIONS")
++        self.assertEqual(result.headers["Access-Control-Allow-Headers"], "authorization,content-type")
++
+     @patch.object(LocalApigwService, "_invoke_lambda_function")
+     @patch.object(LocalApigwService, "_create_method_arn")
+     @patch.object(EventTracker, "track_event")
