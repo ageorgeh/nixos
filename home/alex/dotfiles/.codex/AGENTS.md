@@ -1,76 +1,40 @@
-# RTK 
+# RTK
 
-**Usage**: Token-optimized CLI proxy for shell commands.
+Prefix every shell command with `rtk`.
 
-## Rule
-
-Always prefix shell commands with `rtk`.
-
-Examples:
+Use `distill` for tests, builds, logs, broad searches, diffs, audits, and output likely to exceed 200 lines:
 
 ```bash
-rtk git status
-rtk cargo test
-rtk npm run build
-rtk pytest -q
-```
-## Distill command-output policy
-
-For non-interactive shell commands, compress command output through `distill` before reading it.
-
-Required form:
-
-```bash
-<command> 2>&1 | distill "<specific extraction prompt>"
+<command> 2>&1 | distill "<exact required result>"
 ```
 
-Do not run the same command raw first.
+Do not use `distill` when exact source text is required or output is expected to remain below 200 lines.
 
-Use `distill` for:
+## Execution efficiency
 
-- test output
-- build output
-- logs
-- grep/search output
-- git diff summaries
-- audit/plan output
-- long directory listings
-- any noisy command where a summary is enough
+A narrow task is one that names a specific file, test, error, function, or local behaviour.
 
-Skip `distill` only when:
+For narrow tasks:
 
-- reading agent skill files or AGENTS.md files
-- exact raw output is required
-- command output is machine-consumed by another command
-- command is interactive/TUI/watch mode
-- command creates or modifies files and output is not needed
-- distill is unavailable or fails
-- commands expected to produce under 200 lines
+- Make at most two investigative shell calls before the first edit.
+- Batch independent file reads and searches into one shell call.
+- Read only the target file, its direct implementation, and at most one nearby example.
+- Do not load documentation unless the task changes architecture, contracts, public behaviour, deployment, or external integrations.
+- Do not search for a path that is already known.
+- Do not inspect `package.json` merely to rediscover commands documented in repository instructions.
+- Do not run a flaky or nondeterministic test before editing when the user supplied the failure and reproduction command.
+- After editing, use one combined validation command.
+- Do not run `git diff` merely to summarize a patch just applied.
+- Do not rerun a targeted test after a successful repeated-test validation.
+- Stop when the requested change and required targeted validation succeed.
 
-Prompts must be explicit. Say exactly what to return.
+For broad, architectural, cross-module, security-sensitive, or unclear tasks, these narrow-task limits do not apply.
 
-Good examples:
+## Long-running commands
 
-`rtk pnpm test --reporter=agent 2>&1 | distill "Did tests pass? Return only PASS or FAIL, failing test names, and all actionable errors"`
-`rtk git diff 2>&1 | distill "Summarize changed files. Return only file path, one-line change summary, and risk."`
-`rtk rg -n "TODO|FIXME" . 2>&1 | distill "Return only matching file paths and line numbers."`
-`rtk npm audit 2>&1 | distill "Extract vulnerabilities. Return valid JSON only with package, severity, fixAvailable."`
-`rtk terraform plan 2>&1 | distill "Return SAFE, REVIEW, or UNSAFE, then exact risky changes only."`
-`rtk ls -la 2>&1 | distill "Return only filenames."`
+For commands expected to exceed 30 seconds:
 
-## Long-running terminal commands
-
-For builds, tests, type checks, formatting, distill, and other commands expected to take longer than 30 seconds:
-
-- Start `exec_command` with `yield_time_ms: 30000`.
-- If the command remains active, immediately call `write_stdin` with:
-  - empty input
-  - `yield_time_ms: 300000`
-- Continue using 300000ms waits until the process exits.
-- Never poll a running process with waits shorter than 30000ms.
-- Never use 1000ms polling.
-- Do not cancel, restart, or modify a command merely because it produced no output during a wait.
-- Do not send progress commentary between terminal polls.
-
-- Do not send progress updates for routine reads, edits, tests, builds, or polling.
-- Report only a material finding, blocker, changed plan, or final result.
+- Start with `yield_time_ms: 30000`.
+- Poll only with empty input and `yield_time_ms: 300000`.
+- Do not restart a quiet command.
+- Do not provide routine polling updates.

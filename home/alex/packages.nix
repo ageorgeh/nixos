@@ -46,6 +46,7 @@ in
       stylua # Formatting for .lua
       eslint_d # Eslint
       nixfmt # Nix formatter
+      oxfmt
 
       dart-sass # SASS globally installed
       imagemagick # Image manipulation

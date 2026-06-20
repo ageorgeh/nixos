@@ -11,5 +11,7 @@
     "${3rd}/luv/library",
     "/usr/share/hypr/stubs"
   ],
-  "Lua.completion.autoRequire": false
+  "Lua.completion.autoRequire": false,
+
+  "[markdown]": { "editor.defaultFormatter": "oxc.oxc-vscode" },
 }
