@@ -40,9 +40,6 @@
             aws-sam-cli # AWS SAM CLI
             dynamodb-local
 
-            playwright-test
-            playwright-driver.browsers
-
             dart-sass # SASS globally installed
             mkcert # Certificate generation
 
@@ -51,6 +48,9 @@
             libarchive # unzipping etc
             ripgrep
             docker_29
+
+            qpdf
+            poppler-utils
           ];
           extraEnvironment = {
 

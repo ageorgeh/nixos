@@ -66,6 +66,10 @@ in
       yaak # API client
       drawio # Drawio desktop
 
+      # pdf
+      qpdf
+      poppler-utils
+
       # Dynamo local
       dynamodb-local
       nosql-workbench

@@ -53,6 +53,7 @@ vim.lsp.enable("lua_ls")
 
 
 -- svelte
+-- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/svelte.lua
 vim.lsp.enable("svelte")
 local runtime_args = vs.get(vs.load(), "svelte.language-server.runtime-args") or {}
 if type(runtime_args) ~= "table" then
@@ -61,12 +62,23 @@ end
 
 vim.lsp.config("svelte", {
 	filetypes = { "svelte", "svx" },
-	cmd = {
-		"env",
-		"NODE_OPTIONS=" .. table.concat(runtime_args, " "), -- .. ' --max-old-space-size=8192',
-		"svelteserver",
-		"--stdio",
-	},
+
+	cmd = function(dispatchers, config)
+		local root_dir = (config or {}).root_dir
+		local cmd = "svelteserver"
+
+		local local_cmd = root_dir and root_dir .. "/node_modules/.bin/svelteserver"
+		if local_cmd and vim.fn.executable(local_cmd) == 1 then
+			cmd = local_cmd
+		end
+
+		return vim.lsp.rpc.start({
+			"env",
+			"NODE_OPTIONS=" .. table.concat(runtime_args, " "),
+			cmd,
+			"--stdio",
+		}, dispatchers)
+	end,
 })
 
 --
