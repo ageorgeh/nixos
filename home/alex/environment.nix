@@ -11,7 +11,8 @@ let
   env = {
     EDITOR = "nvim";
     TERMINAL = "kitty";
-    BROWSER = "${pkgs.firefox-devedition}/bin/firefox-devedition";
+    BROWSER = "firefox";
+    # BROWSER = "${pkgs.firefox-devedition}/bin/firefox-devedition";
 
     NIXPKGS_ALLOW_UNFREE = "1";
     # POMO = homeDir + "/.config/pomo";
@@ -19,9 +20,9 @@ let
     # To allow global pnpm installs
     PNPM_HOME = homeDir + "/.local/share/pnpm";
 
-    PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
-    PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
-    PLAYWRIGHT_HOST_PLATFORM_OVERRIDE = "ubuntu-24.04";
+    # PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+    # PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
+    # PLAYWRIGHT_HOST_PLATFORM_OVERRIDE = "ubuntu-24.04";
 
     VIMRUNTIME = "${pkgs.neovim-unwrapped}/share/nvim/runtime"; # helps vscode find types for lsp
   };

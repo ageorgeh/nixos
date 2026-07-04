@@ -5,6 +5,7 @@ local telescope_builtin = require("telescope.builtin")
 local lga_actions = require("telescope-live-grep-args.actions")
 local lga_shortcuts = require("telescope-live-grep-args.shortcuts")
 local lga = require("telescope").extensions.live_grep_args
+local copy_file_to_clipboard = require('utils.fs')
 
 vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, { desc = "Find Files" })
 vim.keymap.set("n", "<leader>fg", function()
@@ -45,6 +46,24 @@ vim.keymap.set("n", "<leader>tw", function()
 	local cmd = string.format('tmux new-window -c "%s"', bufdir)
 	os.execute(cmd)
 end, { desc = "Open tmux window in buffer's directory" })
+
+--
+-- Git
+--
+vim.keymap.set('n', '<leader>gd', '<cmd>DiffviewOpen<cr>', { desc = "Git diff view" })
+vim.keymap.set('n', '<leader>gD', '<cmd>DiffviewClose<cr>', { desc = "Close diff view" })
+
+vim.keymap.set('n', '<leader>dp', '<cmd>Gitsigns preview_hunk_inline<cr>', { desc = 'Show diff preview' })
+
+
+-- github
+vim.keymap.set("n", "<leader>ga", "<cmd>GithubActionsStatus<cr>",
+	{ desc = "GitHub Actions Status" })
+vim.keymap.set("n", "<leader>gp", "<CMD>Octo pr list<CR>",
+	{ desc = "GitHub Actions Status" })
+
+
+
 
 --
 -- Nvim-tree
@@ -196,7 +215,7 @@ vim.keymap.set("n", "<leader>tn", ":tabn<CR>", { desc = "Next tab" })
 vim.keymap.set("n", "<leader>tp", ":tabprevious<CR>", { desc = "Previous tab" })
 vim.keymap.set("n", "<leader>tx", ":tabclose<CR>", { desc = "Close tab" })
 
-for i = 1, 3, 1 do
+for i = 1, 5, 1 do
 	vim.keymap.set("n", "<leader>t" .. i, ":tabn" .. i .. "<CR>", { desc = "Open tab " .. i })
 end
 
@@ -290,20 +309,19 @@ vim.keymap.set(
 vim.keymap.set("n", "grr", ":Trouble lsp_references toggle<CR>", { desc = "LSP references (Trouble)" })
 
 
---
--- github
---
-vim.keymap.set("n", "<leader>ga", "<cmd>GithubActionsStatus<cr>",
-	{ desc = "GitHub Actions Status" })
-
-
-vim.keymap.set("n", "<leader>gp", "<CMD>Octo pr list<CR>",
-	{ desc = "GitHub Actions Status" })
-
-
 
 --
 -- code_runner
 --
 vim.keymap.set("n", "<leader>r", "<CMD>RunCode<CR>",
 	{ desc = "Run code" })
+
+---
+--- files
+---
+
+vim.keymap.set("n", "<leader>yf", function()
+	copy_file_to_clipboard(vim.api.nvim_buf_get_name(0))
+end, {
+	desc = "Copy whole file to clipboard",
+})

@@ -5,11 +5,35 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			require("nvim-tree").setup({
+				on_attach = function(bufnr)
+					local copy_file_to_clipboard = require('utils.fs')
+					local api = require("nvim-tree.api")
+
+					api.config.mappings.default_on_attach(bufnr)
+
+					vim.keymap.set("n", "<leader>yf", function()
+						local node = api.tree.get_node_under_cursor()
+						if node then
+							copy_file_to_clipboard(node.absolute_path)
+						end
+					end, {
+						buffer = bufnr,
+						desc = "Copy file to clipboard",
+					})
+				end,
 				update_cwd = true,
 				respect_buf_cwd = true,
 				filters = {
 					dotfiles = false,
 					git_ignored = false,
+				},
+				view = {
+					preserve_window_proportions = true,
+				},
+				actions = {
+					open_file = {
+						resize_window = false,
+					},
 				},
 				-- https://github.com/nvim-tree/nvim-tree.lua/blob/master/lua/nvim-tree.lua#L463
 				filesystem_watchers = {

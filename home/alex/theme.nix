@@ -38,24 +38,24 @@ lib.mkIf pkgs.stdenv.isLinux {
   xdg.mimeApps = {
     enable = true;
 
-    defaultApplications = {
-      "text/html" = browser;
-      "text/xml" = browser;
-      "application/xhtml+xml" = browser;
-      "application/xml" = browser;
-      "x-scheme-handler/http" = browser;
-      "x-scheme-handler/https" = browser;
-      "x-scheme-handler/about" = browser;
-      "x-scheme-handler/unknown" = browser;
-    };
+    # defaultApplications = {
+    #   "text/html" = browser;
+    #   "text/xml" = browser;
+    #   "application/xhtml+xml" = browser;
+    #   "application/xml" = browser;
+    #   "x-scheme-handler/http" = browser;
+    #   "x-scheme-handler/https" = browser;
+    #   "x-scheme-handler/about" = browser;
+    #   "x-scheme-handler/unknown" = browser;
+    # };
 
-    associations.added = {
-      "text/html" = browser;
-      "text/xml" = browser;
-      "application/xhtml+xml" = browser;
-      "application/xml" = browser;
-      "x-scheme-handler/http" = browser;
-      "x-scheme-handler/https" = browser;
-    };
+    # associations.added = {
+    #   "text/html" = browser;
+    #   "text/xml" = browser;
+    #   "application/xhtml+xml" = browser;
+    #   "application/xml" = browser;
+    #   "x-scheme-handler/http" = browser;
+    #   "x-scheme-handler/https" = browser;
+    # };
   };
 }

@@ -7,7 +7,7 @@ in
   home.packages =
     with pkgs;
     [
-      playwright-driver.browsers
+      # playwright-driver.browsers
 
       # Fonts
       nerd-fonts.jetbrains-mono
@@ -36,8 +36,8 @@ in
       tailwindcss_4
       cargo # For building rust
       lua
-      playwright-test
-      playwright-driver.browsers
+      # playwright-test
+      # playwright-driver.browsers
       direnv
       gh
 
