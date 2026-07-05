@@ -72,6 +72,7 @@ let
 
       # Used in well-known GitHub Action workflows
       gtar
+      curl
     ];
 
   runnerPackage =
