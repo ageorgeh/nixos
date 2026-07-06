@@ -12,6 +12,7 @@
     ./dyn-libs.nix
     ./user.nix
     ./github-runner.nix
+    ./vpn.nix
 
     ../../modules/nixos/hardware/nvidia.nix
   ];

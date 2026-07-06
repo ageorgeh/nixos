@@ -185,6 +185,7 @@ in
 
         tofi # App selector
         inkscape
+        potrace
 
         # Settings
         wdisplays # display settings
