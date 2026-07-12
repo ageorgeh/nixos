@@ -42,22 +42,22 @@
       };
     };
 
-    # Install global pnpm packages
-    # pnpm-global = {
-    #   Unit = {
-    #     Description = "Install pnpm global packages";
-    #   };
-    #   Service = {
-    #     Type = "oneshot";
-    #     Environment = [
-    #       # Should match the variable in ./environment.nix
-    #       "PNPM_HOME = ${config.home.homeDirectory}/.local/share/pnpm"
-    #     ];
-    #     ExecStart = "${pkgs.pnpm}/bin/pnpm add -g @samuelfaj/distill";
-    #     RemainAfterExit = true;
-    #   };
-    #   Install.WantedBy = [ "default.target" ];
-    # };
+    # Install the latest global pnpm packages at login.
+    pnpm-global = {
+      Unit = {
+        Description = "Install global pnpm packages";
+      };
+      Service = {
+        Type = "oneshot";
+        Environment = [
+          # Should match the variable in ./environment.nix
+          "PNPM_HOME=${config.home.homeDirectory}/.local/share/pnpm"
+        ];
+        ExecStart = "${pkgs.pnpm}/bin/pnpm add --global @openai/codex@latest";
+        RemainAfterExit = true;
+      };
+      Install.WantedBy = [ "default.target" ];
+    };
 
     nosql-workbench-credentials = {
       Unit = {

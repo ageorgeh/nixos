@@ -109,6 +109,7 @@ let
       ACTIONS_ARTIFACT_DIR = artifactDir;
       ACTIONS_RESULTS_URL = "http://localhost:3040";
     };
+    serviceOverrides = config.services.github-nix-ci.runnerSettings.serviceOverrides;
   }
   // lib.optionalAttrs isLinux { inherit user group; };
 
@@ -143,6 +144,17 @@ in
               default = [ ];
               description = ''
                 Extra packages to be installed on all runners
+              '';
+            };
+
+            serviceOverrides = lib.mkOption {
+              type = types.submodule {
+                freeformType = types.attrsOf types.anything;
+                options = { };
+              };
+              default = { };
+              description = ''
+                systemd service overrides applied to all runners
               '';
             };
           };

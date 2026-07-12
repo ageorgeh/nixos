@@ -21,7 +21,7 @@ Send an intermediary update only when:
 
 Keep intermediary updates to one short sentence.
 """
-model = "gpt-5.4"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "medium"
 service_tier = "default"
 
@@ -70,6 +70,9 @@ trust_level = "trusted"
 [projects."/home/alex/code/sam-repro"]
 trust_level = "trusted"
 
+[projects."/home/alex/code/cmsWrapper/projects/roshandhillonart"]
+trust_level = "trusted"
+
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp"
 bearer_token_env_var = "CONTEXT7_API_KEY"
@@ -79,9 +82,9 @@ tool_timeout_sec = 60.0
 [mcp_servers.context7.env_http_headers]
 CONTEXT7_API_KEY = "CONTEXT7_API_KEY"
 
-[mcp_servers.backlog]
-command = "backlog"
-args = ["mcp", "start"]
+# [mcp_servers.backlog]
+# command = "backlog"
+# args = ["mcp", "start"]
 
 
 [apps.connector_76869538009648d5b282a4bb21c3d157]

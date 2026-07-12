@@ -19,6 +19,13 @@
       extraPackages = with pkgs; [
         zstd
       ];
+      serviceOverrides = {
+        # Keep two concurrent runners from exhausting the workstation. MemoryHigh
+        # starts reclaim/throttling before MemoryMax enforces the hard cgroup cap.
+        MemoryHigh = "25%";
+        MemoryMax = "30%";
+        MemorySwapMax = "5%";
+      };
     };
     cacheServer = {
       enable = true;
