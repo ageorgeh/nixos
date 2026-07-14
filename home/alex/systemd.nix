@@ -52,6 +52,7 @@
         Environment = [
           # Should match the variable in ./environment.nix
           "PNPM_HOME=${config.home.homeDirectory}/.local/share/pnpm"
+          "PNPM_CONFIG_MINIMUM_RELEASE_AGE=0"
         ];
         ExecStart = "${pkgs.pnpm}/bin/pnpm add --global @openai/codex@latest";
         RemainAfterExit = true;

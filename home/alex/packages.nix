@@ -83,7 +83,7 @@ in
       zip # Easier zipping
       ripgrep # faster grep - Used by nvim plugs
       tree
-      util-linux
+      util-linux # System utils
       ncdu # sudo ncdu --exclude /home/alex/Drive /
       cloc # Count lines of code
 

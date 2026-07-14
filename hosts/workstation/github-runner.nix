@@ -58,6 +58,8 @@
 
             qpdf
             poppler-utils
+
+            util-linux
           ];
           extraEnvironment = {
 
