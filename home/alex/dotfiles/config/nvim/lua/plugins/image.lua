@@ -17,5 +17,6 @@ return {
     ---@type snacks.Config
     opts = {
         image = {},
+        terminal = {}
     },
 }

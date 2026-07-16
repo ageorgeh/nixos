@@ -41,11 +41,23 @@ vim.keymap.set("n", "<C-M-l>", "<cmd>vertical resize +5<CR>", { desc = "Resize s
 vim.keymap.set("n", "<C-M-k>", "<cmd>resize -5<CR>", { desc = "Resize split up" })
 vim.keymap.set("n", "<C-M-j>", "<cmd>resize +5<CR>", { desc = "Resize split down" })
 
-vim.keymap.set("n", "<leader>tw", function()
-	local bufdir = vim.fn.expand("%:p:h")
-	local cmd = string.format('tmux new-window -c "%s"', bufdir)
-	os.execute(cmd)
-end, { desc = "Open tmux window in buffer's directory" })
+vim.keymap.set("n", "<leader>c", function()
+	Snacks.terminal.toggle("codex", {
+		cwd = vim.fs.root(0, ".git") or vim.fn.getcwd(),
+		win = {
+			position = "right",
+			width = 0.4,
+		},
+	})
+end, {
+	desc = "Toggle Codex",
+})
+
+-- vim.keymap.set("n", "<leader>tw", function()
+-- 	local bufdir = vim.fn.expand("%:p:h")
+-- 	local cmd = string.format('tmux new-window -c "%s"', bufdir)
+-- 	os.execute(cmd)
+-- end, { desc = "Open tmux window in buffer's directory" })
 
 --
 -- Git

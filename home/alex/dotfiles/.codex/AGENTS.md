@@ -1,14 +1,31 @@
-# RTK
+## RTK
 
 Prefix every shell command with `rtk`.
 
-Use `distill` for tests, builds, logs, broad searches, diffs, audits, and output likely to exceed 200 lines:
+## Distill
+
+Use `distill` only to reduce large command output. It is an output-compression tool, not an audit, review, or reasoning tool.
+
+Good uses:
+
+- Test, build, lint, formatting, and log output where only failures and their locations matter.
+- Broad search output where the prompt asks for mechanical extraction of matching paths and lines.
+- Other output expected to exceed 200 lines.
+
+Do not ask `distill` to:
+
+- Review or audit code or diffs.
+- Find requirement gaps, logic errors, unsafe casts, missing coverage, or design problems.
+- Decide whether an implementation is correct.
+- Replace reading exact source text or relevant diff hunks.
+
+For code review and diff auditing, inspect the exact relevant files or split the diff into manageable file-level chunks. `git diff --check` may be run directly because it is itself the audit command.
+
+Do not use `distill` when exact source text is required
 
 ```bash
 <command> 2>&1 | distill "<exact required result>"
 ```
-
-Do not use `distill` when exact source text is required or output is expected to remain below 200 lines.
 
 ## Execution efficiency
 

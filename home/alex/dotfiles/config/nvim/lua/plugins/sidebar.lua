@@ -46,7 +46,6 @@ return {
 						"/node_modules",
 						"/target",
 						"/.vite",
-						"/.cms",
 						"/test-results"
 					},
 				},
