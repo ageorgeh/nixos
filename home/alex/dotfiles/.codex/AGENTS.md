@@ -21,6 +21,8 @@ Do not ask `distill` to:
 
 For code review and diff auditing, inspect the exact relevant files or split the diff into manageable file-level chunks. `git diff --check` may be run directly because it is itself the audit command.
 
+Always ask `distill` for the exit code of the command
+
 Do not use `distill` when exact source text is required
 
 ```bash
