@@ -100,11 +100,11 @@ const code_cms = app({
   // },
 });
 
-const firefoxDev = app({
-  id: "firefox-dev",
-  command: "firefox-devedition -P dev",
+const chrome = app({
+  id: "chrome",
+  command: "google-chrome-stable",
   match: {
-    class: /^firefox-devedition$/,
+    class: /^google-chrome(?:-stable)?$/,
   },
   resize: {
     mode: "exact",
@@ -129,19 +129,6 @@ const noSqlWorkbench = app({
   },
   launchMatch: {
     initialTitle: "NoSQL Workbench",
-  },
-});
-
-const firefox = app({
-  id: "firefox",
-  command: "firefox",
-  match: {
-    class: /^firefox$/,
-  },
-  resize: {
-    mode: "exact",
-    width: "60%",
-    height: "100%",
   },
 });
 
@@ -173,11 +160,10 @@ export const layoutConfig = defineLayout({
   0: [
     [thunar, keepassxc, tidalHifi],
     [
-      firefoxDev,
+      chrome,
       // obsidian,
       noSqlWorkbench,
     ],
-    // [firefox],
   ],
   1: [
     [

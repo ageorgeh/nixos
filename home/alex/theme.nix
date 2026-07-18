@@ -1,10 +1,15 @@
 { pkgs, lib, ... }:
 
 let
-  browser = "firefox-devedition.desktop";
+  browser = "google-chrome.desktop";
 in
 lib.mkIf pkgs.stdenv.isLinux {
   services.xsettingsd.enable = true;
+  dconf.settings."org/gtk/settings/file-chooser" = {
+    location-mode = "filename-entry";
+    sort-directories-first = true;
+  };
+
   gtk = {
     enable = true;
     theme = {
@@ -38,24 +43,15 @@ lib.mkIf pkgs.stdenv.isLinux {
   xdg.mimeApps = {
     enable = true;
 
-    # defaultApplications = {
-    #   "text/html" = browser;
-    #   "text/xml" = browser;
-    #   "application/xhtml+xml" = browser;
-    #   "application/xml" = browser;
-    #   "x-scheme-handler/http" = browser;
-    #   "x-scheme-handler/https" = browser;
-    #   "x-scheme-handler/about" = browser;
-    #   "x-scheme-handler/unknown" = browser;
-    # };
-
-    # associations.added = {
-    #   "text/html" = browser;
-    #   "text/xml" = browser;
-    #   "application/xhtml+xml" = browser;
-    #   "application/xml" = browser;
-    #   "x-scheme-handler/http" = browser;
-    #   "x-scheme-handler/https" = browser;
-    # };
+    defaultApplications = {
+      "text/html" = browser;
+      "text/xml" = browser;
+      "application/xhtml+xml" = browser;
+      "application/xml" = browser;
+      "x-scheme-handler/http" = browser;
+      "x-scheme-handler/https" = browser;
+      "x-scheme-handler/about" = browser;
+      "x-scheme-handler/unknown" = browser;
+    };
   };
 }

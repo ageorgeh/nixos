@@ -19,8 +19,6 @@ in
 
       timewarrior
 
-      firefox-devedition
-      google-chrome
       thunderbird # Email client
 
       #

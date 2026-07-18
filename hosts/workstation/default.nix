@@ -149,6 +149,30 @@
       inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
+  programs.chromium = {
+    enable = true;
+    extensions = [
+      "ddkjiahejlhfcafbddmgiahcphecmpfh" # uBlock Origin Lite
+      "oboonakemofpalcgghocfoadofidjkkk" # KeePassXC-Browser
+      "fnaicdffflnofjppbagibeoednhnbjhg" # floccus bookmarks sync
+    ];
+    extraOpts = {
+      HighEfficiencyModeEnabled = true;
+      MemorySaverModeSavings = 1; # Balanced
+    };
+  };
+
+  xdg.portal = {
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    config.hyprland = {
+      default = [
+        "hyprland"
+        "gtk"
+      ];
+      "org.freedesktop.impl.portal.FileChooser" = "gtk";
+    };
+  };
+
   programs.dconf.enable = true;
 
   services.printing.enable = true;

@@ -23,6 +23,14 @@
   # KeepassXC
   programs.keepassxc.enable = true;
 
+  # Google Chrome
+  # Extension installation is managed system-wide in the workstation config,
+  # since Chrome on Linux does not load per-user external extensions.
+  programs.google-chrome = {
+    enable = true;
+    nativeMessagingHosts = [ pkgs.keepassxc ];
+  };
+
   # vscode
   # currently i do extensions through nix here and then all other vscode config through their UI
   # its too difficult to do it here
@@ -95,42 +103,14 @@
 
             ublock-origin
             keepassxc-browser
-            darkreader
-            vimium
             floccus
             auto-tab-discard
-
-            # https://color.firefox.com/?theme=XQAAAAJeAQAAAAAAAABBqYhm849SCia48_6EGccwS-xMDPr6BEKkYVSt2yMiAsBLvzmxZf3j0v9IRknMzArcpsl645Ge7EzJvXkxnR-IdpUfjuoH0j2fU5z119YfdJkFCZr51wD39X1AG95aQjSf047Gsfg1eLa-yQmEuzaYNrnHf14SvHw9S9ScswXTOZbWwmf1JWZimp73kln7qUWzPieoSAtTvOMSnh-_0rQgIAgRFJJmsMtlxHeL_7_RO1PDjOCPnSpqZVvvdez9JEkZPIodlTKsU6P-62x-rt27JQGm6FBGeeFfDv9hn2AA
-            # firefox-color
-
-            gruvbox-dark-theme
-          ];
-        };
-      };
-      dev = {
-        id = 1;
-        name = "dev";
-        isDefault = false;
-        settings = {
-          "ui.systemUsesDarkTheme" = 1;
-          "extensions.autoDisableScopes" = 0;
-        };
-        extensions = {
-          force = true;
-          packages = with pkgs.nur.repos.rycee.firefox-addons; [
-            ublock-origin
-            keepassxc-browser
-            darkreader
-            vimium
-            floccus
-            auto-tab-discard
-            firefox-color
           ];
         };
       };
 
       airvpn = {
-        id = 2;
+        id = 1;
         name = "airvpn";
         isDefault = false;
         settings = {
@@ -142,11 +122,8 @@
           packages = with pkgs.nur.repos.rycee.firefox-addons; [
             ublock-origin
             keepassxc-browser
-            darkreader
-            vimium
             floccus
             auto-tab-discard
-            firefox-color
           ];
         };
       };

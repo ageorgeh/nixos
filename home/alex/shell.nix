@@ -15,7 +15,6 @@ in
 
   home.shellAliases = {
     home-build = "home-manager switch --flake ~/nixos-config#alex";
-    "firefox-devedition" = "firefox-devedition -P dev"; # Cant find the correct profile without this
     tmux-source = "tmux source-file ~/.tmux.conf";
     nvim = "~/scripts/nvim-listen.sh";
   }
