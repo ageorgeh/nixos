@@ -102,7 +102,7 @@ const code_cms = app({
 
 const chrome = app({
   id: "chrome",
-  command: "google-chrome-stable",
+  command: "google-chrome-stable --ozone-platform=x11",
   match: {
     class: /^google-chrome(?:-stable)?$/,
   },

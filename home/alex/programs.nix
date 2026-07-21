@@ -26,7 +26,10 @@
   # Google Chrome
   # Extension installation is managed system-wide in the workstation config,
   # since Chrome on Linux does not load per-user external extensions.
-  programs.google-chrome.enable = true;
+  programs.google-chrome = {
+    enable = true;
+    commandLineArgs = [ "--ozone-platform=x11" ];
+  };
 
   # vscode
   # currently i do extensions through nix here and then all other vscode config through their UI

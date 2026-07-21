@@ -62,8 +62,7 @@ end, {
 --
 -- Git
 --
-vim.keymap.set('n', '<leader>gd', '<cmd>DiffviewOpen<cr>', { desc = "Git diff view" })
-vim.keymap.set('n', '<leader>gD', '<cmd>DiffviewClose<cr>', { desc = "Close diff view" })
+vim.keymap.set('n', '<leader>gd', '<cmd>CodeDiff<cr>', { desc = "Git diff view" })
 
 vim.keymap.set('n', '<leader>dp', '<cmd>Gitsigns preview_hunk_inline<cr>', { desc = 'Show diff preview' })
 
