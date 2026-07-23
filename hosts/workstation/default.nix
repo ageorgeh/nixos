@@ -12,6 +12,7 @@
     ./dyn-libs.nix
     ./user.nix
     ./github-runner.nix
+    ./extenddb.nix
     ./vpn.nix
 
     ../../modules/nixos/hardware/nvidia.nix
@@ -119,7 +120,6 @@
   };
   networking.firewall.allowedTCPPorts = [
     5174
-    8000
   ];
   networking.firewall.trustedInterfaces = [ "docker0" ];
 

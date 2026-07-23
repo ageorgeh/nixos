@@ -11,7 +11,7 @@ let
   env = {
     EDITOR = "nvim";
     TERMINAL = "kitty";
-    BROWSER = "google-chrome-stable --ozone-platform=x11";
+    BROWSER = "firefox";
 
     NIXPKGS_ALLOW_UNFREE = "1";
     # POMO = homeDir + "/.config/pomo";

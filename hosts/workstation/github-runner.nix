@@ -45,7 +45,7 @@
 
             awscli2
             aws-sam-cli # AWS SAM CLI
-            dynamodb-local
+            extenddb
 
             dart-sass # SASS globally installed
             mkcert # Certificate generation
@@ -62,7 +62,10 @@
             util-linux
           ];
           extraEnvironment = {
-
+            CMS_EXTENDDB_ENDPOINT = "https://localhost:8443";
+            CMS_EXTENDDB_ADMIN_PASSWORD_PATH = "/var/lib/extenddb/admin-password";
+            CMS_EXTENDDB_CA_CERT_PATH = "/var/lib/extenddb/.extenddb/tls/cert.pem";
+            NODE_EXTRA_CA_CERTS = "/var/lib/extenddb/.extenddb/tls/cert.pem";
           };
 
           serviceOverrides = {

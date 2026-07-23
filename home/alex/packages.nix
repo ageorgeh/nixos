@@ -68,8 +68,7 @@ in
       qpdf
       poppler-utils
 
-      # Dynamo local
-      dynamodb-local
+      # DynamoDB tooling
       nosql-workbench
 
       # llms

@@ -1,6 +1,8 @@
 {
   "js/ts.tsserver.node.path": "/home/alex/.nix-profile/bin/node",
 
+  "nix.formatterPath": "nixfmt",
+
   // Lua
   "Lua.runtime.version": "LuaJIT",
   "Lua.diagnostics.globals": ["vim"],
@@ -13,5 +15,5 @@
   ],
   "Lua.completion.autoRequire": false,
 
-  "[markdown]": { "editor.defaultFormatter": "oxc.oxc-vscode" },
+  "[markdown]": { "editor.defaultFormatter": "oxc.oxc-vscode" }
 }

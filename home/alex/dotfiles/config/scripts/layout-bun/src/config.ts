@@ -100,11 +100,11 @@ const code_cms = app({
   // },
 });
 
-const chrome = app({
-  id: "chrome",
-  command: "google-chrome-stable --ozone-platform=x11",
+const firefox = app({
+  id: "firefox",
+  command: "firefox",
   match: {
-    class: /^google-chrome(?:-stable)?$/,
+    class: /^firefox$/,
   },
   resize: {
     mode: "exact",
@@ -160,7 +160,7 @@ export const layoutConfig = defineLayout({
   0: [
     [thunar, keepassxc, tidalHifi],
     [
-      chrome,
+      firefox,
       // obsidian,
       noSqlWorkbench,
     ],

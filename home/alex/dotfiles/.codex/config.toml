@@ -21,7 +21,7 @@ Send an intermediary update only when:
 
 Keep intermediary updates to one short sentence.
 """
-model = "gpt-5.6-terra"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "high"
 service_tier = "default"
 approval_policy = "never"

@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 let
-  browser = "google-chrome.desktop";
+  browser = "firefox.desktop";
 in
 lib.mkIf pkgs.stdenv.isLinux {
   services.xsettingsd.enable = true;

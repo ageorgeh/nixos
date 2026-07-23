@@ -25,7 +25,6 @@ Instructions [here](./secrets/README.md)
 ```bash
 nixos-config/
 ├── bun.lock
-├── dynamodb-local-metadata.json
 ├── flake.lock
 ├── flake.nix
 ├── go.mod
