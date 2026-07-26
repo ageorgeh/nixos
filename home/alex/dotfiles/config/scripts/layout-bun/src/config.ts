@@ -15,15 +15,9 @@ export interface LayoutConfig {
   apps: readonly ManagedApp[];
 }
 
-type ManagedAppDefinition = Omit<
-  ManagedApp,
-  "targetMonitor" | "order" | "group"
->;
+type ManagedAppDefinition = Omit<ManagedApp, "targetMonitor" | "order" | "group">;
 
-type MonitorLayout = Record<
-  number,
-  readonly (readonly ManagedAppDefinition[])[]
->;
+type MonitorLayout = Record<number, readonly (readonly ManagedAppDefinition[])[]>;
 
 function app(config: ManagedAppDefinition): ManagedAppDefinition {
   return config;
@@ -40,9 +34,7 @@ function defineLayout(monitors: MonitorLayout): LayoutConfig {
 
     for (const [groupIndex, groupApps] of groups.entries()) {
       const groupId =
-        groupApps.length > 1
-          ? `monitor-${targetMonitor}-group-${groupIndex}`
-          : undefined;
+        groupApps.length > 1 ? `monitor-${targetMonitor}-group-${groupIndex}` : undefined;
 
       for (const groupApp of groupApps) {
         apps.push({
@@ -158,11 +150,15 @@ const tidalHifi = app({
 
 export const layoutConfig = defineLayout({
   0: [
-    [thunar, keepassxc, tidalHifi],
+    [
+      thunar,
+      keepassxc,
+      // tidalHifi
+    ],
     [
       firefox,
       // obsidian,
-      noSqlWorkbench,
+      // noSqlWorkbench,
     ],
   ],
   1: [

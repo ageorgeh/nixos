@@ -14,6 +14,8 @@ return {
             view_mode = "tree",
         },
         diff = {
+            ignore_trim_whitespace = true,
+            max_computation_time_ms = 500,
             -- compute_moves = false,
         },
     },

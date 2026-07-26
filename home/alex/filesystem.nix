@@ -34,20 +34,20 @@ in
       source = ./wallpapers;
     };
 
-    ".aws/config" = {
-      text = ''
-        [default]
-        sso_session = my-sso
-        sso_account_id = 471112897136
-        sso_role_name = AdministratorAccess
-        region = ap-southeast-2
+    # ".aws/config" = {
+    #   text = ''
+    # [default]
+    # sso_session = my-sso
+    # sso_account_id = 471112897136
+    # sso_role_name = AdministratorAccess
+    # region = ap-southeast-2
 
-        [sso-session my-sso]
-        sso_start_url = https://d-97674522b7.awsapps.com/start/#
-        sso_region = ap-southeast-2
-        sso_registration_scopes = sso:account:access
-      '';
-    };
+    # [sso-session my-sso]
+    # sso_start_url = https://d-97674522b7.awsapps.com/start/#
+    # sso_region = ap-southeast-2
+    # sso_registration_scopes = sso:account:access
+    #   '';
+    # };
 
   }
   // lib.optionalAttrs (!isDarwin) {

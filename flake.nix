@@ -97,6 +97,16 @@
           config.allowUnfree = true;
         };
 
+      localSystem = "x86_64-linux";
+      localPkgs = mkPkgs localSystem;
+      updateExtenddb = localPkgs.writeShellApplication {
+        name = "update-extenddb";
+        runtimeInputs = [ localPkgs.nix-update ];
+        text = ''
+          exec nix-update extenddb --flake --build "$@"
+        '';
+      };
+
       mkHost =
         {
           hostName,
@@ -129,6 +139,13 @@
 
       # local
       lib = import ./lib/default.nix { };
+
+      packages.${localSystem}.extenddb = localPkgs.extenddb;
+
+      apps.${localSystem}.update-extenddb = {
+        type = "app";
+        program = "${updateExtenddb}/bin/update-extenddb";
+      };
 
       nixosConfigurations = {
         workstation = mkHost {
