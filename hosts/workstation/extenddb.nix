@@ -33,8 +33,22 @@ let
       -e 's|^#?[[:space:]]*catalog_pool_size[[:space:]]*=.*$|catalog_pool_size = 10|' \
     ${configPath}
 
-    # ${pkgs.extenddb}/bin/extenddb migrate \
-    #   --config ${configPath}
+    # ExtendDB 0.1.2 added these fields to its baseline catalog schema without
+    # shipping an upgrade migration for existing 0.1.1 databases.
+    ${pkgs.postgresql_17}/bin/psql \
+      --username extenddb_runtime \
+      --dbname extenddb_catalog \
+      --set ON_ERROR_STOP=1 \
+      --command '
+        ALTER TABLE tables
+          ADD COLUMN IF NOT EXISTS table_class TEXT,
+          ADD COLUMN IF NOT EXISTS sse_specification JSONB,
+          ADD COLUMN IF NOT EXISTS on_demand_throughput JSONB;
+      '
+
+    ${pkgs.extenddb}/bin/extenddb migrate \
+      --config ${configPath} \
+      --yes
 
     # Optional local-development behaviour.
     ${pkgs.extenddb}/bin/extenddb settings \
