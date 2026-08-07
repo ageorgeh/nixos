@@ -336,3 +336,22 @@ vim.keymap.set("n", "<leader>yf", function()
 end, {
 	desc = "Copy whole file to clipboard",
 })
+
+vim.keymap.set("n", "<leader>yn", function()
+	local file = vim.api.nvim_buf_get_name(0)
+	local file_dir = vim.fn.fnamemodify(file, ":h")
+
+	local git_root = vim.fn.systemlist(
+		"git -C " .. vim.fn.shellescape(file_dir) .. " rev-parse --show-toplevel"
+	)[1]
+
+	if vim.v.shell_error ~= 0 or not git_root then
+		vim.notify("Not inside a git repository", vim.log.levels.ERROR)
+		return
+	end
+
+	local relative_path = vim.fs.relpath(git_root, file)
+	vim.fn.setreg("+", relative_path)
+end, {
+	desc = "Copy relative file path to clipboard",
+})
