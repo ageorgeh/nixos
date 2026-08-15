@@ -60,7 +60,7 @@ in
       go # Go programming language
 
       discord # Discord - maybe in the future change to a better client
-      insomnia # API client
+      # insomnia # API client
       yaak # API client
       drawio # Drawio desktop
 
@@ -88,7 +88,7 @@ in
       lua51Packages.tiktoken_core # Used by copilot-chat nvim: https://github.com/CopilotC-Nvim/CopilotChat.nvim#optional-dependencies
       gnumake # Make
       openssl # OpenSSL
-      obsidian # Note taking
+      # obsidian # Note taking
       kitty # Terminal emulator
       tmux # Terminal multiplexer
       webfontkitgenerator # Generating fonts
