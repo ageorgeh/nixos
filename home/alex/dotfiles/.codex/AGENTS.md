@@ -35,9 +35,7 @@ A narrow task is one that names a specific file, test, error, function, or local
 
 For narrow tasks:
 
-- Make at most two investigative shell calls before the first edit.
 - Batch independent file reads and searches into one shell call.
-- Read only the target file, its direct implementation, and at most one nearby example.
 - Do not load documentation unless the task changes architecture, contracts, public behaviour, deployment, or external integrations.
 - Do not search for a path that is already known.
 - Do not inspect `package.json` merely to rediscover commands documented in repository instructions.
@@ -45,9 +43,15 @@ For narrow tasks:
 - After editing, use one combined validation command.
 - Do not run `git diff` merely to summarize a patch just applied.
 - Do not rerun a targeted test after a successful repeated-test validation.
-- Stop when the requested change and required targeted validation succeed.
 
 For broad, architectural, cross-module, security-sensitive, or unclear tasks, these narrow-task limits do not apply.
+
+All final validation must run in one shell tool call, including formatting,
+build, lint, type checking, and affected tests. Do not return to the model
+between successful validation commands. Return one distilled combined result.
+
+Do not reread an unchanged file or line range already present in the session.
+When output truncates, narrow the next read instead of repeating the original read.
 
 ## Long-running commands
 

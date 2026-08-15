@@ -47,6 +47,20 @@ enabled = false
 [plugins."figma@openai-curated"]
 enabled = false
 
+[plugins."figma@openai-curated-remote"]
+enabled = false
+
+[apps.figma]
+enabled = false
+
+[apps.gmail]
+enabled = false
+
+[apps.google_calendar]
+enabled = false
+
+[apps.google_drive]
+enabled = false
 
 [projects."/home/alex/code/cmsWrapper/cms"]
 trust_level = "trusted"
