@@ -266,12 +266,12 @@
   '';
 
   # Just allows node to bind to lower ports (good for proxy servers)
-  security.wrappers.node = {
-    owner = "root";
-    group = "root";
-    capabilities = "cap_net_bind_service=+ep";
-    source = "${pkgs.nodejs_24}/bin/node";
-  };
+  # security.wrappers.node = {
+  #   owner = "root";
+  #   group = "root";
+  #   capabilities = "cap_net_bind_service=+ep";
+  #   source = "${pkgs.nodejs_24}/bin/node";
+  # };
 
   # run ./setup/setup-smb.sh to create the credentials file
   # potentially just move it to agenix
