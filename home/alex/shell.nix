@@ -10,6 +10,15 @@ let
   isDarwin = pkgs.stdenv.isDarwin;
 in
 {
+  home.activation.installGortex = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ ! -x "${config.home.homeDirectory}/.local/bin/gortex" ]; then
+      ${pkgs.curl}/bin/curl -fsSL https://get.gortex.dev \
+        | GORTEX_INSTALL_DIR="${config.home.homeDirectory}/.local/bin" GORTEX_NO_PATH=1 ${pkgs.runtimeShell}
+    fi
+  '';
+
+  home.sessionPath = [ "${config.home.homeDirectory}/.local/bin" ];
+
   programs.zsh.enable = true;
   programs.fzf.enable = true;
 

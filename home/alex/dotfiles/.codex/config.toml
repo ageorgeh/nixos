@@ -1,51 +1,19 @@
-personality = "pragmatic"
+approval_policy = 'never'
 background_terminal_max_timeout = 300000
+default_permissions = ':danger-full-access'
+developer_instructions = "Override the base intermediary-update policy.\n\nLong reasoning, tool polling, distill processing, builds, and tests may run silently.\nDo not send progress updates on a timer.\nDo not send an update just because 20 or 30 seconds passed.\nDo not interrupt reasoning just because thinking is long.\nDo not send multiple updates while thinking unless there is a material new finding.\n\nDo not send preambles before routine read-only commands such as rg, sed, nl, ls, git diff, or file inspection.\nDo not send user-visible polling updates while a command is still running unless it has been running for more than 5 minutes.\n\nSend an intermediary update only when:\n- a command failed AND changes the approach\n- blocked or needing user input\n- a material partial finding changes the task direction\n\nKeep intermediary updates to one short sentence.\n"
+model = 'gpt-5.6-sol'
+model_reasoning_effort = 'high'
+personality = 'pragmatic'
+sandbox_mode = 'danger-full-access'
+service_tier = 'default'
 tool_output_token_limit = 24000
 
-developer_instructions = """
-Override the base intermediary-update policy.
-
-Long reasoning, tool polling, distill processing, builds, and tests may run silently.
-Do not send progress updates on a timer.
-Do not send an update just because 20 or 30 seconds passed.
-Do not interrupt reasoning just because thinking is long.
-Do not send multiple updates while thinking unless there is a material new finding.
-
-Do not send preambles before routine read-only commands such as rg, sed, nl, ls, git diff, or file inspection.
-Do not send user-visible polling updates while a command is still running unless it has been running for more than 5 minutes.
-
-Send an intermediary update only when:
-- a command failed AND changes the approach
-- blocked or needing user input
-- a material partial finding changes the task direction
-
-Keep intermediary updates to one short sentence.
-"""
-model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
-service_tier = "default"
-approval_policy = "never"
-sandbox_mode = "danger-full-access"
-default_permissions = ":danger-full-access"
-
-[features]
-memories = false
-apps = false
-
-[memories]
-generate_memories = false
-use_memories = false
-
-[history]
-persistence = "none"
-
-[plugins."github@openai-curated"]
+[apps]
+[apps.connector_68df038e0ba48191908c8434991bbac2]
 enabled = false
 
-[plugins."figma@openai-curated"]
-enabled = false
-
-[plugins."figma@openai-curated-remote"]
+[apps.connector_76869538009648d5b282a4bb21c3d157]
 enabled = false
 
 [apps.figma]
@@ -60,79 +28,147 @@ enabled = false
 [apps.google_drive]
 enabled = false
 
-[projects."/home/alex/code/cmsWrapper/cms"]
-trust_level = "trusted"
+[features]
+apps = false
+memories = false
 
-[projects."/home/alex/code/cms-codex"]
-trust_level = "trusted"
+# [features.code_mode]
+# direct_only_tool_namespaces = ['mcp__gortex', 'gortex']
 
-[projects."/home/alex/code/vite-plugin-entry-shaking-repro"]
-trust_level = "trusted"
+[history]
+persistence = 'none'
 
-[projects."/home/alex/code/ts-ag"]
-trust_level = "trusted"
+# [hooks]
+# [[hooks.PostToolUse]]
+# matcher = '^(Bash|apply_patch|(mcp__gortex__|gortex__)(explore|search|read|relations|trace|analyze))$'
 
-[projects."/home/alex/code/svelte-ag"]
-trust_level = "trusted"
+# [[hooks.PostToolUse.hooks]]
+# command = '/home/alex/.local/bin/gortex hook --agent=codex --mode=enrich'
+# statusMessage = 'Loading Gortex post-tool context...'
+# timeout = 5
+# type = 'command'
 
-[projects."/home/alex/code/svelte-check-refs"]
-trust_level = "trusted"
+# [[hooks.PreToolUse]]
+# matcher = '.*'
 
-[projects."/home/alex/code/distill"]
-trust_level = "trusted"
+# [[hooks.PreToolUse.hooks]]
+# command = '/home/alex/.local/bin/gortex hook --agent=codex --mode=enrich'
+# statusMessage = 'Loading Gortex tool guidance...'
+# timeout = 5
+# type = 'command'
 
-[projects."/home/alex/nixos-config"]
-trust_level = "trusted"
+# [[hooks.SessionStart]]
+# matcher = 'startup|resume|clear|compact'
 
-[projects."/home/alex/code/sam-repro"]
-trust_level = "trusted"
+# [[hooks.SessionStart.hooks]]
+# command = '/home/alex/.local/bin/gortex hook --agent=codex --mode=enrich'
+# statusMessage = 'Loading Gortex graph orientation...'
+# timeout = 5
+# type = 'command'
 
-[projects."/home/alex/code/cmsWrapper/projects/roshandhillonart"]
-trust_level = "trusted"
+# [[hooks.Stop]]
+# [[hooks.Stop.hooks]]
+# command = '/home/alex/.local/bin/gortex hook --agent=codex --mode=enrich'
+# statusMessage = 'Checking Gortex evidence authority...'
+# timeout = 5
+# type = 'command'
 
-[projects."/home/alex/code/tailwind-repro"]
-trust_level = "trusted"
+# [[hooks.UserPromptSubmit]]
+# [[hooks.UserPromptSubmit.hooks]]
+# command = '/home/alex/.local/bin/gortex hook --agent=codex --mode=enrich'
+# statusMessage = 'Surfacing Gortex graph context for your prompt...'
+# timeout = 5
+# type = 'command'
 
-[projects."/home/alex/code/vite-plugin-entry-shaking"]
-trust_level = "trusted"
 
-[projects."/home/alex/code/cms"]
-trust_level = "trusted"
-
+[mcp_servers]
 [mcp_servers.context7]
-url = "https://mcp.context7.com/mcp"
-bearer_token_env_var = "CONTEXT7_API_KEY"
+bearer_token_env_var = 'CONTEXT7_API_KEY'
 startup_timeout_sec = 40.0
 tool_timeout_sec = 60.0
+url = 'https://mcp.context7.com/mcp'
 
 [mcp_servers.context7.env_http_headers]
-CONTEXT7_API_KEY = "CONTEXT7_API_KEY"
+CONTEXT7_API_KEY = 'CONTEXT7_API_KEY'
 
 [mcp_servers.distill]
-command = "distill"
-args = ["mcp"]
-cwd = "/home/alex/code/distill"
+args = ['mcp']
+command = 'distill'
+cwd = '/home/alex/code/distill'
 enabled = true
+enabled_tools = ['context', 'run']
 required = true
-enabled_tools = ["context", "run"]
 startup_timeout_sec = 30.0
-tool_timeout_sec = 120.0
+tool_timeout_sec = 180.0
 
-# [mcp_servers.backlog]
-# command = "backlog"
-# args = ["mcp", "start"]
+# [mcp_servers.gortex]
+# args = ['mcp']
+# command = '/home/alex/.local/bin/gortex'
+# startup_timeout_sec = 90
+# env_vars = ["XDG_RUNTIME_DIR"]
 
+# [mcp_servers.gortex.env]
+# GORTEX_INDEX_WORKERS = '8'
 
-[apps.connector_76869538009648d5b282a4bb21c3d157]
-enabled = false
-
-[apps.connector_68df038e0ba48191908c8434991bbac2]
-enabled = false
-
-[tui.model_availability_nux]
-"gpt-5.5" = 1
-"gpt-5.6-sol" = 4
+[memories]
+generate_memories = false
+use_memories = false
 
 [notice]
 hide_full_access_warning = true
 hide_rate_limit_model_nudge = true
+
+[plugins]
+[plugins.'figma@openai-curated']
+enabled = false
+
+[plugins.'figma@openai-curated-remote']
+enabled = false
+
+[plugins.'github@openai-curated']
+enabled = false
+
+[projects]
+[projects.'/home/alex/code/cms']
+trust_level = 'trusted'
+
+[projects.'/home/alex/code/cms-codex']
+trust_level = 'trusted'
+
+[projects.'/home/alex/code/cmsWrapper/cms']
+trust_level = 'trusted'
+
+[projects.'/home/alex/code/cmsWrapper/projects/roshandhillonart']
+trust_level = 'trusted'
+
+[projects.'/home/alex/code/distill']
+trust_level = 'trusted'
+
+[projects.'/home/alex/code/sam-repro']
+trust_level = 'trusted'
+
+[projects.'/home/alex/code/svelte-ag']
+trust_level = 'trusted'
+
+[projects.'/home/alex/code/svelte-check-refs']
+trust_level = 'trusted'
+
+[projects.'/home/alex/code/tailwind-repro']
+trust_level = 'trusted'
+
+[projects.'/home/alex/code/ts-ag']
+trust_level = 'trusted'
+
+[projects.'/home/alex/code/vite-plugin-entry-shaking']
+trust_level = 'trusted'
+
+[projects.'/home/alex/code/vite-plugin-entry-shaking-repro']
+trust_level = 'trusted'
+
+[projects.'/home/alex/nixos-config']
+trust_level = 'trusted'
+
+[tui]
+[tui.model_availability_nux]
+'gpt-5.5' = 1
+'gpt-5.6-sol' = 4

@@ -36,7 +36,9 @@ Good uses:
 - Broad mechanical search output where only matching paths and lines matter.
 - Logs expected to exceed 200 lines and commands that may succeed silently.
 
-Do not ask `distill.run` to review or audit code or diffs, find requirement gaps or design problems, decide correctness, or replace exact source/diff reading. Always ask for the exit code. Do not pipe command output into Distill, and do not use it when exact source text is required.
+Do not use `distill.run` for commands expected to take a long time like end to end tests.
+
+Do not ask `distill.run` to review or audit code or diffs, find requirement gaps or design problems, decide correctness, or replace exact source/diff reading. Do not pipe command output into Distill, and do not use it when exact source text is required.
 
 ## Execution efficiency
 
@@ -70,3 +72,22 @@ For commands expected to exceed 30 seconds:
 - Poll only with empty input and `yield_time_ms: 300000`.
 - Do not restart a quiet command.
 - Do not provide routine polling updates.
+
+## Optional Gortex code graph
+
+`distill.context` already uses the local Gortex daemon for broad initial repository retrieval. Do not repeat that discovery after a Distill context call for the same objective.
+
+For a genuinely new unresolved question, Gortex may be used when graph semantics can replace broad exploratory searching:
+
+- Unknown implementation or working set:
+  `rtk gortex explore "<task>" --index "$PWD" --format toon --max-symbols 12 --no-progress`
+- Resolve a symbol:
+  `rtk gortex query symbol "<name>" --index "$PWD" --format text --limit 10`
+- Inspect semantic relationships:
+  `rtk gortex query callers|calls|usages|deps|dependents|implementations "<symbol-id>" --index "$PWD" --format text --limit 30`
+
+Prefer one bounded Gortex query for one unresolved question, then continue with normal repository tools. Use native tools for known-file reads, exact text/path searches, edits and writes, git/diffs, and validation.
+
+Do not use Gortex as a mandatory pre-edit or post-edit step. Do not use its editing, change-analysis, or memory workflows, and do not use the generic `gortex call` surface unless explicitly requested.
+
+If Gortex is unavailable, the repository is untracked, fall back immediately to normal repository tools. Do not start, restart, track, or reconfigure Gortex automatically.

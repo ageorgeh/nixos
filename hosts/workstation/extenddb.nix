@@ -89,7 +89,6 @@ in
     group = "extenddb";
     extraGroups = [ clientGroup ];
     home = stateDir;
-    createHome = true;
   };
   users.users.alex.extraGroups = [ clientGroup ];
   users.users.github-runner.extraGroups = [ clientGroup ];
