@@ -72,6 +72,25 @@
       };
     };
 
+    "com.zzet.gortex" = {
+      Unit = {
+        Description = "Gortex code intelligence daemon";
+        Documentation = [ "https://github.com/zzet/gortex" ];
+        After = [ "network.target" ];
+      };
+
+      Service = {
+        Type = "simple";
+        ExecStart = "${config.home.homeDirectory}/.local/bin/gortex daemon start";
+        Restart = "on-failure";
+        RestartSec = 2;
+      };
+
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
+    };
+
   };
 
   systemd.user.timers = {

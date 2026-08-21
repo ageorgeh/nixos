@@ -95,6 +95,7 @@ CONTEXT7_API_KEY = 'CONTEXT7_API_KEY'
 args = ['mcp']
 command = 'distill'
 cwd = '/home/alex/code/distill'
+env_vars = ["XDG_RUNTIME_DIR"]
 enabled = true
 enabled_tools = ['context', 'run']
 required = true
