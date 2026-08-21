@@ -49,4 +49,8 @@ in
     workstation
     laptop
   ];
+  "openrouter-key.age".publicKeys = [
+    workstation
+    laptop
+  ];
 }
