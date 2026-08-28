@@ -257,14 +257,6 @@ vim.lsp.config("eslint", {
 vim.lsp.enable("oxlint")
 local oxlint_base_on_attach = vim.lsp.config.oxlint.on_attach
 vim.lsp.config("oxlint", {
-	cmd = function(dispatchers, config)
-		local cmd = 'oxlint'
-		local local_cmd = (config or {}).root_dir and config.root_dir .. '/node_modules/.bin/oxlint'
-		if local_cmd and vim.fn.executable(local_cmd) == 1 then
-			cmd = local_cmd
-		end
-		return vim.lsp.rpc.start({ cmd, '--lsp' }, dispatchers)
-	end,
 	filetypes = {
 		'javascript',
 		'javascriptreact',
@@ -280,10 +272,21 @@ vim.lsp.config("oxlint", {
 		}
 	},
 	root_dir = function(bufnr, on_dir)
-		-- local fname = vim.api.nvim_buf_get_name(bufnr)
-		-- return util.root_pattern(".oxlintrc.json")(fname)
 		local fname = vim.api.nvim_buf_get_name(bufnr)
-		local root_markers = util.insert_package_json({ '.oxlintrc.json' }, 'oxlint', fname)
+
+		local root_markers = util.insert_package_json(
+			{ '.oxlintrc.json', '.oxlintrc.jsonc', 'oxlint.config.ts' },
+			{ 'oxlint', 'vite%-plus' },
+			fname
+		)
+		-- find vite plus config with lint field
+		-- root_markers = util.root_markers_with_field(
+		-- 	root_markers,
+		-- 	{ 'vite.config.ts' },
+		-- 	{ 'vite%-plus', 'lint:' },
+		-- 	fname,
+		-- 	'all'
+		-- )
 		on_dir(vim.fs.dirname(vim.fs.find(root_markers, { path = fname, upward = true })[1]))
 	end,
 	on_attach = function(client, bufnr)

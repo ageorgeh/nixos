@@ -67,6 +67,7 @@ in
       eval "$(direnv hook bash)"
       export NPM_ACCESS_TOKEN="$(cat ${config.age.secrets.npm-access-key.path})"
       export CONTEXT7_API_KEY="$(cat ${config.age.secrets.context7-key.path})"
+      export OPENROUTER_API_KEY="$(cat ${config.age.secrets.openrouter-key.path})"
     '';
     # Open into fish if not already in fish
     # Cant put fish as login shell as it may cause issues https://nixos.wiki/wiki/Fish
@@ -91,6 +92,10 @@ in
       set -x CONTEXT7_API_KEY (cat ${
         lib.replaceStrings [ "\${XDG_RUNTIME_DIR}" ] [ "$XDG_RUNTIME_DIR" ]
           config.age.secrets.context7-key.path
+      })
+      set -x OPENROUTER_API_KEY (cat ${
+        lib.replaceStrings [ "\${XDG_RUNTIME_DIR}" ] [ "$XDG_RUNTIME_DIR" ]
+          config.age.secrets.openrouter-key.path
       })
     '';
   };

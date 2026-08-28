@@ -32,6 +32,10 @@ in
     file = secrets + "/context7-key.age";
     mode = "600";
   };
+  age.secrets."openrouter-key" = {
+    file = secrets + "/openrouter-key.age";
+    mode = "600";
+  };
 
   age.secrets."floccus.export.json" = {
     file = secrets + "/floccus.export.json.age";
