@@ -8,7 +8,11 @@
 ## Docker
 
 - `docker system prune` - removes stopped containers, unused networks, dangling images and unused build cache
+- `docker system prune -a --filter until=168h`
 - `docker builder prune -a` - prune build cache
 - `docker buildx prune -a` - prune buildx cache
 - `docker container prune` - remove all stopped containers
 - `docker image prune` - remove all
+
+- `rm -rf ~/Desktop/Old\ Firefox\ Data/`
+- `rm -rf ~/.npm`

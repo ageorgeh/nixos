@@ -1,8 +1,8 @@
-{ pkgs }:
-
-
-pkgs.mkShell
 {
+  pkgs ? import <nixpkgs> { config.allowUnfree = true; },
+}:
+
+pkgs.mkShell {
   packages = with pkgs; [
     uv # Alternative to pip https://docs.astral.sh/uv/
   ];
@@ -19,3 +19,8 @@ pkgs.mkShell
     echo "🐍 Python dev shell loaded"
   '';
 }
+
+# Cleanup
+
+# nix-shell ~/nixos-config/shells/python.nix
+# uv store prune|clean
