@@ -9,6 +9,11 @@ sandbox_mode = 'danger-full-access'
 service_tier = "default"
 tool_output_token_limit = 24000
 
+[features]
+apps = false
+memories = false
+# context_management.experimental_mode = true
+
 [apps]
 [apps.connector_68df038e0ba48191908c8434991bbac2]
 enabled = false
@@ -28,9 +33,6 @@ enabled = false
 [apps.google_drive]
 enabled = false
 
-[features]
-apps = false
-memories = false
 
 # [features.code_mode]
 # direct_only_tool_namespaces = ['mcp__gortex', 'gortex']
@@ -168,6 +170,9 @@ trust_level = 'trusted'
 
 [projects.'/home/alex/nixos-config']
 trust_level = 'trusted'
+
+[projects."/home/alex/code/sveltekit-sync-repro"]
+trust_level = "trusted"
 
 [tui]
 [tui.model_availability_nux]

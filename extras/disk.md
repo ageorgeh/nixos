@@ -16,3 +16,5 @@
 
 - `rm -rf ~/Desktop/Old\ Firefox\ Data/`
 - `rm -rf ~/.npm`
+
+- `pnpm store prune`
