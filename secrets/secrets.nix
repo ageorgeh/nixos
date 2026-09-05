@@ -44,6 +44,11 @@ in
     workstation
     laptop
   ];
+  "github-media-token.age".publicKeys = [
+    workstation
+    media
+    laptop
+  ];
 
   "context7-key.age".publicKeys = [
     workstation
