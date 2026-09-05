@@ -249,7 +249,7 @@ in
       ];
 
       # First-run testing only.
-      dryRun = "full";
+      # dryRun = "full";
     };
   };
 
