@@ -179,6 +179,8 @@ in
         libnotify
         inotify-tools
 
+        ookla-speedtest
+
         tofi # App selector
         inkscape
         potrace

@@ -119,6 +119,10 @@ in
     group = "qbittorrent";
     mode = "0400";
   };
+  age.secrets."github-media-token" = {
+    file = secrets + "/github-media-token.age";
+    mode = "0400";
+  };
 
   # Power saving options
   powerManagement = {

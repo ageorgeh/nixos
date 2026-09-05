@@ -214,4 +214,44 @@ in
   #     };
   #   };
   # };
+
+  services.renovate = {
+    enable = true;
+
+    # Media host is already Australia/Melbourne.
+    schedule = "*-*-* 07:00:00";
+
+    credentials = {
+      RENOVATE_TOKEN = config.age.secrets."github-media-token".path;
+    };
+
+    runtimePackages = with pkgs; [
+      nodejs_24
+      pnpm
+    ];
+
+    environment = {
+      LOG_LEVEL = "info";
+    };
+
+    settings = {
+      platform = "github";
+
+      repositories = [
+        "ageorgeh/cms"
+      ];
+
+      binarySource = "global";
+      repositoryCache = "enabled";
+
+      allowedCommands = [
+        "^pnpm run renovate:post-upgrade$"
+      ];
+
+      # First-run testing only.
+      dryRun = "full";
+    };
+  };
+
+  systemd.timers.renovate.timerConfig.Persistent = true;
 }

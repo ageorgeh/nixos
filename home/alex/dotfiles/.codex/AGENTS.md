@@ -1,68 +1,37 @@
-## RTK
+## Shell
 
 Prefix every shell command with `rtk`.
 
-## Distill
+## Repository context
 
-Distill exposes two MCP tools: `context` and `run`. It replaces the capable agent's initial broad repository-discovery and source-reading pass, and reduces command-output cost. It does not replace task understanding, implementation reasoning, code review, or correctness decisions.
+Use direct targeted reads when the implementation is already localized to a known owner and adjacent tests.
 
-### Repository context
+Treat work as broad when the implementation owner is unclear, it crosses modules or architectural layers, or it requires tracing callers, usages, dependencies, or related tests. Named files, functions, tests, errors, or local behaviours alone do not make a task narrow.
 
-For broad, cross-module, architectural, security-sensitive, review, merge, or unclear work, use this order:
+For broad work:
 
 1. Read and understand the authoritative task, specification, review finding, backlog entry, or merge request yourself.
-2. Form a complete repository-context objective from that understanding.
-3. Before broad source, caller, test, or documentation discovery, call `distill.context` with `action: "gather"`, the objective, and task IDs, symbols, paths, branches, or issue references.
-4. Use `inlineEvidence` only for evidence that exists solely in the user prompt.
+2. Before broad source, caller, test, or documentation discovery, call `distill.context` once with `action: "gather"`, a complete objective, and useful task IDs, symbols, paths, branches, or issue references.
+3. Use `inlineEvidence` only for evidence that exists solely in the user prompt.
+4. Treat returned exact source and completed searches as already read. Make only targeted follow-up reads for specific context still required to edit or reason correctly.
 
-Distill performs one bounded Spark pass and returns one flat, deduplicated bundle containing exact source from direct implementation owners, boundary callers, representative tests, completed mechanical searches, and validation commands. It does not diagnose, advise, recommend solutions, or produce an implementation plan.
+Do not repeat completed searches, broadly reread source already returned by Distill, or call `distill.context` again for the same objective.
 
-- Treat the returned exact source as the initial repository read pass; do not immediately reread it.
-- Do not repeat searches listed as completed.
-- Do not call context again for the same objective.
-- Perform only targeted follow-up reads when editing requires surrounding code or implementation reveals a genuinely new detail.
-- If secondary source is listed only as a precise location because the one-response budget was reached, read it only if the active part of the task needs it.
+## Command output
 
-Each capable agent must read the authoritative task itself and request its own context. A review agent should inspect the diff itself and use Distill only for surrounding repository context. Skip `distill.context` for narrow work that already has sufficient local context.
+Use `distill.run` for tests, builds, lint, formatting, type checks, logs, or mechanical searches whose output may be large, noisy, or empty. Use native tools when exact source or diff text is required. Do not pipe command output into Distill.
 
-### Command output
-
-Use `distill.run` for test, build, lint, formatting, typecheck, validation, log, or mechanical search commands whose output may be large, noisy, or empty. Distill executes the command itself and always returns its exit status.
-
-Good uses:
-
-- Test, build, lint, formatting, and typecheck output where failures and locations matter.
-- Combined final validation.
-- Broad mechanical search output where only matching paths and lines matter.
-- Logs expected to exceed 200 lines and commands that may succeed silently.
-
-Do not use `distill.run` for commands expected to take a long time like end to end tests.
-
-Do not ask `distill.run` to review or audit code or diffs, find requirement gaps or design problems, decide correctness, or replace exact source/diff reading. Do not pipe command output into Distill, and do not use it when exact source text is required.
-
-## Execution efficiency
-
-A narrow task is one that names a specific file, test, error, function, or local behaviour.
-
-For narrow tasks:
-
-- Batch independent file reads and searches into one shell call.
-- Do not load documentation unless the task changes architecture, contracts, public behaviour, deployment, or external integrations.
-- Do not search for a path that is already known.
-- Do not inspect `package.json` merely to rediscover commands documented in repository instructions.
-- Do not run a flaky or nondeterministic test before editing when the user supplied the failure and reproduction command.
-- After editing, use one combined validation command.
-- Do not run `git diff` merely to summarize a patch just applied.
-- Do not rerun a targeted test after a successful repeated-test validation.
-
-For broad, architectural, cross-module, security-sensitive, or unclear tasks, these narrow-task limits do not apply.
-
-- After retrieving Distill context, do not repeat its completed searches or broadly reread included exact source. Use only targeted additional reads that remain necessary.
-
-All final validation must run in one `distill.run` call, including formatting, build, lint, type checking, and affected tests. Do not return to the model between successful validation commands. Return one bounded combined result.
+Keep ordinary source and search output bounded: prefer targeted ranges and searches, do not concatenate several large files, and if output truncates narrow the next read rather than repeating or broadening it.
 
 Do not reread an unchanged file or line range already present in the session.
-When output truncates, narrow the next read instead of repeating the original read.
+
+## Validation
+
+Run repository-required checks appropriate to the change. Once required checks pass, broaden or repeat verification only when later edits, failures, or unresolved concerns justify it.
+
+After partial validation failure, rerun only failed checks and previously passing checks that the subsequent edit could realistically invalidate. Do not rerun a known unrelated failing check unless the task changed code relevant to it.
+
+When final validation has multiple noisy stages, prefer one `distill.run` call so the parent model receives one bounded result.
 
 ## Long-running commands
 
@@ -73,21 +42,14 @@ For commands expected to exceed 30 seconds:
 - Do not restart a quiet command.
 - Do not provide routine polling updates.
 
-## Optional Gortex code graph
+## Optional Gortex
 
-`distill.context` already uses the local Gortex daemon for broad initial repository retrieval. Do not repeat that discovery after a Distill context call for the same objective.
+Use the `rtk gortex` CLI when graph relationships can answer a genuinely unresolved repository question more efficiently than ordinary search. It is optional; prefer normal tools for known-file reads, exact searches, edits, and diffs.
 
-For a genuinely new unresolved question, Gortex may be used when graph semantics can replace broad exploratory searching:
+Useful forms:
 
-- Unknown implementation or working set:
-  `rtk gortex explore "<task>" --index "$PWD" --format toon --max-symbols 12 --no-progress`
-- Resolve a symbol:
-  `rtk gortex query symbol "<name>" --index "$PWD" --format text --limit 10`
-- Inspect semantic relationships:
-  `rtk gortex query callers|calls|usages|deps|dependents|implementations "<symbol-id>" --index "$PWD" --format text --limit 30`
+- `rtk gortex explore "<task>" --index "$PWD" --format toon --max-symbols 12 --no-progress`
+- `rtk gortex query symbol "<name>" --index "$PWD" --format text --limit 10`
+- `rtk gortex query callers|calls|usages|deps|dependents|implementations "<symbol-id>" --index "$PWD" --format text --limit 30`
 
-Prefer one bounded Gortex query for one unresolved question, then continue with normal repository tools. Use native tools for known-file reads, exact text/path searches, edits and writes, git/diffs, and validation.
-
-Do not use Gortex as a mandatory pre-edit or post-edit step. Do not use its editing, change-analysis, or memory workflows, and do not use the generic `gortex call` surface unless explicitly requested.
-
-If Gortex is unavailable, the repository is untracked, fall back immediately to normal repository tools. Do not start, restart, track, or reconfigure Gortex automatically.
+If Gortex is unavailable or the repository is untracked, fall back immediately to normal repository tools. Do not start, restart, track, or reconfigure Gortex automatically.
