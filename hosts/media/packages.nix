@@ -12,7 +12,7 @@
     sysstat
 
     ffmpeg
-    speedtest-cli
+    ookla-speedtest
     sqlite
 
     #

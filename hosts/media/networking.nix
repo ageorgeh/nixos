@@ -81,6 +81,7 @@
 
       privateKeyFile = config.age.secrets."airvpn-private-key".path;
       mtu = 1320;
+      # sudo ip link set wg0 mtu 1320
 
       # do not replace system default route
       table = "off";
@@ -91,6 +92,9 @@
           presharedKeyFile = config.age.secrets."airvpn-preshared-key".path;
 
           endpoint = "oceania3.vpn.airdns.org:1637";
+          # endpoint = "europe3.vpn.airdns.org:1637";
+          # endpoint = "asia3.vpn.airdns.org:1637";
+
           allowedIPs = [
             "0.0.0.0/0"
             "::/0"
@@ -101,3 +105,8 @@
     };
   };
 }
+
+# sudo wg set wg0 peer 'PyLCXAQT8KkM4T+dUsOQfn+Ub3pGxfGlxkIApuig+hk=' endpoint 'europe3.vpn.airdns.org:1637'
+# sudo systemctl restart wg-quick-wg0
+
+# nix-shell -p dig --command "dig +short europe3.vpn.airdns.org"
