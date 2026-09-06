@@ -228,6 +228,8 @@ in
     runtimePackages = with pkgs; [
       nodejs_24
       pnpm
+      bashInteractive
+      coreutils
     ];
 
     environment = {
@@ -254,4 +256,8 @@ in
   };
 
   systemd.timers.renovate.timerConfig.Persistent = true;
+  systemd.services.renovate.serviceConfig.ExecPaths = [
+    "/var/cache/renovate"
+    "/var/lib/renovate"
+  ];
 }
