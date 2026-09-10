@@ -15,7 +15,7 @@ Explicit user instructions take precedence over skill guidance. If a skill would
 Keep final responses concise and direct. Use plain technical language and only as much formatting as improves readability.
 """
 model = "gpt-6-astra"
-model_reasoning_effort = "medium"
+model_reasoning_effort = "low"
 personality = 'pragmatic'
 sandbox_mode = 'danger-full-access'
 service_tier = "default"
@@ -114,7 +114,7 @@ enabled = true
 enabled_tools = ['context', 'run']
 required = true
 startup_timeout_sec = 30.0
-tool_timeout_sec = 180.0
+tool_timeout_sec = 240.0
 
 # [mcp_servers.gortex]
 # args = ['mcp']

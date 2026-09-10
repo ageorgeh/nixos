@@ -30,24 +30,24 @@
     };
 
     # ---- hyprland ---- #
-    hyprland.url = "github:hyprwm/Hyprland/v0.55.4";
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
-    };
-    hy3 = {
-      url = "github:outfoxxed/hy3/hl0.55.0";
-      inputs.hyprland.follows = "hyprland";
-    };
+    # hyprland.url = "github:hyprwm/Hyprland/v0.56.2";
+    # hyprland-plugins = {
+    #   url = "github:hyprwm/hyprland-plugins";
+    #   inputs.hyprland.follows = "hyprland";
+    # };
+    # hy3 = {
+    #   url = "github:outfoxxed/hy3/hl0.56.0.1";
+    #   inputs.hyprland.follows = "hyprland";
+    # };
     hyprqt6engine = {
       url = "github:hyprwm/hyprqt6engine";
     };
-    # https://sakshatshinde.github.io/hyprcursor-themes/
-    rose-pine-hyprcursor = {
-      url = "github:ndom91/rose-pine-hyprcursor";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.hyprlang.follows = "hyprland/hyprlang";
-    };
+    # # https://sakshatshinde.github.io/hyprcursor-themes/
+    # rose-pine-hyprcursor = {
+    #   url = "github:ndom91/rose-pine-hyprcursor";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    #   inputs.hyprlang.follows = "hyprland/hyprlang";
+    # };
 
     # secrets
     agenix = {

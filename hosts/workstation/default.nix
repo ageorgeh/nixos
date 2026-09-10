@@ -1,5 +1,5 @@
 {
-  inputs,
+  # inputs,
   pkgs,
   ...
 }:
@@ -24,17 +24,17 @@
       "flakes"
     ];
     substituters = [
-      "https://hyprland.cachix.org"
+      # "https://hyprland.cachix.org"
       "https://nix-community.cachix.org"
       "https://cache.nixos-cuda.org"
     ];
     trusted-substituters = [
-      "https://hyprland.cachix.org"
+      # "https://hyprland.cachix.org"
       "https://nix-community.cachix.org"
       "https://cache.nixos-cuda.org"
     ];
     trusted-public-keys = [
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      # "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
     ];
@@ -157,9 +157,9 @@
   # programs
   programs.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.default;
-    portalPackage =
-      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    # portalPackage =
+    #   inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
   programs.chromium = {
@@ -248,7 +248,8 @@
     libjpeg
     libffi
 
-    inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
+    # inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
+    rose-pine-hyprcursor
 
     # https://github.com/catppuccin/sddm?tab=readme-ov-file#nixos
     (catppuccin-sddm.override {
@@ -268,9 +269,11 @@
   };
 
   environment.etc."pkgconfig/openblas.pc".source = "${pkgs.openblas.dev}/lib/pkgconfig/openblas64.pc";
-  environment.etc."hypr/plugins/libhy3.so".source = "${
-    inputs.hy3.packages.${pkgs.stdenv.hostPlatform.system}.hy3
-  }/lib/libhy3.so";
+
+  # environment.etc."hypr/plugins/libhy3.so".source = "${
+  #   inputs.hy3.packages.${pkgs.stdenv.hostPlatform.system}.hy3
+  # }/lib/libhy3.so";
+  environment.etc."hypr/plugins/libhy3.so".source = "${pkgs.hyprlandPlugins.hy3}/lib/libhy3.so";
 
   environment.variables = { };
 

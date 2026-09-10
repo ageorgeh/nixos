@@ -1,6 +1,6 @@
 ## Shell
 
-Prefix every shell command with `rtk`.
+Prefix every shell command with `rtk` it simply makes the output consume less tokens with no loss in quality
 
 ## Repository context
 

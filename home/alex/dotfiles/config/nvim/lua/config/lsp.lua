@@ -85,14 +85,8 @@ vim.lsp.config("svelte", {
 -- typescript
 --
 
--- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/tsgo.lua
+-- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/tsc.lua
 vim.lsp.enable("tsc")
-vim.lsp.config('tsc', {
-	cmd = function(dispatchers, config)
-		local cmd = vim.fs.joinpath(config.root_dir, 'node_modules/.bin/tsgo')
-		return vim.lsp.rpc.start({ cmd, '--lsp', '--stdio' }, dispatchers)
-	end,
-})
 
 -- vim.lsp.enable("ts_ls")
 

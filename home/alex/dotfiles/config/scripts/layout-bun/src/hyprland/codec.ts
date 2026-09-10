@@ -9,7 +9,9 @@ import type {
 type JsonObject = Record<string, unknown>;
 
 function fail(path: string, expected: string, value: unknown): never {
-  throw new Error(`Invalid Hyprland payload at ${path}: expected ${expected}, received ${JSON.stringify(value)}`);
+  throw new Error(
+    `Invalid Hyprland payload at ${path}: expected ${expected}, received ${JSON.stringify(value)}`,
+  );
 }
 
 function asObject(value: unknown, path: string): JsonObject {
@@ -62,10 +64,7 @@ function asTuple2(value: unknown, path: string): [number, number] {
     fail(path, "tuple[2]", value);
   }
 
-  return [
-    asNumber(value[0], `${path}[0]`),
-    asNumber(value[1], `${path}[1]`),
-  ];
+  return [asNumber(value[0], `${path}[0]`), asNumber(value[1], `${path}[1]`)];
 }
 
 function asStringArray(value: unknown, path: string): string[] {
@@ -114,7 +113,10 @@ function decodeClient(value: unknown, path: string): HyprClient {
     pinned: asBoolean(object.pinned, `${path}.pinned`),
     fullscreen: asNumber(object.fullscreen, `${path}.fullscreen`),
     fullscreenClient: asNumber(object.fullscreenClient, `${path}.fullscreenClient`),
-    overFullscreen: asBoolean(object.overFullscreen, `${path}.overFullscreen`),
+    overFullscreen: asBoolean(
+      object.allowedOverFullscreen ?? object.overFullscreen,
+      `${path}.allowedOverFullscreen`,
+    ),
     grouped: asStringArray(object.grouped, `${path}.grouped`) as HyprClient["grouped"],
     tags: asStringArray(object.tags, `${path}.tags`),
     swallowing: asString(object.swallowing, `${path}.swallowing`),
@@ -157,7 +159,10 @@ function decodeMonitor(value: unknown, path: string): HyprMonitor {
     activelyTearing: asBoolean(object.activelyTearing, `${path}.activelyTearing`),
     tearingBlockedBy: asNullableStringArray(object.tearingBlockedBy, `${path}.tearingBlockedBy`),
     directScanoutTo: asString(object.directScanoutTo, `${path}.directScanoutTo`),
-    directScanoutBlockedBy: asNullableStringArray(object.directScanoutBlockedBy, `${path}.directScanoutBlockedBy`),
+    directScanoutBlockedBy: asNullableStringArray(
+      object.directScanoutBlockedBy,
+      `${path}.directScanoutBlockedBy`,
+    ),
     disabled: asBoolean(object.disabled, `${path}.disabled`),
     currentFormat: asString(object.currentFormat, `${path}.currentFormat`),
     mirrorOf: asString(object.mirrorOf, `${path}.mirrorOf`),
@@ -204,7 +209,12 @@ export function decodeHyprClientList(value: unknown): HyprClient[] {
 }
 
 export function decodeHyprClientOrNull(value: unknown): HyprClient | null {
-  if (typeof value === "object" && value !== null && !Array.isArray(value) && Object.keys(value).length === 0) {
+  if (
+    typeof value === "object" &&
+    value !== null &&
+    !Array.isArray(value) &&
+    Object.keys(value).length === 0
+  ) {
     return null;
   }
 

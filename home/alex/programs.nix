@@ -105,6 +105,7 @@
             keepassxc-browser
             floccus
             auto-tab-discard
+            tab-session-manager
           ];
         };
       };

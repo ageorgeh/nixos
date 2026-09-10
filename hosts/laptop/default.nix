@@ -15,48 +15,50 @@ in
     # ./dock.nix
   ];
 
- nix = {
+  nix = {
     enable = true;
     package = pkgs.nix;
     settings = {
-      trusted-users = [ "@admin" "${user}" ];
+      trusted-users = [
+        "@admin"
+        "${user}"
+      ];
       substituters = [
-        "https://cache.nixos.org" 
-      "https://hyprland.cachix.org"
-      "https://nix-community.cachix.org"
-      "https://cache.nixos-cuda.org"
-    ];
-    trusted-substituters = [
-      "https://cache.nixos.org" 
-      "https://hyprland.cachix.org"
-      "https://nix-community.cachix.org"
-      "https://cache.nixos-cuda.org"
-    ];
-    trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
-    ];
+        "https://cache.nixos.org"
+        # "https://hyprland.cachix.org"
+        "https://nix-community.cachix.org"
+        "https://cache.nixos-cuda.org"
+      ];
+      trusted-substituters = [
+        "https://cache.nixos.org"
+        # "https://hyprland.cachix.org"
+        "https://nix-community.cachix.org"
+        "https://cache.nixos-cuda.org"
+      ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        # "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+      ];
       experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+        "nix-command"
+        "flakes"
+      ];
     };
 
-  # https://nixos.wiki/wiki/Storage_optimization
-# gc = {
-#     automatic = true;
-#     dates = "weekly";
-#     options = "--delete-older-than 30d";
-#   };
-#   optimise = {
-#     automatic = true;
-#     dates = [ "weekly" ];
-#   };
+    # https://nixos.wiki/wiki/Storage_optimization
+    # gc = {
+    #     automatic = true;
+    #     dates = "weekly";
+    #     options = "--delete-older-than 30d";
+    #   };
+    #   optimise = {
+    #     automatic = true;
+    #     dates = [ "weekly" ];
+    #   };
 
-  }; 
-   
+  };
 
   # time.timeZone = "Australia/Melbourne";
   # i18n.defaultLocale = "en_AU.UTF-8";
@@ -73,23 +75,21 @@ in
   # };
 
   environment.shellAliases = {
-    # sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake /Users/alex/code/nixos-config#laptop -L --show-trace -v 
+    # sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake /Users/alex/code/nixos-config#laptop -L --show-trace -v
     # sudo darwin-rebuild switch --flake ~/code/nixos-config#laptop -L --show-trace -v
     nixos-build = "sudo darwin-rebuild switch --flake ~/code/nixos-config#laptop";
   };
-
 
   # Secrets
   # age.identityPaths = [
   #   "${ssh}/id_ed25519_agenix"
   # ];
 
-
   system = {
     checks.verifyNixPath = false;
     primaryUser = user;
     defaults = {
-           LaunchServices = {
+      LaunchServices = {
         LSQuarantine = false;
       };
 
@@ -121,8 +121,8 @@ in
       };
       finder = {
         _FXShowPosixPathInTitle = false;
-  FXPreferredViewStyle = "Nlsv";
-          AppleShowAllExtensions = true;
+        FXPreferredViewStyle = "Nlsv";
+        AppleShowAllExtensions = true;
       };
       trackpad = {
         Clicking = true;
@@ -135,5 +135,5 @@ in
     };
   };
 
-system.stateVersion = 5;
+  system.stateVersion = 5;
 }
