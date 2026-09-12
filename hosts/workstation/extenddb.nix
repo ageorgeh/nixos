@@ -29,22 +29,9 @@ let
 
 
     ${pkgs.gnused}/bin/sed -Ei \
-      -e 's|^#?[[:space:]]*pool_size[[:space:]]*=.*$|pool_size = 40|' \
+      -e 's|^#?[[:space:]]*pool_size[[:space:]]*=.*$|pool_size = 20|' \
       -e 's|^#?[[:space:]]*catalog_pool_size[[:space:]]*=.*$|catalog_pool_size = 10|' \
     ${configPath}
-
-    # ExtendDB 0.1.2 added these fields to its baseline catalog schema without
-    # shipping an upgrade migration for existing 0.1.1 databases.
-    ${pkgs.postgresql_17}/bin/psql \
-      --username extenddb_runtime \
-      --dbname extenddb_catalog \
-      --set ON_ERROR_STOP=1 \
-      --command '
-        ALTER TABLE tables
-          ADD COLUMN IF NOT EXISTS table_class TEXT,
-          ADD COLUMN IF NOT EXISTS sse_specification JSONB,
-          ADD COLUMN IF NOT EXISTS on_demand_throughput JSONB;
-      '
 
     ${pkgs.extenddb}/bin/extenddb migrate \
       --config ${configPath} \
@@ -57,7 +44,7 @@ let
 
     ${pkgs.extenddb}/bin/extenddb settings \
       --config ${configPath} \
-      set gsi_propagation_delay_ms 0
+      set index_propagation_delay_ms 0
 
     ${pkgs.extenddb}/bin/extenddb settings \
       --config ${configPath} \
@@ -96,6 +83,10 @@ in
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_17;
+    extensions = ps: [
+      ps.pgvector
+    ];
+
     settings.listen_addresses = lib.mkForce "";
     authentication = lib.mkForce ''
       local all postgres         peer map=postgres
