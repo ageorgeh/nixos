@@ -78,7 +78,8 @@
       theme = "catppuccin-mocha-peach";
       package = pkgs.kdePackages.sddm;
     };
-    defaultSession = "hyprland";
+
+    defaultSession = "hyprland-uwsm";
     autoLogin.enable = false;
   };
 
@@ -157,6 +158,7 @@
   # programs
   programs.hyprland = {
     enable = true;
+    withUWSM = true;
     # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.default;
     # portalPackage =
     #   inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
@@ -262,11 +264,11 @@
     })
   ];
 
-  environment.sessionVariables = {
-    # Required for vscode to pick up the correct keychain
-    XDG_CURRENT_DESKTOP = "GNOME";
-    DESKTOP_SESSION = "gnome";
-  };
+  # environment.sessionVariables = {
+  #   # Required for vscode to pick up the correct keychain
+  #   XDG_CURRENT_DESKTOP = "GNOME";
+  #   DESKTOP_SESSION = "gnome";
+  # };
 
   environment.etc."pkgconfig/openblas.pc".source = "${pkgs.openblas.dev}/lib/pkgconfig/openblas64.pc";
 

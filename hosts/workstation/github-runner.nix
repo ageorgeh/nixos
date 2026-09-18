@@ -1,7 +1,16 @@
-{ inputs, pkgs, ... }:
+{
+  lib,
+  inputs,
+  pkgs,
+  ...
+}:
 
 let
   sharedPnpmStore = "/run/github-runner-pnpm-store";
+  runners = [
+    "github-runner-workstation-ageorgeh-cms-01"
+    "github-runner-workstation-ageorgeh-cms-02"
+  ];
 in
 
 # Configures the service for github action to be able to use this machine as the runner
@@ -10,6 +19,25 @@ in
   systemd.tmpfiles.rules = [
     "d ${sharedPnpmStore} 0750 github-runner github-runner -"
   ];
+  systemd.services = builtins.listToAttrs (
+    map (name: {
+      inherit name;
+      value.wantedBy = lib.mkForce [ ];
+    }) runners
+  );
+
+  systemd.timers = builtins.listToAttrs (
+    map (name: {
+      inherit name;
+      value = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnBootSec = "5s";
+          Unit = "${name}.service";
+        };
+      };
+    }) runners
+  );
 
   imports = [
     inputs.agenix.nixosModules.default

@@ -71,7 +71,7 @@ in
     ];
   };
 
-  systemd.services.wireguard-wg-airvpn.wantedBy = lib.mkForce [ ];
+  systemd.targets."wireguard-wg-airvpn".wantedBy = lib.mkForce [ ];
 
   # Starts Firefox but attaches its networking syscalls to the airvpn namespace.
   environment.systemPackages = [

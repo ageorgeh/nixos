@@ -1,0 +1,18 @@
+# Import Home Manager's normal session environment.
+if [ -r "/etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh" ]; then
+    . "/etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh"
+fi
+
+export CLUTTER_BACKEND=wayland
+export ELECTRON_OZONE_PLATFORM_HINT=1
+export GDK_BACKEND='wayland,x11'
+export GDK_SCALE=1
+export LIBVA_DRIVER_NAME=nvidia
+export MOZ_ENABLE_WAYLAND=1
+export NVD_BACKEND=direct
+export QT_QPA_PLATFORM='wayland;xcb'
+export QT_SCALE_FACTOR=1
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+export SDL_VIDEODRIVER=wayland
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
+export QT_QPA_PLATFORMTHEME=hyprqt6engine

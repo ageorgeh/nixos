@@ -14,8 +14,8 @@ Explicit user instructions take precedence over skill guidance. If a skill would
 
 Keep final responses concise and direct. Use plain technical language and only as much formatting as improves readability.
 """
-model = "gpt-5.6-sol"
-model_reasoning_effort = "medium"
+model = "gpt-6-astra"
+model_reasoning_effort = "low"
 personality = 'pragmatic'
 sandbox_mode = 'danger-full-access'
 service_tier = "default"
@@ -187,6 +187,9 @@ trust_level = 'trusted'
 trust_level = "trusted"
 
 [projects."/home/alex/code/codediff-repro"]
+trust_level = "trusted"
+
+[projects."/home/alex/code/trial"]
 trust_level = "trusted"
 
 [tui]
