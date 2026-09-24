@@ -119,8 +119,8 @@ in
     group = "qbittorrent";
     mode = "0400";
   };
-  age.secrets."github-media-token" = {
-    file = secrets + "/github-media-token.age";
+  age.secrets."github-withtabstop-renovate-token" = {
+    file = secrets + "/github-withtabstop-renovate-token.age";
     mode = "0400";
   };
 

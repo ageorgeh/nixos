@@ -44,7 +44,7 @@ in
     workstation
     laptop
   ];
-  "github-media-token.age".publicKeys = [
+  "github-withtabstop-renovate-token.age".publicKeys = [
     workstation
     media
     laptop

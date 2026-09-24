@@ -222,7 +222,7 @@ in
     schedule = "*-*-* 07:00:00";
 
     credentials = {
-      RENOVATE_TOKEN = config.age.secrets."github-media-token".path;
+      RENOVATE_TOKEN = config.age.secrets."github-withtabstop-renovate-token".path;
     };
 
     runtimePackages = with pkgs; [
