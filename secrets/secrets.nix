@@ -58,4 +58,9 @@ in
     workstation
     laptop
   ];
+
+  "typesafe-api-key.age".publicKeys = [
+    workstation
+    laptop
+  ];
 }

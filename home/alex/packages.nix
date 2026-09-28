@@ -1,7 +1,17 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
+
+  chatgptPkgs = import inputs.chatgpt-nixpkgs {
+    system = pkgs.stdenv.hostPlatform.system;
+    config.allowUnfree = true;
+  };
 in
 {
   home.packages =
@@ -125,6 +135,8 @@ in
     ++ lib.optionals isLinux (
       with pkgs;
       [
+        chatgptPkgs.chatgpt
+
         # Google drive
         rclone
         fuse

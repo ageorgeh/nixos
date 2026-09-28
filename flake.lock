@@ -40,6 +40,22 @@
         "type": "github"
       }
     },
+    "chatgpt-nixpkgs": {
+      "locked": {
+        "lastModified": 1790221697,
+        "narHash": "sha256-jHCiuCFxgjf08Qv3pZEkr4AltnLA7HdNT1JaNy01pAc=",
+        "owner": "Moraxyc",
+        "repo": "nixpkgs",
+        "rev": "294e967ba4b504cec68ab969c8850f01dd8433c2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Moraxyc",
+        "ref": "chatgpt-linux",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "clipboard-sync": {
       "inputs": {
         "nixpkgs": [
@@ -378,6 +394,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "chatgpt-nixpkgs": "chatgpt-nixpkgs",
         "clipboard-sync": "clipboard-sync",
         "darwin": "darwin_2",
         "github-nix-ci": "github-nix-ci",

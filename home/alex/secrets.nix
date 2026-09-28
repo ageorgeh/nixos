@@ -41,4 +41,9 @@ in
     file = secrets + "/floccus.export.json.age";
     path = config.home.homeDirectory + "/floccus.export.json";
   };
+
+  age.secrets.typesafe-api-key = {
+    file = secrets + "/typesafe-api-key.age";
+    mode = "600";
+  };
 }

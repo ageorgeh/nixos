@@ -4,6 +4,8 @@
   inputs = {
     # NixOS
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    chatgpt-nixpkgs.url = "github:Moraxyc/nixpkgs/chatgpt-linux";
+
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
