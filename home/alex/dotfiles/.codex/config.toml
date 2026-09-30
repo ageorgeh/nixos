@@ -245,6 +245,9 @@ trust_level = "trusted"
 [projects."/home/alex/code/cms/.agent-runs/task-166-smoke/fixture-final"]
 trust_level = "trusted"
 
+[projects."/home/alex/code/achdNz"]
+trust_level = "trusted"
+
 [tui]
 screen_reader_detection_done = true
 
