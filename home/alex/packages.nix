@@ -136,6 +136,7 @@ in
       with pkgs;
       [
         chatgptPkgs.chatgpt
+        gortex
 
         # Google drive
         rclone

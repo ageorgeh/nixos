@@ -81,7 +81,7 @@
 
       Service = {
         Type = "simple";
-        ExecStart = "${config.home.homeDirectory}/.local/bin/gortex daemon start";
+        ExecStart = "${pkgs.gortex}/bin/gortex daemon start";
         Restart = "on-failure";
         RestartSec = 2;
       };

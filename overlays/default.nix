@@ -3,12 +3,18 @@ let
   nur = inputs.nur.overlays.default;
   awsSam = import ./aws-sam-pr.nix;
   extenddb = import ./extenddb.nix;
+  gortex = import ./gortex.nix;
 
 in
 {
-  inherit nur awsSam extenddb;
+  inherit
+    nur
+    awsSam
+    extenddb
+    gortex
+    ;
 
-  # function form (what consumers expect)
-  default = final: prev: (nur final prev) // (awsSam final prev) // (extenddb final prev);
-
+  default =
+    final: prev:
+    (nur final prev) // (awsSam final prev) // (extenddb final prev) // (gortex final prev);
 }

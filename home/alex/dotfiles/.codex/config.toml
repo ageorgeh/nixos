@@ -14,8 +14,8 @@ Explicit user instructions take precedence over skill guidance. If a skill would
 
 Keep final responses concise and direct. Use plain technical language and only as much formatting as improves readability.
 """
-model = "gpt-6-sol"
-model_reasoning_effort = "medium"
+model = "gpt-6.1-sol"
+model_reasoning_effort = "high"
 personality = 'pragmatic'
 sandbox_mode = 'danger-full-access'
 service_tier = "default"
@@ -109,7 +109,7 @@ CONTEXT7_API_KEY = 'CONTEXT7_API_KEY'
 args = ['mcp']
 command = 'distill'
 cwd = '/home/alex/code/distill'
-env_vars = ["XDG_RUNTIME_DIR"]
+env_vars = ["XDG_RUNTIME_DIR", "TYPESAFE_API_KEY"]
 enabled = true
 enabled_tools = ['context', 'run']
 required = true
@@ -118,23 +118,23 @@ tool_timeout_sec = 240.0
 
 [mcp_servers.node_repl]
 args = []
-command = "/nix/store/siysskgjmr4gdydm1i04vyn5l6zalv7z-chatgpt-26.917.71314/lib/chatgpt/resources/cua_node/bin/node_repl"
+command = "/nix/store/nifwninp1pcz7yvk6ss9m705dcxc3fsd-chatgpt-26.924.51851/lib/chatgpt/resources/cua_node/bin/node_repl"
 startup_timeout_sec = 120
 
 [mcp_servers.node_repl.env]
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
-NODE_REPL_NODE_MODULE_DIRS = "/nix/store/siysskgjmr4gdydm1i04vyn5l6zalv7z-chatgpt-26.917.71314/lib/chatgpt/resources/cua_node/lib/node_modules"
-NODE_REPL_NODE_PATH = "/nix/store/z5piarlh57mjwr4c9w318ay97sxr6c9m-nodejs-slim-24.20.0/bin/node"
-NODE_REPL_TRUSTED_CODE_PATHS = "/home/alex/.codex:/nix/store/siysskgjmr4gdydm1i04vyn5l6zalv7z-chatgpt-26.917.71314/lib/chatgpt/resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_MODULE_DIRS = "/nix/store/nifwninp1pcz7yvk6ss9m705dcxc3fsd-chatgpt-26.924.51851/lib/chatgpt/resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/nix/store/m0256z6rrjwmvxkbymm7a28n0nw2zll9-nodejs-slim-24.21.0/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/home/alex/.codex:/nix/store/nifwninp1pcz7yvk6ss9m705dcxc3fsd-chatgpt-26.924.51851/lib/chatgpt/resources/cua_node/lib/node_modules"
 CODEX_HOME = "/home/alex/.codex"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 BROWSER_USE_TINYSKY_ENABLED = "1"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.917.71314"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/home/alex/.codex/plugins/cache/openai-bundled/browser/26.917.71314/scripts/browser-service.mjs"}'
-CODEX_CLI_PATH = "/nix/store/938cs7afvdcb8f5rqz8k1a950v4i6js4-codex-0.156.1/bin/codex"
+BROWSER_USE_CODEX_APP_VERSION = "26.924.51851"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/home/alex/.codex/plugins/cache/openai-bundled/browser/26.924.51851/scripts/browser-service.mjs"}'
+CODEX_CLI_PATH = "/nix/store/2vbxllv50w73f1h2pmzxh5yh2laan9p2-codex-0.158.0/bin/codex"
 
 # [mcp_servers.gortex]
 # args = ['mcp']
@@ -255,6 +255,7 @@ screen_reader_detection_done = true
 "gpt-5.5" = 1
 "gpt-5.6-sol" = 4
 gpt-6-astra = 4
+"gpt-6.1-sol" = 4
 
 [desktop]
 followUpQueueMode = "steer"

@@ -119,12 +119,33 @@
 
   # networking
   networking.hostName = "workstation";
+  # networking.enableIPv6 = false;
   networking.nameservers = [
-    "8.8.8.8"
-    "8.8.4.4"
-    "2001:4860:4860::8888"
-    "2001:4860:4860::8844"
+    "1.1.1.1"
+    "1.0.0.1"
   ];
+
+  zramSwap = {
+    enable = true;
+    memoryPercent = 50;
+    priority = 100;
+    algorithm = "zstd";
+  };
+
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 16 * 1024; # 16 GiB
+      priority = 10;
+    }
+  ];
+
+  boot.kernel.sysctl = {
+    "fs.inotify.max_user_watches" = 1048576;
+    "fs.inotify.max_user_instances" = 1048576;
+    "fs.inotify.max_queued_events" = 65536;
+  };
+
   networking.hosts = {
     "127.0.0.1" = [
       "localhost"

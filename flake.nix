@@ -108,6 +108,13 @@
           exec nix-update extenddb --flake --build "$@"
         '';
       };
+      updateGortex = localPkgs.writeShellApplication {
+        name = "update-gortex";
+        runtimeInputs = [ localPkgs.nix-update ];
+        text = ''
+          exec nix-update gortex --flake --build "$@"
+        '';
+      };
 
       mkHost =
         {
@@ -142,11 +149,20 @@
       # local
       lib = import ./lib/default.nix { };
 
-      packages.${localSystem}.extenddb = localPkgs.extenddb;
+      packages.${localSystem} = {
+        extenddb = localPkgs.extenddb;
+        gortex = localPkgs.gortex;
+      };
 
-      apps.${localSystem}.update-extenddb = {
-        type = "app";
-        program = "${updateExtenddb}/bin/update-extenddb";
+      apps.${localSystem} = {
+        update-extenddb = {
+          type = "app";
+          program = "${updateExtenddb}/bin/update-extenddb";
+        };
+        update-gortex = {
+          type = "app";
+          program = "${updateGortex}/bin/update-gortex";
+        };
       };
 
       nixosConfigurations = {

@@ -21,6 +21,8 @@ Do not repeat completed searches, broadly reread source already returned by Dist
 
 Use `distill.run` for tests, builds, lint, formatting, type checks, logs, or mechanical searches whose output may be large, noisy, or empty. Use native tools when exact source or diff text is required. Do not pipe command output into Distill.
 
+Omit `question` for ordinary validation. Distill reports real exit statuses and selects verbatim evidence; the agent must interpret the diagnostics. Check omission and degradation notices. When a result provides a `CAPTURE` ID, retrieve missing evidence with `distill.run` using the same workspace root and `captureId`, a focused question, or the reported `blockIds`. Page one oversized block with `startLine`/`endLine` relative to that block. Inspect the saved capture before rerunning an unchanged command to obtain more output.
+
 Keep ordinary source and search output bounded: prefer targeted ranges and searches, do not concatenate several large files, and if output truncates narrow the next read rather than repeating or broadening it.
 
 Do not reread an unchanged file or line range already present in the session.

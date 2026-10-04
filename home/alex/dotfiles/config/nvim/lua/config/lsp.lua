@@ -111,6 +111,13 @@ vim.lsp.enable("tsc")
 
 -- tailwind
 vim.lsp.config("tailwindcss", {
+	capabilities = {
+		workspace = {
+			didChangeWatchedFiles = {
+				dynamicRegistration = false,
+			},
+		},
+	},
 	settings = {
 		tailwindCSS = {
 			validate = true,

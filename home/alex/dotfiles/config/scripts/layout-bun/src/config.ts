@@ -51,45 +51,45 @@ function defineLayout(monitors: MonitorLayout): LayoutConfig {
   return { apps };
 }
 
-const code_nixos = app({
-  id: "nixos-code",
-  command: "code --use-angle=vulkan ~/nixos-config",
+const kitty_cms = app({
+  id: "kitty-cms",
+  command: "kitty --class kitty-cms --directory /home/alex/code/cms",
   match: {
-    title: /.*nixos-config.*/,
-  },
-  // launchMatch: {
-  //   initialTitle: "Visual Studio Code",
-  // },
-});
-
-const code_cmsCodex = app({
-  id: "code_cmsCodex",
-  command: "code --use-angle=vulkan ~/code/cms-codex",
-  match: {
-    title: /.*cms-codex.*/,
-  },
-  // launchMatch: {
-  //   initialTitle: "Visual Studio Code",
-  // },
-});
-
-const kitty = app({
-  id: "kitty",
-  command: "kitty",
-  match: {
-    class: /^kitty$/,
+    class: /^kitty-cms$/,
   },
 });
 
-const code_cms = app({
-  id: "code_cms",
-  command: "code --use-angle=vulkan ~/code/cmsWrapper/cms",
+const kitty_achdNz = app({
+  id: "kitty-achdNz",
+  command: "kitty --class kitty-achdNz --directory /home/alex/code/achdNz",
   match: {
-    title: /^(?!.*codex).*cms.*Visual Studio Code.*/,
+    class: /^kitty-achdNz$/,
   },
-  // launchMatch: {
-  //   initialTitle: "Visual Studio Code",
-  // },
+});
+
+const kitty_cmsWrapper = app({
+  id: "kitty-cms-wrapper",
+  command:
+    "kitty --class kitty-cms-wrapper --directory /home/alex/code/cmsWrapper/cms",
+  match: {
+    class: /^kitty-cms-wrapper$/,
+  },
+});
+
+const kitty_cmsCodex = app({
+  id: "kitty-cms-codex",
+  command: "kitty --class kitty-cms-codex --directory /home/alex/code/cms-codex",
+  match: {
+    class: /^kitty-cms-codex$/,
+  },
+});
+
+const kitty_btop = app({
+  id: "kitty-btop",
+  command: "kitty --class kitty-btop -e btop",
+  match: {
+    class: /^kitty-btop$/,
+  },
 });
 
 const firefox = app({
@@ -157,16 +157,17 @@ export const layoutConfig = defineLayout({
     ],
     [
       firefox,
+      kitty_btop,
       // obsidian,
       // noSqlWorkbench,
     ],
   ],
   1: [
     [
-      code_nixos,
-      // code_cmsCodex,
-      kitty,
-      code_cms,
+      kitty_cms,
+      kitty_achdNz,
+      kitty_cmsWrapper,
+      kitty_cmsCodex,
     ],
   ],
 });
