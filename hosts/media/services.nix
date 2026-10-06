@@ -218,6 +218,9 @@ in
   services.renovate = {
     enable = true;
 
+    # Manually: sudo systemctl start renovate.service
+    # Watch: journalctl -u renovate.service -f
+
     # Media host is already Australia/Melbourne.
     schedule = "*-*-* 07:00:00";
 
@@ -240,7 +243,7 @@ in
       platform = "github";
 
       repositories = [
-        "ageorgeh/cms"
+        "withtabstop/cms"
       ];
 
       binarySource = "global";
