@@ -188,6 +188,8 @@ in
         avahi
         nssmdns
 
+        dnsutils
+
         mako # Notification daemon
         libnotify
         inotify-tools

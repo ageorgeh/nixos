@@ -21,6 +21,10 @@ sandbox_mode = 'danger-full-access'
 service_tier = "default"
 tool_output_token_limit = 24000
 
+# Mark agent shell commands so human-operated tools can reject accidental invocation.
+[shell_environment_policy.set]
+CMS_AGENT_EXECUTION = "1"
+
 [features]
 apps = false
 memories = false
@@ -115,6 +119,9 @@ enabled_tools = ['context', 'run']
 required = true
 startup_timeout_sec = 30.0
 tool_timeout_sec = 240.0
+
+[mcp_servers.distill.env]
+CMS_AGENT_EXECUTION = "1"
 
 [mcp_servers.node_repl]
 args = []
@@ -246,6 +253,9 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/home/alex/code/achdNz"]
+trust_level = "trusted"
+
+[projects."/home/alex/code/emulsive"]
 trust_level = "trusted"
 
 [tui]
