@@ -24,10 +24,12 @@
       interface = "enp2s0";
     };
     nameservers = [
-      "8.8.8.8"
-      "8.8.4.4"
-      "2001:4860:4860::8888"
-      "2001:4860:4860::8844"
+      # "8.8.8.8"
+      # "8.8.4.4"
+      # "2001:4860:4860::8888"
+      # "2001:4860:4860::8844"
+      "1.1.1.1"
+      "1.0.0.1"
     ];
 
     firewall = {
@@ -67,16 +69,16 @@
         ${pkgs.iproute2}/bin/ip route add default dev wg0 table 200
         ${pkgs.iproute2}/bin/ip rule add from 10.139.52.237/32 table 200
 
-        ${pkgs.iproute2}/bin/ip -6 route add default dev wg0 table 200
-        ${pkgs.iproute2}/bin/ip -6 rule add from fd7d:76ee:e68f:a993:97df:96cb:44e6:32e7/128 table 200
+        # ${pkgs.iproute2}/bin/ip -6 route add default dev wg0 table 200
+        # ${pkgs.iproute2}/bin/ip -6 rule add from fd7d:76ee:e68f:a993:97df:96cb:44e6:32e7/128 table 200
       '';
 
       preDown = ''
         ${pkgs.iproute2}/bin/ip rule del from 10.139.52.237/32 table 200 || true
         ${pkgs.iproute2}/bin/ip route del default dev wg0 table 200 || true
 
-        ${pkgs.iproute2}/bin/ip -6 rule del from fd7d:76ee:e68f:a993:97df:96cb:44e6:32e7/128 table 200 || true
-        ${pkgs.iproute2}/bin/ip -6 route del default dev wg0 table 200 || true
+        # ${pkgs.iproute2}/bin/ip -6 rule del from fd7d:76ee:e68f:a993:97df:96cb:44e6:32e7/128 table 200 || true
+        # ${pkgs.iproute2}/bin/ip -6 route del default dev wg0 table 200 || true
       '';
 
       privateKeyFile = config.age.secrets."airvpn-private-key".path;
@@ -97,7 +99,7 @@
 
           allowedIPs = [
             "0.0.0.0/0"
-            "::/0"
+            # "::/0"
           ];
           persistentKeepalive = 15;
         }
