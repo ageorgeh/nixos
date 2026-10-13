@@ -20,6 +20,7 @@ personality = 'pragmatic'
 sandbox_mode = 'danger-full-access'
 service_tier = "default"
 tool_output_token_limit = 24000
+model_context_window = 500000
 
 # Mark agent shell commands so human-operated tools can reject accidental invocation.
 [shell_environment_policy.set]
@@ -256,6 +257,9 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/home/alex/code/emulsive"]
+trust_level = "trusted"
+
+[projects."/home/alex/code/emulsive-2"]
 trust_level = "trusted"
 
 [tui]
