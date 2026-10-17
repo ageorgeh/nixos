@@ -168,6 +168,9 @@ in
         kdePackages.kio-admin
         kdePackages.ark
 
+        # Epub reader
+        foliate
+
         # thumbnails / previews
         kdePackages.ffmpegthumbs
         kdePackages.kdegraphics-thumbnailers
