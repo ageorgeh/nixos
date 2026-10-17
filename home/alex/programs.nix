@@ -128,8 +128,7 @@
             icon = "briefcase";
           };
         };
-        # Reconcile any existing containers.json before taking ownership.
-        containersForce = false;
+        containersForce = true;
         extensions = {
           force = true;
           packages = with pkgs.nur.repos.rycee.firefox-addons; [
