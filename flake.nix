@@ -152,9 +152,32 @@
       packages.${localSystem} = {
         extenddb = localPkgs.extenddb;
         gortex = localPkgs.gortex;
+        cms-video-capture-tools = import ./home/alex/video-capture {
+          pkgs = localPkgs;
+          obs =
+            self.nixosConfigurations.workstation.config.home-manager.users.alex.programs.obs-studio.finalPackage;
+          homeDirectory = "/home/alex";
+        };
+        cms-resolve-editor = self.packages.${localSystem}.cms-video-capture-tools.editor;
       };
 
       apps.${localSystem} = {
+        cms-resolve-editor = {
+          type = "app";
+          program = "${self.packages.${localSystem}.cms-resolve-editor}/bin/cms-resolve-editor";
+        };
+        cms-video-capture = {
+          type = "app";
+          program = "${self.packages.${localSystem}.cms-video-capture-tools}/bin/cms-video-capture";
+        };
+        cms-video-browser = {
+          type = "app";
+          program = "${self.packages.${localSystem}.cms-video-capture-tools}/bin/cms-video-browser";
+        };
+        cms-video-workspace = {
+          type = "app";
+          program = "${self.packages.${localSystem}.cms-video-capture-tools}/bin/cms-video-workspace";
+        };
         update-extenddb = {
           type = "app";
           program = "${updateExtenddb}/bin/update-extenddb";

@@ -168,3 +168,11 @@ for ws = 1, 9 do
     hl.bind(mainMod .. " + " .. code, hl.dsp.focus({ workspace = ws }))
     hl.bind(mainMod .. " + SHIFT + " .. code, hl.dsp.window.move({ workspace = ws }))
 end
+
+-- Recording workspace, clean Firefox identity, shortcut and brief workspace notifications.
+local videoConfig = os.getenv("HOME") .. "/.config/hypr/cms-video.lua"
+local videoFile = io.open(videoConfig, "r")
+if videoFile then
+    videoFile:close()
+    dofile(videoConfig)
+end

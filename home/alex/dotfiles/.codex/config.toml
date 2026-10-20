@@ -101,48 +101,51 @@ persistence = 'none'
 
 
 [mcp_servers]
+
 [mcp_servers.context7]
-bearer_token_env_var = 'CONTEXT7_API_KEY'
+url = "https://mcp.context7.com/mcp"
+bearer_token_env_var = "CONTEXT7_API_KEY"
 startup_timeout_sec = 40.0
 tool_timeout_sec = 60.0
-url = 'https://mcp.context7.com/mcp'
 
 [mcp_servers.context7.env_http_headers]
-CONTEXT7_API_KEY = 'CONTEXT7_API_KEY'
+CONTEXT7_API_KEY = "CONTEXT7_API_KEY"
 
 [mcp_servers.distill]
-args = ['mcp']
-command = 'distill'
-cwd = '/home/alex/code/distill'
+command = "distill"
+args = ["mcp"]
 env_vars = ["XDG_RUNTIME_DIR", "TYPESAFE_API_KEY"]
-enabled = true
-enabled_tools = ['context', 'run']
+cwd = "/home/alex/code/distill"
 required = true
 startup_timeout_sec = 30.0
 tool_timeout_sec = 240.0
+enabled_tools = ["context", "run"]
 
 [mcp_servers.distill.env]
 CMS_AGENT_EXECUTION = "1"
 
 [mcp_servers.node_repl]
-args = []
 command = "/nix/store/nifwninp1pcz7yvk6ss9m705dcxc3fsd-chatgpt-26.924.51851/lib/chatgpt/resources/cua_node/bin/node_repl"
-startup_timeout_sec = 120
+startup_timeout_sec = 120.0
 
 [mcp_servers.node_repl.env]
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.924.51851"
+BROWSER_USE_TINYSKY_ENABLED = "1"
+CODEX_CLI_PATH = "/nix/store/2vbxllv50w73f1h2pmzxh5yh2laan9p2-codex-0.158.0/bin/codex"
+CODEX_HOME = "/home/alex/.codex"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
 NODE_REPL_NODE_MODULE_DIRS = "/nix/store/nifwninp1pcz7yvk6ss9m705dcxc3fsd-chatgpt-26.924.51851/lib/chatgpt/resources/cua_node/lib/node_modules"
 NODE_REPL_NODE_PATH = "/nix/store/m0256z6rrjwmvxkbymm7a28n0nw2zll9-nodejs-slim-24.21.0/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/home/alex/.codex:/nix/store/nifwninp1pcz7yvk6ss9m705dcxc3fsd-chatgpt-26.924.51851/lib/chatgpt/resources/cua_node/lib/node_modules"
-CODEX_HOME = "/home/alex/.codex"
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
-BROWSER_USE_TINYSKY_ENABLED = "1"
-NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
-NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
-BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.924.51851"
 NODE_REPL_TRUSTED_SERVICES = '{"browser":"/home/alex/.codex/plugins/cache/openai-bundled/browser/26.924.51851/scripts/browser-service.mjs"}'
-CODEX_CLI_PATH = "/nix/store/2vbxllv50w73f1h2pmzxh5yh2laan9p2-codex-0.158.0/bin/codex"
+
+[mcp_servers.davinci_resolve]
+command = "davinci-resolve-mcp"
+args = []
 
 # [mcp_servers.gortex]
 # args = ['mcp']
@@ -260,6 +263,204 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/home/alex/code/emulsive-2"]
+trust_level = "trusted"
+
+[projects."/home/alex/code/keirMatthews"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-09-76e0b9"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-01-0b321b"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-05-2c9ee3"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-06-7d10a5"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-02-3f3f34"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-10-88a395"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-03-adf890"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-11-7c91ee"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-12-29d6de"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-08-98d296"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-04-029081"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-20-b2fa76"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-21-268297"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-14-c9ea43"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-13-9bdddf"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-16-837c0f"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-22-c2ecc1"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-17-a0993c"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-18-e19c65"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-23-dd4412"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-19-aba9b1"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-24-9022a5"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-27-dae276"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-25-f63d8f"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-26-762e3e"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-29-99a5a2"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-28-9da74a"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/cms-review-boundaries-ryRVp8/case-30-2b6180"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-WYq8mo"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-WlsYZW"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-t4b3U9"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-pVn6mk"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-08otvi"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-D3KEeQ"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-QPDOdv"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-vKPAFC"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-3ljm0M"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-j7ZfX9"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-D6uM02"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-g2yaEJ"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-9N3tZP"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-I2wVPA"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-h9bzXZ"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-mPqL4o"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-xXsQEI"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-4rIoVA"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-B2ce5o"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-xNSssZ"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-9bQWZq"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-Jq5j3i"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-RWQIvf"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-lycUma"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/visual-sample-nJ2dSG"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/handoff-calibration-4bdobJ"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/handoff-calibration-FhN3qf"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/handoff-calibration-DgsJUs"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/handoff-calibration-uitNjv"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/handoff-calibration-PrbQHG"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/handoff-calibration-9WAM5i"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/handoff-calibration-LPCXUA"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/handoff-calibration-bYiSOI"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/handoff-calibration-7lUwHM"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/handoff-calibration-NJfyl0"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/handoff-calibration-vidWr4"]
+trust_level = "trusted"
+
+[projects."/tmp/nix-shell.sk3PJk/handoff-calibration-Re9HC2"]
 trust_level = "trusted"
 
 [tui]

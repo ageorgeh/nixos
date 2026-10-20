@@ -8,6 +8,16 @@ let
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
 
+  # Codex spawns MCP servers from temporary threads. Bubblewrap's parent-death
+  # signal follows that thread; stdin EOF already handles normal MCP shutdown.
+  resolveMcpFhs = pkgs.davinci-resolve-studio.override {
+    buildFHSEnv = args: pkgs.buildFHSEnv (args // { dieWithParent = false; });
+  };
+  resolveMcp = pkgs.writeShellScriptBin "davinci-resolve-mcp" ''
+    exec ${lib.getExe resolveMcpFhs} \
+      ${pkgs.davinci-resolve-studio.davinci}/bin/ResolveMCP "$@"
+  '';
+
   chatgptPkgs = import inputs.chatgpt-nixpkgs {
     system = pkgs.stdenv.hostPlatform.system;
     config.allowUnfree = true;
@@ -136,6 +146,7 @@ in
       [
         chatgptPkgs.chatgpt
         gortex
+        resolveMcp
 
         # Google drive
         rclone

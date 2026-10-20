@@ -1,0 +1,67 @@
+{
+  "name": "CMS Alex Desk",
+  "current_scene": "Browser",
+  "current_program_scene": "Browser",
+  "scene_order": [{ "name": "Browser" }],
+  "sources": [
+    {
+      "name": "CMS Recording Firefox",
+      "uuid": "c8de229f-f456-43b0-9d19-493eb1e44232",
+      "id": "pipewire-window-capture-source",
+      "versioned_id": "pipewire-window-capture-source",
+      "settings": { "RestoreToken": "" },
+      "mixers": 0,
+      "volume": 0,
+      "muted": true
+    },
+    {
+      "name": "Browser",
+      "uuid": "62f3ce4e-fb57-44e5-9946-e3346e6ce06f",
+      "id": "scene",
+      "versioned_id": "scene",
+      "settings": {
+        "id_counter": 1,
+        "custom_size": false,
+        "items": [{
+          "name": "CMS Recording Firefox",
+          "source_uuid": "c8de229f-f456-43b0-9d19-493eb1e44232",
+          "visible": true,
+          "locked": true,
+          "id": 1,
+          "rot": 0,
+          "align": 5,
+          "pos": { "x": 0, "y": 0 },
+          "pos_rel": { "x": -1.7777777777777777, "y": -1 },
+          "scale": { "x": 1, "y": 1 },
+          "scale_rel": { "x": 1, "y": 1 },
+          "scale_ref": { "x": 2560, "y": 1440 },
+          "bounds_type": 2,
+          "bounds_align": 0,
+          "bounds_crop": false,
+          "bounds": { "x": 2560, "y": 1440 },
+          "bounds_rel": { "x": 3.5555555555555554, "y": 2 },
+          "crop_left": 0, "crop_top": 0, "crop_right": 0, "crop_bottom": 0
+        }]
+      }
+    }
+  ],
+  "AuxAudioDevice1": {
+    "name": "Blue microphone",
+    "uuid": "418a6786-4e14-4bbe-b00c-11ab59038e96",
+    "id": "pulse_input_capture",
+    "versioned_id": "pulse_input_capture",
+    "settings": { "device_id": "alsa_input.usb-Generic_Blue_Microphones_LT_2010291845405F390773_111000-00.analog-stereo" },
+    "mixers": 1,
+    "sync": 0,
+    "flags": 0,
+    "volume": 1,
+    "balance": 0.5,
+    "enabled": true,
+    "muted": false,
+    "monitoring_type": 0
+  },
+  "groups": [],
+  "transitions": [],
+  "current_transition": "Fade",
+  "transition_duration": 300
+}
