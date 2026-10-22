@@ -85,10 +85,19 @@ or reconstruct a timeline, copy settings, change keyboard mappings or alter the 
 timeline state, sets native In/Out marks and checks the edit through Resolve MCP.
 
 The adapter discovers the single Hyprland session and the main Resolve window for the requested project. It targets
-that exact window, focuses the timeline with Ctrl+4 and deselects clips with Ctrl+Shift+A. It invokes Shift+Backspace
+that exact window with background shortcuts, selects its timeline panel with Ctrl+4 and deselects clips with Ctrl+Shift+A.
+It does not activate Resolve, switch workspaces or restore focus afterwards. It invokes Shift+Backspace
 for native marked-range Ripple Delete, or Ctrl+Z for Undo if the CMS detects an incorrect ripple. It expects the
 calibrated default Resolve shortcuts and reports custom keyboard presets rather than guessing. Run it while no one is
-typing in Resolve. It leaves Resolve visible for normal editing.
+typing in Resolve. You can continue working in other applications while it edits.
+
+The Hyprland configuration also sets `focus_on_activate = false` for Resolve windows: Resolve can request activation
+when receiving these shortcuts. Both parts are needed; blocking activation does not block an explicit focus command.
+Generic `resolve` progress windows also have `no_initial_focus = true`, because a slow native save creates one briefly.
+This rule does not match normally titled dialogs.
+Verified with native ripple deletion, Undo and saving while Kitty retained focus. Hyprland's event socket recorded
+the save progress window opening and closing with no focus or workspace events. Test cuts were undone and timeline
+coverage restored. Repeated preparation also produced no focus or workspace events.
 
 The package is also available without a system switch:
 

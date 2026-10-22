@@ -45,17 +45,13 @@ def run(action, project):
     def dispatch(expression):
         assert ipc("dispatch", expression).strip() == "ok", "Hyprland command failed"
 
-    def focused():
-        return json.loads(ipc("-j", "activewindow")).get("address") == address
-
     def key(mods, key):
-        assert focused(), "Resolve lost focus; native edit cancelled"
+        # Target the background window directly; activating it interrupts the user's work.
         dispatch("hl.dsp.send_shortcut({mods=" + json.dumps(mods) + ",key=" + json.dumps(key) +
                  ",window=" + json.dumps("address:" + address) + "})")
         time.sleep(.08)
 
     if action == "prepare":
-        dispatch("hl.dsp.focus({window=" + json.dumps("address:" + address) + "})")
         key("CTRL", "4")  # Workspace > Active Panel Selection > Timeline
         key("CTRL SHIFT", "a")  # Edit > Deselect All
     elif action == "ripple-delete":

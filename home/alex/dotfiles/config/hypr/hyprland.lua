@@ -71,6 +71,20 @@ hl.config({
     },
 })
 
+-- Native editing shortcuts can make Resolve request activation; keep the user's current window focused.
+hl.window_rule({
+    name = "resolve-background-editing",
+    match = { class = "^resolve$" },
+    focus_on_activate = false,
+})
+
+-- Slow SaveProject calls can briefly create a generic progress window.
+hl.window_rule({
+    name = "resolve-background-progress",
+    match = { class = "^resolve$", title = "^resolve$" },
+    no_initial_focus = true,
+})
+
 hl.curve("ease", {
     type = "bezier",
     points = {
