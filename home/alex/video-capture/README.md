@@ -80,24 +80,26 @@ check for the complete capture setup.
 
 ## Native Resolve editing adapter
 
-`cms-resolve-editor` supplies the Edit-page keyboard commands absent from the Resolve scripting API. It does not read
-or reconstruct a timeline, copy settings, change keyboard mappings or alter the MCP server. The CMS reads actual
-timeline state, sets native In/Out marks and checks the edit through Resolve MCP.
+`cms-resolve-editor` supplies only timeline preparation and the Split Clip command absent from Resolve's scripting API.
+It does not read or reconstruct a timeline, copy settings, change keyboard mappings or alter the MCP server. The CMS
+reads actual timeline state, seeks to each boundary and deletes the resulting whole middle clips through the API.
+`ready` advertises `actions: ["prepare", "split"]`, allowing the CMS to reject an outdated installed adapter before edits.
 
 The adapter discovers the single Hyprland session and the main Resolve window for the requested project. It targets
 that exact window with background shortcuts, selects its timeline panel with Ctrl+4 and deselects clips with Ctrl+Shift+A.
-It does not activate Resolve, switch workspaces or restore focus afterwards. It invokes Shift+Backspace
-for native marked-range Ripple Delete, or Ctrl+Z for Undo if the CMS detects an incorrect ripple. It expects the
-calibrated default Resolve shortcuts and reports custom keyboard presets rather than guessing. Run it while no one is
-typing in Resolve. You can continue working in other applications while it edits.
+It does not activate Resolve, switch workspaces or restore focus afterwards. Preparation happens once per batch;
+`split` sends only Ctrl+B. There are no marked-range Ripple Delete or Undo actions. It expects the calibrated default
+Resolve shortcuts and reports custom keyboard presets rather than guessing. Run it while no one is typing in Resolve.
+You can continue working in other applications while it edits. The CMS verifies each split before deleting, then checks
+per-track timing, media and source offsets. A mismatch stops the batch for inspection rather than blindly retrying.
 
 The Hyprland configuration also sets `focus_on_activate = false` for Resolve windows: Resolve can request activation
 when receiving these shortcuts. Both parts are needed; blocking activation does not block an explicit focus command.
 Generic `resolve` progress windows also have `no_initial_focus = true`, because a slow native save creates one briefly.
 This rule does not match normally titled dialogs.
-Verified with native ripple deletion, Undo and saving while Kitty retained focus. Hyprland's event socket recorded
-the save progress window opening and closing with no focus or workspace events. Test cuts were undone and timeline
-coverage restored. Repeated preparation also produced no focus or workspace events.
+The split/API-delete trial completed 18 boundary commands and ten range removals on disposable timelines, including a
+long tail/head removal, crossing/downstream overlays and a simple Fusion effect. Resolve remained in the background;
+MCP-driven shortcut checks explicitly observed Firefox foreground and Resolve hidden. Original edit state was restored.
 
 The package is also available without a system switch:
 

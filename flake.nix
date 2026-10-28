@@ -159,9 +159,14 @@
           homeDirectory = "/home/alex";
         };
         cms-resolve-editor = self.packages.${localSystem}.cms-video-capture-tools.editor;
+        cms-resolve-python = self.packages.${localSystem}.cms-video-capture-tools.resolvePython;
       };
 
       apps.${localSystem} = {
+        cms-resolve-python = {
+          type = "app";
+          program = "${self.packages.${localSystem}.cms-resolve-python}/bin/cms-resolve-python";
+        };
         cms-resolve-editor = {
           type = "app";
           program = "${self.packages.${localSystem}.cms-resolve-editor}/bin/cms-resolve-editor";

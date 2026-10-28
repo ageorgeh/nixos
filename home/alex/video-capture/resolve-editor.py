@@ -1,7 +1,7 @@
 """Invoke normal Resolve Edit-page commands on this Hyprland workstation.
 
-Timeline inspection, In/Out marks and result verification use Resolve's API.
-This adapter only supplies the keyboard commands that API does not expose.
+Timeline inspection, seeks, whole-clip deletion and verification use Resolve's API.
+This adapter only prepares the timeline pane and splits at the current playhead.
 """
 import argparse
 import json
@@ -54,19 +54,17 @@ def run(action, project):
     if action == "prepare":
         key("CTRL", "4")  # Workspace > Active Panel Selection > Timeline
         key("CTRL SHIFT", "a")  # Edit > Deselect All
-    elif action == "ripple-delete":
-        key("SHIFT", "BackSpace")  # Edit > Ripple Delete, using the marked range
-    elif action == "undo":
-        key("CTRL", "z")
+    elif action == "split":
+        key("CTRL", "b")  # Timeline > Split Clip at the API-positioned playhead
     else:
         assert action == "ready", "Unknown editor command"
     return {"available": True, "backend": "hyprland", "project": project,
-            "action": action, "window": address}
+            "action": action, "window": address, "actions": ["prepare", "split"]}
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("ready", "prepare", "ripple-delete", "undo"))
+    parser.add_argument("action", choices=("ready", "prepare", "split"))
     parser.add_argument("--project", required=True)
     args = parser.parse_args()
     print(json.dumps(run(args.action, args.project)))

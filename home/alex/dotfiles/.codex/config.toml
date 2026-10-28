@@ -463,6 +463,18 @@ trust_level = "trusted"
 [projects."/tmp/nix-shell.sk3PJk/handoff-calibration-Re9HC2"]
 trust_level = "trusted"
 
+[projects."/home/alex/code/tax"]
+trust_level = "trusted"
+
+[projects."/home/alex/code/cjd"]
+trust_level = "trusted"
+
+[projects."/home/alex/code/yaHoi"]
+trust_level = "trusted"
+
+[projects."/home/alex/code/yaHui"]
+trust_level = "trusted"
+
 [tui]
 screen_reader_detection_done = true
 

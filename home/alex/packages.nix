@@ -2,6 +2,7 @@
   pkgs,
   lib,
   inputs,
+  hostName ? "",
   ...
 }:
 let
@@ -232,5 +233,6 @@ in
       [
         vlc-bin
       ]
-    );
+    )
+    ++ lib.optionals (isLinux && hostName == "workstation") [ pkgs.sccache ];
 }
