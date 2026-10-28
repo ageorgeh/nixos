@@ -1,6 +1,8 @@
 # Media server 
 
-This host is a media server running plex, airvpn, qbittorrent
+This host runs Jellyfin, AirVPN and qBittorrent.
+
+For Jellyfin scan/database failures, see the [recovery runbook](../../docs/runbooks/jellyfin.md).
 
 
 ## Summary
