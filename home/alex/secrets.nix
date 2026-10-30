@@ -46,4 +46,9 @@ in
     file = secrets + "/typesafe-api-key.age";
     mode = "600";
   };
+
+  age.secrets.openai-key = {
+    file = secrets + "/openai-key.age";
+    mode = "600";
+  };
 }
