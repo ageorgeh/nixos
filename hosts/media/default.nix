@@ -16,6 +16,7 @@ in
     ./packages.nix
     ./services.nix
     ./users.nix
+    ./illustrations.nix
 
   ];
 

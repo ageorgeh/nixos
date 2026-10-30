@@ -5,7 +5,7 @@
 }:
 let
   resolveFhs = pkgs.davinci-resolve-studio.override {
-    buildFHSEnv = args: pkgs.buildFHSEnv (args // { dieWithParent = false; });
+    buildFHSEnv = args: pkgs.buildDavinciResolveFHSEnv (args // { dieWithParent = false; });
   };
   resolvePython = pkgs.writeShellScriptBin "cms-resolve-python" ''
     exec ${pkgs.lib.getExe resolveFhs} \

@@ -12,7 +12,7 @@ let
   # Codex spawns MCP servers from temporary threads. Bubblewrap's parent-death
   # signal follows that thread; stdin EOF already handles normal MCP shutdown.
   resolveMcpFhs = pkgs.davinci-resolve-studio.override {
-    buildFHSEnv = args: pkgs.buildFHSEnv (args // { dieWithParent = false; });
+    buildFHSEnv = args: pkgs.buildDavinciResolveFHSEnv (args // { dieWithParent = false; });
   };
   resolveMcp = pkgs.writeShellScriptBin "davinci-resolve-mcp" ''
     exec ${lib.getExe resolveMcpFhs} \

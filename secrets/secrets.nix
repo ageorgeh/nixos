@@ -19,6 +19,19 @@ in
     laptop
   ];
 
+  "illustration-m365-credential.pfx.age".publicKeys = [
+    workstation
+    media
+  ];
+  "illustration-samba-password.age".publicKeys = [
+    workstation
+    media
+  ];
+
+  "openai-key.age".publicKeys = [
+    workstation
+  ];
+
   "airvpn-private-key.age".publicKeys = [
     workstation
     media
