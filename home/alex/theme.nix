@@ -35,7 +35,7 @@ lib.mkIf pkgs.stdenv.isLinux {
       name = "Papirus-Dark";
     };
     font = {
-      name = "JetBrainsMono Nerd Font";
+      name = "Sans";
       size = 11;
     };
   };

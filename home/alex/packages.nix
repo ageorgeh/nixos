@@ -2,11 +2,22 @@
   pkgs,
   lib,
   inputs,
+  hostName ? "",
   ...
 }:
 let
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
+
+  # Codex spawns MCP servers from temporary threads. Bubblewrap's parent-death
+  # signal follows that thread; stdin EOF already handles normal MCP shutdown.
+  resolveMcpFhs = pkgs.davinci-resolve-studio.override {
+    buildFHSEnv = args: pkgs.buildDavinciResolveFHSEnv (args // { dieWithParent = false; });
+  };
+  resolveMcp = pkgs.writeShellScriptBin "davinci-resolve-mcp" ''
+    exec ${lib.getExe resolveMcpFhs} \
+      ${pkgs.davinci-resolve-studio.davinci}/bin/ResolveMCP "$@"
+  '';
 
   chatgptPkgs = import inputs.chatgpt-nixpkgs {
     system = pkgs.stdenv.hostPlatform.system;
@@ -102,8 +113,7 @@ in
       kitty # Terminal emulator
       tmux # Terminal multiplexer
       webfontkitgenerator # Generating fonts
-      # polypane # Browser dev tool - REMOVED from nix packages due to lack of support
-      # davinci-resolve
+      davinci-resolve-studio
       ffmpeg
 
       #
@@ -137,6 +147,7 @@ in
       [
         chatgptPkgs.chatgpt
         gortex
+        resolveMcp
 
         # Google drive
         rclone
@@ -169,6 +180,9 @@ in
         kdePackages.kio-admin
         kdePackages.ark
 
+        # Epub reader
+        foliate
+
         # thumbnails / previews
         kdePackages.ffmpegthumbs
         kdePackages.kdegraphics-thumbnailers
@@ -187,6 +201,8 @@ in
         # local network discovery
         avahi
         nssmdns
+
+        dnsutils
 
         mako # Notification daemon
         libnotify
@@ -217,5 +233,6 @@ in
       [
         vlc-bin
       ]
-    );
+    )
+    ++ lib.optionals (isLinux && hostName == "workstation") [ pkgs.sccache ];
 }

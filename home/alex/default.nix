@@ -12,6 +12,7 @@ in
     inputs.agenix.homeManagerModules.default
 
     ./programs.nix # programs (with options)
+    ./video-capture.nix # opt-in workstation recording profile and tools
     ./packages.nix # list of packages
 
     ./services.nix

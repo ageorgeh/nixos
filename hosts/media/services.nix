@@ -233,6 +233,11 @@ in
       pnpm
       bashInteractive
       coreutils
+      # CMS post-upgrade builds Typst; pnpm provisions its pinned Rust toolchain.
+      wasm-bindgen-cli
+      stdenv.cc
+      stdenv.cc.bintools
+      gnumake
     ];
 
     environment = {

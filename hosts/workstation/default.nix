@@ -83,6 +83,9 @@
     autoLogin.enable = false;
   };
 
+  # iphone connection
+  services.usbmuxd.enable = true;
+
   # network discovery
   services.gvfs.enable = true;
   services.dbus.enable = true;

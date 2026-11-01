@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  hostName ? "",
   ...
 }:
 let
@@ -30,9 +31,17 @@ let
     NIXOS_OZONE_WL = "1";
   };
 
+  envWorkstation = {
+    RUSTC_WRAPPER = "${pkgs.sccache}/bin/sccache";
+    SCCACHE_CACHE_SIZE = "20G";
+  };
+
 in
 {
-  home.sessionVariables = env // lib.optionalAttrs isLinux envLinux;
+  home.sessionVariables =
+    env
+    // lib.optionalAttrs isLinux envLinux
+    // lib.optionalAttrs (isLinux && hostName == "workstation") envWorkstation;
 
   home.sessionPath = [
     "${homeDir}/.config/pomo"

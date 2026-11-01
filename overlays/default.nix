@@ -4,6 +4,7 @@ let
   awsSam = import ./aws-sam-pr.nix;
   extenddb = import ./extenddb.nix;
   gortex = import ./gortex.nix;
+  davinciResolveStudio = import ./davinci-resolve-studio.nix;
 
 in
 {
@@ -12,9 +13,14 @@ in
     awsSam
     extenddb
     gortex
+    davinciResolveStudio
     ;
 
   default =
     final: prev:
-    (nur final prev) // (awsSam final prev) // (extenddb final prev) // (gortex final prev);
+    (nur final prev)
+    // (awsSam final prev)
+    // (extenddb final prev)
+    // (gortex final prev)
+    // (davinciResolveStudio final prev);
 }

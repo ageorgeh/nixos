@@ -112,7 +112,23 @@
         settings = {
           "ui.systemUsesDarkTheme" = 1;
           "extensions.autoDisableScopes" = 0;
+          "privacy.userContext.enabled" = true;
+          "privacy.userContext.ui.enabled" = true;
         };
+        # Ordinary tabs remain personal; keep these IDs stable to preserve logins.
+        containers = {
+          Tabstop = {
+            id = 10;
+            color = "blue";
+            icon = "briefcase";
+          };
+          Emulsive = {
+            id = 11;
+            color = "green";
+            icon = "briefcase";
+          };
+        };
+        containersForce = true;
         extensions = {
           force = true;
           packages = with pkgs.nur.repos.rycee.firefox-addons; [
@@ -124,6 +140,7 @@
             floccus
             auto-tab-discard
             tab-session-manager
+            multi-account-containers
           ];
         };
       };

@@ -62,6 +62,7 @@ in
       export CONTEXT7_API_KEY="$(cat ${config.age.secrets.context7-key.path})"
       export OPENROUTER_API_KEY="$(cat ${config.age.secrets.openrouter-key.path})"
       export TYPESAFE_API_KEY="$(cat ${config.age.secrets.typesafe-api-key.path})"
+      export OPENAI_API_KEY="$(cat ${config.age.secrets.openai-key.path})"
     '';
     # Open into fish if not already in fish
     # Cant put fish as login shell as it may cause issues https://nixos.wiki/wiki/Fish
@@ -95,6 +96,11 @@ in
         lib.replaceStrings [ "\${XDG_RUNTIME_DIR}" ] [ "$XDG_RUNTIME_DIR" ]
           config.age.secrets.typesafe-api-key.path
       })
+      set -x OPENAI_API_KEY (cat ${
+        lib.replaceStrings [ "\${XDG_RUNTIME_DIR}" ] [ "$XDG_RUNTIME_DIR" ]
+          config.age.secrets.openai-key.path
+      })
+
     '';
   };
 }
