@@ -475,6 +475,9 @@ trust_level = "trusted"
 [projects."/home/alex/code/yaHui"]
 trust_level = "trusted"
 
+[projects."/home/alex/code/keirMathews"]
+trust_level = "trusted"
+
 [tui]
 screen_reader_detection_done = true
 
