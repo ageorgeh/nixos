@@ -1,6 +1,6 @@
 final: prev:
 let
-  version = "21.1.2";
+  version = "21.2";
   # Temporary: remove the version override once nixpkgs provides 21.1.2 or newer.
   resolve =
     if prev.lib.versionAtLeast prev.davinci-resolve-studio.version version then
@@ -19,7 +19,7 @@ let
                 src = args.src.overrideAttrs {
                   VERSION = version;
                   # Recursive (NAR) hash of Blackmagic's Linux Studio ZIP.
-                  outputHash = "sha256-65cKds8/Sf9OcLIvgoX8mDSUIv2wjq/bicgS7RdEapY=";
+                  outputHash = "sha256-4B3PzeAns3RYch0M7VdgDPdbnIjKVCHwYj0K692qajs=";
                 };
                 # Upstream uses a recursive attrset, so installPhase captured its version.
                 installPhase = prev.lib.replaceStrings [ args.version ] [ version ] args.installPhase;

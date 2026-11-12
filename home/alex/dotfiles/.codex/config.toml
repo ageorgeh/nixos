@@ -146,6 +146,7 @@ NODE_REPL_TRUSTED_SERVICES = '{"browser":"/home/alex/.codex/plugins/cache/openai
 [mcp_servers.davinci_resolve]
 command = "davinci-resolve-mcp"
 args = []
+env_vars = ["DISPLAY", "WAYLAND_DISPLAY", "XDG_RUNTIME_DIR", "DBUS_SESSION_BUS_ADDRESS", "XAUTHORITY"]
 
 # [mcp_servers.gortex]
 # args = ['mcp']
@@ -476,6 +477,9 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/home/alex/code/keirMathews"]
+trust_level = "trusted"
+
+[projects."/home/alex/code/patriciaW"]
 trust_level = "trusted"
 
 [tui]

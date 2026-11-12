@@ -234,5 +234,8 @@ in
         vlc-bin
       ]
     )
-    ++ lib.optionals (isLinux && hostName == "workstation") [ pkgs.sccache ];
+    ++ lib.optionals (isLinux && hostName == "workstation") [
+      pkgs.sccache
+      pkgs.yt-dlp
+    ];
 }

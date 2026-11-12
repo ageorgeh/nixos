@@ -50,7 +50,6 @@ in
     "d ${stateRoot} 0700 illustrations illustrations - -"
     "d ${stateRoot}/incoming 0700 illustrations illustrations - -"
     "d ${artistRoot} 0755 illustrations illustrations - -"
-    "d ${artistRoot}/Packs 0755 illustrations illustrations - -"
     "d ${artistRoot}/Returns 2770 illustrations illustration-artists - -"
     "d /var/lib/cms-illustration-runtime 0755 root root - -"
   ];
@@ -76,6 +75,7 @@ in
     after = [ "samba-smbd.service" ];
     serviceConfig = {
       Type = "oneshot";
+      RemainAfterExit = true;
       LoadCredential = [ "password:${config.age.secrets.illustration-samba-password.path}" ];
     };
     script = ''
